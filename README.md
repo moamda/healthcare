@@ -5,8 +5,7 @@ run 'composer update' to root app to install vendors.
 Implemented:
 
 user management:
-| Features                            | Status | Details                                      |
-|----------------------------------------------------------------------------------------------
+| Features                            | Status | Details |  
 | User Authentication                 |        | Basic security features (hashing, auth keys).
 | Registration                        |        |               
 | Password Reset                      |        |
@@ -15,4 +14,3 @@ user management:
 | User Profile                        |        |    
 | Session and Cookie Management       |        |    
 | Security                            |        |    
-------------------------------------------------------------    
