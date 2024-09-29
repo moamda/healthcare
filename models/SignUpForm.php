@@ -16,22 +16,7 @@ class SignupForm extends Model
     public $email;
     public $password;
 
-
-    /**
-     * {@inheritdoc}
-     */
-
-    // public function behaviors()
-    // {
-    //     return [
-    //         [
-    //             'class' => TimestampBehavior::class,
-    //             'createdAtAttribute' => 'created_at',
-    //             'updatedAtAttribute' => 'updated_at',
-    //             'value' => new Expression('NOW()'),
-    //         ],
-    //     ];
-    // }
+    
     public function rules()
     {
         return [
