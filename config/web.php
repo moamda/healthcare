@@ -74,7 +74,11 @@ $config = [
             'mainLayout' => '@app/views/layouts/main.php',
             // 'menus' => ['route' => null],
 
-        ]
+        ],
+        'scheduling' => [
+            'class' => 'app\modules\scheduling\Module',
+            // 'layout' => 'left-menu',
+        ],
     ],
 ];
 
