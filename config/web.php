@@ -80,6 +80,7 @@ $config = [
             // 'layout' => 'left-menu',
         ],
     ],
+    
 ];
 
 if (YII_ENV_DEV) {
