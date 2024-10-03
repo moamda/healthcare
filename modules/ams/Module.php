@@ -1,16 +1,16 @@
 <?php
 
-namespace app\modules\scheduling;
+namespace app\modules\ams;
 
 /**
- * scheduling module definition class
+ * ams module definition class
  */
 class Module extends \yii\base\Module
 {
     /**
      * {@inheritdoc}
      */
-    public $controllerNamespace = 'app\modules\scheduling\controllers';
+    public $controllerNamespace = 'app\modules\ams\controllers';
 
     /**
      * {@inheritdoc}

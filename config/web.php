@@ -73,8 +73,10 @@ $config = [
             'layout' => 'left-menu',
             'mainLayout' => '@app/views/layouts/main.php',
             // 'menus' => ['route' => null],
-
         ],
+        'ams' => [
+            'class' => 'app\modules\ams\Module'
+        ]
     ],
     
 ];
