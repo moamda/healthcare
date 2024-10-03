@@ -75,10 +75,6 @@ $config = [
             // 'menus' => ['route' => null],
 
         ],
-        'scheduling' => [
-            'class' => 'app\modules\scheduling\Module',
-            // 'layout' => 'left-menu',
-        ],
     ],
     
 ];
