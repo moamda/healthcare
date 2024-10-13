@@ -1,6 +1,6 @@
 <?php
 
-namespace app\modules\ams\models;
+namespace app\modules\scheduling\models;
 
 use Yii;
 
@@ -33,8 +33,7 @@ class Profile extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['user_id', 'last_name', 'first_name', 'middle_initial', 'address', 'contact'], 'required'],
-            [['user_id'], 'integer'],
+            [['last_name', 'first_name', 'middle_initial', 'address', 'contact'], 'required'],
             [['last_name', 'first_name', 'middle_initial', 'extname', 'gender', 'address', 'contact'], 'string', 'max' => 255],
         ];
     }

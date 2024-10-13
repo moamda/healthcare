@@ -1,6 +1,6 @@
 <?php
 
-namespace app\modules\ams\controllers;
+namespace app\modules\scheduling\controllers;
 
 use yii\web\Controller;
 use yii\filters\AccessControl;

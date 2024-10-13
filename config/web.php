@@ -73,8 +73,8 @@ $config = [
             'mainLayout' => '@app/views/layouts/main.php',
             // 'menus' => ['route' => null],
         ],
-        'ams' => [
-            'class' => 'app\modules\ams\Module'
+        'scheduling' => [
+            'class' => 'app\modules\scheduling\Module'
         ]
     ],
     

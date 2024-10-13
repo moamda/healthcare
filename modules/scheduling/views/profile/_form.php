@@ -4,15 +4,13 @@ use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 
 /** @var yii\web\View $this */
-/** @var app\modules\ams\models\Profile $model */
+/** @var app\modules\scheduling\models\Profile $model */
 /** @var yii\widgets\ActiveForm $form */
 ?>
 
 <div class="profile-form">
 
     <?php $form = ActiveForm::begin(); ?>
-
-    <?= $form->field($model, 'user_id')->textInput() ?>
 
     <?= $form->field($model, 'last_name')->textInput(['maxlength' => true]) ?>
 

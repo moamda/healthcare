@@ -1,9 +1,9 @@
 <?php
 
-namespace app\modules\ams\controllers;
+namespace app\modules\scheduling\controllers;
 
-use app\modules\ams\models\Profile;
-use app\modules\ams\models\ProfileSearch;
+use app\modules\scheduling\models\Profile;
+use app\modules\scheduling\models\ProfileSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;

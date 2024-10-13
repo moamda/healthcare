@@ -1,13 +1,13 @@
 <?php
 
-namespace app\modules\ams\models;
+namespace app\modules\scheduling\models;
 
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
-use app\modules\ams\models\Profile;
+use app\modules\scheduling\models\Profile;
 
 /**
- * ProfileSearch represents the model behind the search form of `app\modules\ams\models\Profile`.
+ * ProfileSearch represents the model behind the search form of `app\modules\scheduling\models\Profile`.
  */
 class ProfileSearch extends Profile
 {

@@ -4,7 +4,7 @@ use yii\helpers\Html;
 use yii\widgets\DetailView;
 
 /** @var yii\web\View $this */
-/** @var app\modules\ams\models\Profile $model */
+/** @var app\modules\scheduling\models\Profile $model */
 
 $this->title = $model->id;
 $this->params['breadcrumbs'][] = ['label' => 'Profiles', 'url' => ['index']];

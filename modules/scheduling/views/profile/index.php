@@ -1,13 +1,13 @@
 <?php
 
-use app\modules\ams\models\Profile;
+use app\modules\scheduling\models\Profile;
 use yii\helpers\Html;
 use yii\helpers\Url;
 use yii\grid\ActionColumn;
 use yii\grid\GridView;
 use yii\widgets\Pjax;
 /** @var yii\web\View $this */
-/** @var app\modules\ams\models\ProfileSearch $searchModel */
+/** @var app\modules\scheduling\models\ProfileSearch $searchModel */
 /** @var yii\data\ActiveDataProvider $dataProvider */
 
 $this->title = 'Profiles';
