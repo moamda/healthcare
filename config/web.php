@@ -6,7 +6,10 @@ $db = require __DIR__ . '/db.php';
 $config = [
     'id' => 'basic',
     'basePath' => dirname(__DIR__),
-    'bootstrap' => ['log'],
+    'bootstrap' => [
+        'log',
+        'admin'
+    ],
     'aliases' => [
         '@bower' => '@vendor/bower-asset',
         '@npm'   => '@vendor/npm-asset',
@@ -15,18 +18,6 @@ $config = [
         'authManager' => [
             'class' => 'yii\rbac\DbManager',
         ],
-        'as access' => [
-            'class' => 'mdm\admin\components\AccessControl',
-            'allowActions' => [
-                'site/*',
-                // 'admin/*',
-                // The actions listed here will be allowed to everyone including guests.
-                // So, 'admin/*' should not appear here in the production, of course.
-                // But in the earlier stages of your development, you may probably want to
-                // add a lot of actions here until you finally completed setting up rbac,
-                // otherwise you may not even take a first step.
-            ]
-        ],
         'request' => [
             'cookieValidationKey' => 'SQ4ktLsm5pLWGjPQZ2NdVm5YwAFIym3Z',
         ],
@@ -34,7 +25,8 @@ $config = [
             'class' => 'yii\caching\FileCache',
         ],
         'user' => [
-            'identityClass' => 'app\models\User',
+            'identityClass' => 'mdm\admin\models\User',
+            'loginUrl' => ['admin/user/login'],
             'enableAutoLogin' => true,
         ],
         'errorHandler' => [
@@ -55,6 +47,15 @@ $config = [
                 ],
             ],
         ],
+        'i18n' => [
+            'translations' => [
+                'yii2-ajaxcrud' => [
+                    'class' => 'yii\i18n\PhpMessageSource',
+                    'basePath' => '@yii2ajaxcrud/ajaxcrud/messages',
+                    'sourceLanguage' => 'en',
+                ],
+            ]
+        ],
         'db' => $db,
 
         'urlManager' => [
@@ -64,20 +65,34 @@ $config = [
         ],
 
     ],
+    'as access' => [
+        'class' => 'mdm\admin\components\AccessControl',
+        'allowActions' => [
+            'site/*',
+            'gii/*',
+            'debug/*',
+            'admin/*',
+            'gridview/*',
+        ]
+    ],
     'params' => $params,
 
     'modules' => [
+        'gridview' =>  [
+            'class' => '\kartik\grid\Module'
+        ],
         'admin' => [
             'class' => 'mdm\admin\Module',
-            'layout' => 'left-menu',
-            'mainLayout' => '@app/views/layouts/main.php',
-            // 'menus' => ['route' => null],
+            'controllerMap' => [
+                'assignment' => [
+                    'class' => 'mdm\admin\controllers\AssignmentController',
+                    'idField' => 'id',
+                    'usernameField' => 'username',
+                ],
+            ],
+            'layout' => '/adminlte',
         ],
-        'scheduling' => [
-            'class' => 'app\modules\scheduling\Module'
-        ]
     ],
-    
 ];
 
 if (YII_ENV_DEV) {
@@ -92,6 +107,14 @@ if (YII_ENV_DEV) {
     $config['bootstrap'][] = 'gii';
     $config['modules']['gii'] = [
         'class' => 'yii\gii\Module',
+        'generators' => [
+            'crud' => [
+                'class' => 'yii\gii\generators\crud\Generator',
+                'templates' => [
+                    'yii2-adminlte3' => '@vendor/hail812/yii2-adminlte3/src/gii/generators/crud/default'
+                ]
+            ]
+        ]
         // uncomment the following to add your IP if you are not connecting from localhost.
         //'allowedIPs' => ['127.0.0.1', '::1'],
     ];

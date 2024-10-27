@@ -7,4 +7,10 @@ return [
     'senderName' => 'Example.com mailer',
     'user.passwordResetTokenExpire' => 3600,
     'user.passwordMinLength' => 8,
+
+    'bsVersion' => '4.x',
+
+    'mdm.admin.configs' => [
+        'defaultUserStatus' => 0, // 0 = inactive, 10 = active
+    ]
 ];

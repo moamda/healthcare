@@ -129,7 +129,7 @@ $requirements = array(
         'mandatory' => false,
         'condition' => $requirementsChecker->checkPhpIniOff("expose_php"),
         'by' => 'Security reasons',
-        'memo' => '"bootstrap5_php" should be disabled at php.ini',
+        'memo' => '"bootstrap4_php" should be disabled at php.ini',
     ),
     'phpAllowUrlInclude' => array(
         'name' => 'PHP allow url include',
