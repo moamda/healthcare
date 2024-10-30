@@ -39,30 +39,27 @@
                     ['label' => '', 'header' => true],
                     ['label' => 'MODULES', 'header' => true],
                     [
-                        'label' => 'Admin',
+                        'label' => 'User',
                         'items' => [
-                            [
-                                'label' => 'User Management',
-                                'iconStyle' => 'far',
-                                'items' => [
-                                    ['label' => 'Sign Up', 'url' => ['/admin/user/signup'], 'iconStyle' => 'far', 'icon' => 'dot-circle'],
-                                ]
-                            ],
-                            [
-                                'label' => 'RBAC',
-                                'iconStyle' => 'far',
-                                'items' => [
-                                    ['label' => 'Users', 'url' => ['/admin/user'], 'iconStyle' => 'far', 'icon' => 'dot-circle'],
-                                    ['label' => 'Assignments', 'url' => ['/admin/assignment'], 'iconStyle' => 'far', 'icon' => 'dot-circle'],
-                                    ['label' => 'Roles', 'url' => ['/admin/role'], 'iconStyle' => 'far', 'icon' => 'dot-circle'],
-                                    ['label' => 'Permissions', 'url' => ['/admin/permission'], 'iconStyle' => 'far', 'icon' => 'dot-circle'],
-                                    ['label' => 'Routes', 'url' => ['/admin/route'], 'iconStyle' => 'far', 'icon' => 'dot-circle'],
-                                    ['label' => 'Rules', 'url' => ['/admin/rule'], 'iconStyle' => 'far', 'icon' => 'dot-circle'],
-                                    ['label' => 'Menus', 'url' => ['/admin/menu'], 'iconStyle' => 'far', 'icon' => 'dot-circle'],
-                                ]
-                            ],
+                            ['label' => 'Index', 'url' => ['/user/user/index'], 'iconStyle' => 'far'],
+                            ['label' => 'Sign Up', 'url' => ['/user/user/signup'], 'iconStyle' => 'far'],
                         ]
                     ],
+                    ['label' => '', 'header' => true],
+                    ['label' => 'SECURITY', 'header' => true],
+                    [
+                        'label' => 'RBAC',
+                        'items' => [
+                            ['label' => 'Users', 'url' => ['/admin/user/index'], 'iconStyle' => 'far'],
+                            ['label' => 'Assignments', 'url' => ['/admin/assignment/index'], 'iconStyle' => 'far'],
+                            ['label' => 'Roles', 'url' => ['/admin/role/index'], 'iconStyle' => 'far'],
+                            ['label' => 'Permissions', 'url' => ['/admin/permission/index'], 'iconStyle' => 'far'],
+                            ['label' => 'Routes', 'url' => ['/admin/route/index'], 'iconStyle' => 'far'],
+                            ['label' => 'Rules', 'url' => ['/admin/rule/index'], 'iconStyle' => 'far'],
+                            ['label' => 'Menus', 'url' => ['/admin/menu/index'], 'iconStyle' => 'far'],
+                        ]
+                    ],
+
                 ],
             ]);
             ?>

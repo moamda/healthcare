@@ -141,32 +141,5 @@ class SiteController extends Controller
      *
      * @return mixed
      */
-    public function actionSignup()
-    {
-
-        $model = new SignUpForm();
-        
-        // original code
-        // if ($model->load(Yii::$app->request->post()) && $model->signup()) {
-        //     Yii::$app->session->setFlash('success', 'Thank you for registration. Please check your inbox for verification email.');
-        //     return $this->goHome();
-        // }
-
-        // new optimized code
-        if (Yii::$app->request->post()) {
-            $model->load(Yii::$app->request->post());
-            if ($model->validate()) {
-                if ($model->signup()){
-                    Yii::$app->session->setFlash(self::FLASH_SUCCESS, 'Thank you for registtration. Please check your inbox for verification email.');
-                    return $this->goHome();
-                } else {
-                    Yii::$app->session->setFlash(self::FLASH_ERROR, 'Failed to save user.');
-                }
-            }
-        }
-
-        return $this->render('signup', [
-            'model' => $model,
-        ]);
-    }
+    
 }

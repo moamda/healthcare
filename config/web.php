@@ -73,6 +73,7 @@ $config = [
             'debug/*',
             'admin/*',
             'gridview/*',
+            'user/*',
         ]
     ],
     'params' => $params,
@@ -83,13 +84,10 @@ $config = [
         ],
         'admin' => [
             'class' => 'mdm\admin\Module',
-            'controllerMap' => [
-                'assignment' => [
-                    'class' => 'mdm\admin\controllers\AssignmentController',
-                    'idField' => 'id',
-                    'usernameField' => 'username',
-                ],
-            ],
+            'layout' => '/adminlte',
+        ],
+        'user' => [
+            'class' => 'app\modules\user\Module',
             'layout' => '/adminlte',
         ],
     ],

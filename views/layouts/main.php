@@ -47,9 +47,9 @@ $this->registerLinkTag(['rel' => 'icon', 'type' => 'image/x-icon', 'href' => Yii
             ['label' => 'About', 'url' => ['/site/about']],
             ['label' => 'Contact', 'url' => ['/site/contact']],
         ];
-        if (Yii::$app->user->isGuest) {
-            $menuItems[] = ['label' => 'Signup', 'url' => ['/site/signup']];
-        }
+        // if (Yii::$app->user->isGuest) {
+        //     $menuItems[] = ['label' => 'Signup', 'url' => ['/site/signup']];
+        // }
 
         echo Nav::widget([
             'options' => ['class' => 'navbar-nav ms-auto mb-2 mb-md-0'],

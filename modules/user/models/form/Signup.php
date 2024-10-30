@@ -10,11 +10,12 @@ use yii\behaviors\TimestampBehavior;
 /**
  * Signup form
  */
-class SignupForm extends Model
+class Signup extends Model
 {
     public $username;
     public $email;
     public $password;
+    public $retypePassword;
 
     
     public function rules()
@@ -33,6 +34,9 @@ class SignupForm extends Model
 
             ['password', 'required'],
             ['password', 'string', 'min' => Yii::$app->params['user.passwordMinLength']],
+
+            ['retypePassword', 'required'],
+            ['retypePassword', 'compare', 'compareAttribute' => 'password'],
 
         ];
     }
