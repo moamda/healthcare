@@ -35,10 +35,10 @@ $this->params['breadcrumbs'][] = $this->title;
                             [
                                 'attribute' => 'status',
                                 'value' => function($model) {
-                                    return $model->status == 0 ? 'Inactive' : 'Active';
+                                    return $model->status == 9 ? 'Inactive' : 'Active';
                                 },
                                 'filter' => [
-                                    0 => 'Inactive',
+                                    9 => 'Inactive',
                                     10 => 'Active'
                                 ]
                             ],

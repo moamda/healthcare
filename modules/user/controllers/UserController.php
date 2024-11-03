@@ -5,10 +5,13 @@ namespace app\modules\user\controllers;
 use Yii;
 use app\modules\user\models\User;
 use app\modules\user\models\UserSearch;
+use app\modules\user\models\SignupForm;
+
+
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
-use mdm\admin\models\form\Signup;
+// use mdm\admin\models\form\Signup;
 
 /**
  * UserController implements the CRUD actions for User model.
@@ -68,13 +71,28 @@ class UserController extends Controller
      */
     public function actionCreate()
     {
-        $model = new User();
+        $model = new SignupForm();
+        
+        // original code
+        // if ($model->load(Yii::$app->request->post()) && $model->signup()) {
+        //     Yii::$app->session->setFlash('success', 'Thank you for registration. Please check your inbox for verification email.');
+        //     return $this->goHome();
+        // }
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+        // new optimized code
+        if (Yii::$app->request->post()) {
+            $model->load(Yii::$app->request->post());
+            if ($model->validate()) {
+                if ($model->signup()){
+                    Yii::$app->session->setFlash(self::FLASH_SUCCESS, 'Thank you for registtration. Please check your inbox for verification email.');
+                    return $this->redirect(['index']);
+                } else {
+                    Yii::$app->session->setFlash(self::FLASH_ERROR, 'Failed to save user.');
+                }
+            }
         }
 
-        return $this->render('create', [
+        return $this->render('signup', [
             'model' => $model,
         ]);
     }
@@ -116,7 +134,7 @@ class UserController extends Controller
     public function actionSignup()
     {
 
-        $model = new Signup();
+        $model = new SignupForm();
         
         // original code
         // if ($model->load(Yii::$app->request->post()) && $model->signup()) {
