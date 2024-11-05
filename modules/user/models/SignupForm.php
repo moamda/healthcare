@@ -60,7 +60,7 @@ class SignupForm extends Model
     {
         return [
             'fname' => 'First Name',
-            'mname' => 'Middle Initial',
+            'mname' => 'Middle Name',
             'lname' => 'Last Name',
             'suffix' => 'Extension Name (e.g., Jr., Sr.)',
             'gender' => 'Gender',
@@ -148,6 +148,6 @@ class SignupForm extends Model
 
     protected function generateDefaultPassword()
     {
-        return strtolower(substr($this->fname, 0, 1) . $this->mname . substr($this->lname, 0, 1)) . '@12345';
+        return strtolower(substr($this->fname, 0, 1) . substr($this->mname, 0, 1) . substr($this->lname, 0, 1)) . '@12345';
     }
 }
