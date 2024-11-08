@@ -60,4 +60,9 @@ class User extends \yii\db\ActiveRecord
             'password' => 'Password',
         ];
     }
+
+    public function getProfile()
+    {
+        return $this->hasOne(Profile::class, ['user_id' => 'id']);
+    }
 }

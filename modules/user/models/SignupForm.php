@@ -62,7 +62,7 @@ class SignupForm extends Model
             'fname' => 'First Name',
             'mname' => 'Middle Name',
             'lname' => 'Last Name',
-            'suffix' => 'Extension Name (e.g., Jr., Sr.)',
+            'suffix' => 'Suffix',
             'gender' => 'Gender',
             'address' => 'Address',
             'contact' => 'Contact Number',

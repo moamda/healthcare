@@ -6,6 +6,7 @@ use Yii;
 use app\modules\user\models\User;
 use app\modules\user\models\UserSearch;
 use app\modules\user\models\SignupForm;
+use app\modules\user\models\Profile;
 
 
 use yii\web\Controller;
@@ -60,7 +61,8 @@ class UserController extends Controller
     public function actionView($id)
     {
         return $this->render('view', [
-            'model' => $this->findModel($id),
+            'user' => $this->findModel($id),
+            'profile' => Profile::find()->where(['user_id' => $id])->one(),
         ]);
     }
 
@@ -72,7 +74,7 @@ class UserController extends Controller
     public function actionCreate()
     {
         $model = new SignupForm();
-        
+
         // original code
         // if ($model->load(Yii::$app->request->post()) && $model->signup()) {
         //     Yii::$app->session->setFlash('success', 'Thank you for registration. Please check your inbox for verification email.');
@@ -83,7 +85,7 @@ class UserController extends Controller
         if (Yii::$app->request->post()) {
             $model->load(Yii::$app->request->post());
             if ($model->validate()) {
-                if ($model->signup()){
+                if ($model->signup()) {
                     Yii::$app->session->setFlash(self::FLASH_SUCCESS, 'Thank you for registtration. Please check your inbox for verification email.');
                     return $this->redirect(['index']);
                 } else {
@@ -106,10 +108,10 @@ class UserController extends Controller
      */
     public function actionUpdate($id)
     {
-        $model = $this->findModel($id);
+        $model = Profile::find()->where(['user_id' => $id])->one();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+            return $this->redirect(['view', 'id' => $model]);
         }
 
         return $this->render('update', [
@@ -135,7 +137,7 @@ class UserController extends Controller
     {
 
         $model = new SignupForm();
-        
+
         // original code
         // if ($model->load(Yii::$app->request->post()) && $model->signup()) {
         //     Yii::$app->session->setFlash('success', 'Thank you for registration. Please check your inbox for verification email.');
@@ -146,7 +148,7 @@ class UserController extends Controller
         if (Yii::$app->request->post()) {
             $model->load(Yii::$app->request->post());
             if ($model->validate()) {
-                if ($model->signup()){
+                if ($model->signup()) {
                     Yii::$app->session->setFlash(self::FLASH_SUCCESS, 'Thank you for registtration. Please check your inbox for verification email.');
                     return $this->redirect(['index']);
                 } else {
@@ -159,6 +161,7 @@ class UserController extends Controller
             'model' => $model,
         ]);
     }
+
 
     /**
      * Finds the User model based on its primary key value.

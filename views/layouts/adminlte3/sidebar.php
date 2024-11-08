@@ -39,10 +39,9 @@
                     ['label' => '', 'header' => true],
                     ['label' => 'MODULES', 'header' => true],
                     [
-                        'label' => 'User',
+                        'label' => 'User Management',
                         'items' => [
-                            ['label' => 'Index', 'url' => ['/user/user/index'], 'iconStyle' => 'far'],
-                            ['label' => 'Sign Up', 'url' => ['/user/user/signup'], 'iconStyle' => 'far'],
+                            ['label' => 'Users', 'url' => ['/user/user/index'], 'iconStyle' => 'far'],
                         ]
                     ],
                     ['label' => '', 'header' => true],
