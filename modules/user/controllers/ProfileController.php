@@ -5,6 +5,7 @@ namespace app\modules\user\controllers;
 use Yii;
 use app\modules\user\models\Profile;
 use app\modules\user\models\ProfileSearch;
+use yii\filters\AccessControl;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -19,14 +20,29 @@ class ProfileController extends Controller
      */
     public function behaviors()
     {
-        return [
-            'verbs' => [
-                'class' => VerbFilter::className(),
-                'actions' => [
-                    'delete' => ['POST'],
+        return array_merge(
+            parent::behaviors(),
+            [
+                'access' => [
+                    'class' => AccessControl::class,
+                    'rules' => [
+                        [
+                            'allow' => true,
+                            'roles' => ['super-admin'], 
+                        ],
+                        [
+                            'allow' => false, 
+                        ],
+                    ],
                 ],
-            ],
-        ];
+                'verbs' => [
+                    'class' => VerbFilter::class,
+                    'actions' => [
+                        'delete' => ['POST'],
+                    ],
+                ],
+            ]
+        );
     }
 
     /**
@@ -53,7 +69,7 @@ class ProfileController extends Controller
     public function actionView($id)
     {
         return $this->render('view', [
-            'model' => $this->findModel($id),
+            'model' => Profile::find()->where(['user_id' => $id])->one(),
         ]);
     }
 

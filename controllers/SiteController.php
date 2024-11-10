@@ -87,7 +87,13 @@ class SiteController extends Controller
 
         $model = new LoginForm();
         if ($model->load(Yii::$app->request->post()) && $model->login()) {
-            return $this->goBack();
+            if (Yii::$app->user->can('access admin module')) {
+                return $this->redirect(['/user/dashboard/v1']);
+            } elseif (Yii::$app->user->can('access user module')) {
+                return $this->redirect(['/user/dashboard/v1']);
+            } else {
+                return $this->goHome();
+            }
         }
 
         $model->password = '';
@@ -131,7 +137,7 @@ class SiteController extends Controller
      *
      * @return string
      */
-     public function actionAbout()
+    public function actionAbout()
     {
         return $this->render('about');
     }
@@ -141,5 +147,4 @@ class SiteController extends Controller
      *
      * @return mixed
      */
-    
 }

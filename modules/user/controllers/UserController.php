@@ -7,8 +7,7 @@ use app\modules\user\models\User;
 use app\modules\user\models\UserSearch;
 use app\modules\user\models\SignupForm;
 use app\modules\user\models\Profile;
-
-
+use yii\filters\AccessControl;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -27,14 +26,29 @@ class UserController extends Controller
      */
     public function behaviors()
     {
-        return [
-            'verbs' => [
-                'class' => VerbFilter::className(),
-                'actions' => [
-                    'delete' => ['POST'],
+        return array_merge(
+            parent::behaviors(),
+            [
+                'access' => [
+                    'class' => AccessControl::class,
+                    'rules' => [
+                        [
+                            'allow' => true,
+                            'roles' => ['super-admin'], 
+                        ],
+                        [
+                            'allow' => false, 
+                        ],
+                    ],
                 ],
-            ],
-        ];
+                'verbs' => [
+                    'class' => VerbFilter::class,
+                    'actions' => [
+                        'delete' => ['POST'],
+                    ],
+                ],
+            ]
+        );
     }
 
     /**
@@ -60,8 +74,13 @@ class UserController extends Controller
      */
     public function actionView($id)
     {
+        // return $this->render('view', [
+        //     'user' => $this->findModel($id),
+        //     'profile' => Profile::find()->where(['user_id' => $id])->one(),
+        // ]);
+
         return $this->render('view', [
-            'user' => $this->findModel($id),
+            'model' => $this->findModel($id),
             'profile' => Profile::find()->where(['user_id' => $id])->one(),
         ]);
     }
@@ -108,7 +127,8 @@ class UserController extends Controller
      */
     public function actionUpdate($id)
     {
-        $model = Profile::find()->where(['user_id' => $id])->one();
+        // $model = Profile::find()->where(['user_id' => $id])->one();
+        $model = $this->findModel($id);
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model]);
@@ -161,7 +181,6 @@ class UserController extends Controller
             'model' => $model,
         ]);
     }
-
 
     /**
      * Finds the User model based on its primary key value.

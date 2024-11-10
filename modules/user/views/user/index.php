@@ -2,10 +2,7 @@
 
 use yii\helpers\Html;
 use yii\grid\GridView;
-
-\hail812\adminlte3\assets\FontAwesomeAsset::register($this);
-\hail812\adminlte3\assets\AdminLteAsset::register($this);
-
+use yii\widgets\Pjax;
 /* @var $this yii\web\View */
 /* @var $searchModel app\modules\user\models\UserSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
@@ -25,6 +22,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     </div>
 
 
+                    <?php Pjax::begin(); ?>
                     <?php // echo $this->render('_search', ['model' => $searchModel]); 
                     ?>
 
@@ -33,8 +31,6 @@ $this->params['breadcrumbs'][] = $this->title;
                         'filterModel' => $searchModel,
                         'columns' => [
                             ['class' => 'yii\grid\SerialColumn'],
-
-                            // 'id',
                             'username',
                             'email:email',
                             [
@@ -47,15 +43,8 @@ $this->params['breadcrumbs'][] = $this->title;
                                     10 => 'Active'
                                 ]
                             ],
-                            //'password_hash',
-                            //'password_reset_token',
-                            //'verification_token',
-                            //'auth_key',
-                            //'status',
-                            //'created_at',
-                            //'updated_at',
-                            //'password',
-
+                            'created_at:datetime',
+                            'updated_at:datetime',
                             [
                                 'class' => 'hail812\adminlte3\yii\grid\ActionColumn',
                                 'template' => '{view} {update} {delete} {profile}',
@@ -80,8 +69,15 @@ $this->params['breadcrumbs'][] = $this->title;
                                             'data-method' => 'post',
                                         ]);
                                     },
+                                    'profile' => function ($url, $model, $key) {
+                                        return Html::a('<i class="fas fa-user"></i>', ['profile/view', 'id' => $model->id], [
+                                            'class' => 'btn bg-gradient-info',
+                                            'title' => Yii::t('app', 'Profile'),
+                                        ]);
+                                    },
                                 ],
                             ],
+
                         ],
                         'summaryOptions' => ['class' => 'summary mb-2'],
                         'pager' => [
@@ -89,6 +85,7 @@ $this->params['breadcrumbs'][] = $this->title;
                         ]
                     ]); ?>
 
+                    <?php Pjax::end(); ?>
 
                 </div>
                 <!--.card-body-->
