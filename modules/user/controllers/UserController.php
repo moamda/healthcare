@@ -21,6 +21,10 @@ class UserController extends Controller
 
     const FLASH_SUCCESS = 'success';
     const FLASH_ERROR = 'error';
+    const INACTIVE = 9;
+    const ACTIVE = 10;
+
+
     /**
      * {@inheritdoc}
      */
@@ -34,10 +38,10 @@ class UserController extends Controller
                     'rules' => [
                         [
                             'allow' => true,
-                            'roles' => ['super-admin'], 
+                            'roles' => ['super-admin'],
                         ],
                         [
-                            'allow' => false, 
+                            'allow' => false,
                         ],
                     ],
                 ],
@@ -66,12 +70,7 @@ class UserController extends Controller
         ]);
     }
 
-    /**
-     * Displays a single User model.
-     * @param int $id ID
-     * @return mixed
-     * @throws NotFoundHttpException if the model cannot be found
-     */
+    
     public function actionView($id)
     {
         // return $this->render('view', [
@@ -85,49 +84,38 @@ class UserController extends Controller
         ]);
     }
 
-    /**
-     * Creates a new User model.
-     * If creation is successful, the browser will be redirected to the 'view' page.
-     * @return mixed
-     */
-    public function actionCreate()
-    {
-        $model = new SignupForm();
+    
+    // public function actionCreate()
+    // {
+    //     $model = new SignupForm();
 
-        // original code
-        // if ($model->load(Yii::$app->request->post()) && $model->signup()) {
-        //     Yii::$app->session->setFlash('success', 'Thank you for registration. Please check your inbox for verification email.');
-        //     return $this->goHome();
-        // }
+    //     // original code
+    //     // if ($model->load(Yii::$app->request->post()) && $model->signup()) {
+    //     //     Yii::$app->session->setFlash('success', 'Thank you for registration. Please check your inbox for verification email.');
+    //     //     return $this->goHome();
+    //     // }
 
-        // new optimized code
-        if (Yii::$app->request->post()) {
-            $model->load(Yii::$app->request->post());
-            if ($model->validate()) {
-                if ($model->signup()) {
-                    Yii::$app->session->setFlash(self::FLASH_SUCCESS, 'Thank you for registtration. Please check your inbox for verification email.');
-                    return $this->redirect(['index']);
-                } else {
-                    Yii::$app->session->setFlash(self::FLASH_ERROR, 'Failed to save user.');
-                }
-            }
-        }
+    //     // new optimized code
+    //     if (Yii::$app->request->post()) {
+    //         $model->load(Yii::$app->request->post());
+    //         if ($model->validate()) {
+    //             if ($model->signup()) {
+    //                 Yii::$app->session->setFlash(self::FLASH_SUCCESS, 'Thank you for registtration. Please check your inbox for verification email.');
+    //                 return $this->redirect(['index']);
+    //             } else {
+    //                 Yii::$app->session->setFlash(self::FLASH_ERROR, 'Failed to save user.');
+    //             }
+    //         }
+    //     }
 
-        return $this->render('signup', [
-            'model' => $model,
-        ]);
-    }
+    //     return $this->render('signup', [
+    //         'model' => $model,
+    //     ]);
+    // }
 
-    /**
-     * Updates an existing User model.
-     * If update is successful, the browser will be redirected to the 'view' page.
-     * @param int $id ID
-     * @return mixed
-     * @throws NotFoundHttpException if the model cannot be found
-     */
+    
     public function actionUpdate($id)
     {
-        // $model = Profile::find()->where(['user_id' => $id])->one();
         $model = $this->findModel($id);
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
@@ -139,32 +127,24 @@ class UserController extends Controller
         ]);
     }
 
-    /**
-     * Deletes an existing User model.
-     * If deletion is successful, the browser will be redirected to the 'index' page.
-     * @param int $id ID
-     * @return mixed
-     * @throws NotFoundHttpException if the model cannot be found
-     */
+    
     public function actionDelete($id)
     {
-        $this->findModel($id)->delete();
+        $user = $this->findModel($id);
 
-        return $this->redirect(['index']);
+        if ($user->status == self::ACTIVE) {
+            $user->status = self::INACTIVE;
+            if ($user->save()) {
+                return $this->redirect(['index']);
+            }
+        }
+        return $this->goHome();
     }
 
     public function actionSignup()
     {
-
         $model = new SignupForm();
 
-        // original code
-        // if ($model->load(Yii::$app->request->post()) && $model->signup()) {
-        //     Yii::$app->session->setFlash('success', 'Thank you for registration. Please check your inbox for verification email.');
-        //     return $this->goHome();
-        // }
-
-        // new optimized code
         if (Yii::$app->request->post()) {
             $model->load(Yii::$app->request->post());
             if ($model->validate()) {
@@ -180,6 +160,19 @@ class UserController extends Controller
         return $this->render('signup', [
             'model' => $model,
         ]);
+    }
+
+    public function actionActivate($id)
+    {
+        $user = $this->findModel($id);
+
+        if ($user->status == self::INACTIVE) {
+            $user->status = self::ACTIVE;
+            if ($user->save()) {
+                return $this->redirect(['index']);
+            }
+        }
+        return $this->goHome();
     }
 
     /**
