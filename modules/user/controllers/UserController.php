@@ -119,7 +119,7 @@ class UserController extends Controller
         $model = $this->findModel($id);
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model]);
+            return $this->redirect(['view', 'id' => $model->id]);
         }
 
         return $this->render('update', [
@@ -138,7 +138,7 @@ class UserController extends Controller
                 return $this->redirect(['index']);
             }
         }
-        return $this->goHome();
+        return $this->redirect(['index']);
     }
 
     public function actionSignup()

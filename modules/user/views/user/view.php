@@ -22,7 +22,7 @@ $this->params['breadcrumbs'][] = $this->title;
                         <?= Html::a('Delete', ['delete', 'id' => $model->id], [
                             'class' => 'btn btn-danger',
                             'data' => [
-                                'confirm' => 'Are you sure you want to delete this item?',
+                                'confirm' => 'Are you sure you want to deactivate this user?',
                                 'method' => 'post',
                             ],
                         ]) ?>
@@ -37,7 +37,14 @@ $this->params['breadcrumbs'][] = $this->title;
                             'verification_token',
                             'email:email',
                             'auth_key',
-                            'status',
+                            [
+                                'attribute' => 'status',
+                                'value' => fn($model) => $model->status === 9 ? 'Inactive' : 'Active',
+                                'filter' => [
+                                    9 => 'Inactive',
+                                    10 => 'Active',
+                                ],
+                            ],
                             'created_at:datetime',
                             'updated_at:datetime',
                             'password',

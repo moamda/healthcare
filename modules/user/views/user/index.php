@@ -35,22 +35,23 @@ $this->params['breadcrumbs'][] = $this->title;
                             'email:email',
                             [
                                 'attribute' => 'status',
-                                'value' => function ($model) {
-                                    return $model->status == 9 ? 'Inactive' : 'Active';
-                                },
+                                'value' => fn($model) => $model->status === 9 ? 'Inactive' : 'Active',
                                 'filter' => [
                                     9 => 'Inactive',
-                                    10 => 'Active'
-                                ]
+                                    10 => 'Active',
+                                ],
                             ],
-                            'created_at:datetime',
-                            'updated_at:datetime',
+                            // 'created_at:datetime',
+                            // 'updated_at:datetime',
                             [
                                 'class' => 'hail812\adminlte3\yii\grid\ActionColumn',
                                 'template' => '{view} {update} {activate} {delete} {profile}',
+                                'header' => 'Actions',
+                                'headerOptions' => ['style' => 'width: 350px; text-align: center;'],
+                                'contentOptions' => ['style' => 'width: 350px; text-align: center;'],
                                 'buttons' => [
                                     'view' => function ($url, $model, $key) {
-                                        return Html::a('<i class="fas fa-eye"></i>', $url, [
+                                        return Html::a('View', $url, [
                                             'class' => 'btn bg-gradient-info',
                                             'title' => Yii::t('app', 'View'),
                                         ]);
@@ -67,10 +68,10 @@ $this->params['breadcrumbs'][] = $this->title;
                                             'data-method' => 'post',
                                             'data-pjax' => '0',
                                         ];
-                                        return Html::a('<i class="fas fa-check"></i>', $url, $options);
+                                        return Html::a('Activate', $url, $options);
                                     },
                                     'update' => function ($url, $model, $key) {
-                                        return Html::a('<i class="fas fa-edit"></i>', $url, [
+                                        return Html::a('Update', $url, [
                                             'class' => 'btn bg-gradient-warning',
                                             'title' => Yii::t('app', 'Update'),
                                         ]);
@@ -79,7 +80,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                         if ($model->status == 9) {
                                             return '';
                                         }
-                                        return Html::a('<i class="fas fa-trash"></i>', $url, [
+                                        return Html::a('Deactivate', $url, [
                                             'class' => 'btn bg-gradient-danger',
                                             'title' => Yii::t('app', 'Delete'),
                                             'data-confirm' => Yii::t('app', 'Are you sure you want to deactivate this user?'),
@@ -87,7 +88,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                         ]);
                                     },
                                     'profile' => function ($url, $model, $key) {
-                                        return Html::a('<i class="fas fa-user"></i>', ['profile/view', 'id' => $model->id], [
+                                        return Html::a('Profile', ['profile/view', 'id' => $model->id], [
                                             'class' => 'btn bg-gradient-success',
                                             'title' => Yii::t('app', 'Profile'),
                                         ]);

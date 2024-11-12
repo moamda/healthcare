@@ -12,17 +12,32 @@ use yii\bootstrap4\ActiveForm;
 
     <?php $form = ActiveForm::begin(); ?>
 
-    <?= $form->field($model, 'user_id')->textInput() ?>
-
     <?= $form->field($model, 'last_name')->textInput(['maxlength' => true]) ?>
 
     <?= $form->field($model, 'first_name')->textInput(['maxlength' => true]) ?>
 
     <?= $form->field($model, 'middle_name')->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'suffix')->textInput(['maxlength' => true]) ?>
-
-    <?= $form->field($model, 'gender')->textInput(['maxlength' => true]) ?>
+    <?= $form->field($model, 'suffix')->dropDownList(
+        [
+            'Jr.' => 'Jr.',
+            'Sr.' => 'Sr.',
+            'I' => 'I',
+            'II' => 'II',
+            'III' => 'III',
+            'IV' => 'IV',
+            'V' => 'V'
+        ],
+        ['prompt' => 'Optional']
+    ) ?>
+    
+    <?= $form->field($model, 'gender')->dropDownList(
+        [
+            'Male' => 'Male',
+            'Female' => 'Female',
+        ],
+        ['prompt' => 'Optional']
+    ) ?>
 
     <?= $form->field($model, 'address')->textInput(['maxlength' => true]) ?>
 
