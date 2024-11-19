@@ -6,48 +6,39 @@
 use app\assets\AppAsset;
 use yii\helpers\Html;
 
-use app\widgets\Alert;
-use yii\bootstrap4\Breadcrumbs;
-use yii\bootstrap4\Nav;
-use yii\bootstrap4\NavBar;
-
 \hail812\adminlte3\assets\FontAwesomeAsset::register($this);
 \hail812\adminlte3\assets\AdminLteAsset::register($this);
 
 AppAsset::register($this);
 ?>
+
 <?php $this->beginPage() ?>
 <!DOCTYPE html>
 <html lang="<?= Yii::$app->language ?>" class="h-100">
-
 <head>
     <meta charset="<?= Yii::$app->charset ?>">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <?php $this->registerCsrfMetaTags() ?>
     <title><?= Html::encode($this->title) ?></title>
     <?php $this->head() ?>
+    <style>
+        body {
+            background-color: #ced4da;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 0;
+        }
+        .card {
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+    </style>
 </head>
-
-<body class="d-flex flex-column h-100" style="background-color: #d6d8db;">
+<body>
     <?php $this->beginBody() ?>
-
-    <main role="main">
-        <div class="container">
-            <?= $content ?>
-        </div>
-
-        <!-- <div class="container text-center">
-            <p class="text-muted">© <?= date('Y') ?> DOST-ITDI. All rights reserved.</p>
-        </div> -->
-    </main>
-
-    <!-- <footer class="main-footer">
-        
-    </footer> -->
-
+    <?= $content ?>
     <?php $this->endBody() ?>
 </body>
-
 </html>
-
-<?php $this->endPage();
+<?php $this->endPage() ?>

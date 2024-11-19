@@ -9,6 +9,7 @@ use yii\web\Response;
 use yii\filters\VerbFilter;
 use app\models\LoginForm;
 use app\models\ContactForm;
+use app\models\PasswordResetRequestForm;
 use app\models\SignupForm;
 
 class SiteController extends Controller
@@ -144,9 +145,23 @@ class SiteController extends Controller
         return $this->render('about');
     }
 
-    /**
-     * Signs user up.
-     *
-     * @return mixed
-     */
+    public function actionRequestPasswordReset()
+    {
+        $this->layout = '/blank';
+
+        $model = new PasswordResetRequestForm();
+        if ($model->load(Yii::$app->request->post()) && $model->validate()) {
+            if ($model->sendEmail()) {
+                Yii::$app->session->setFlash('success', 'Kindly wait for the administrator to reset your password.');
+                return $this->goHome();
+            }
+
+            Yii::$app->session->setFlash('error', 'Sorry, we are unable to reset password for the provided email address.');
+            return $this->goHome();
+        }
+
+        return $this->render('requestPasswordResetToken', [
+            'model' => $model,
+        ]);
+    }
 }
