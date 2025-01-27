@@ -38,29 +38,15 @@
 
 
                     ['label' => '', 'header' => true],
-                    ['label' => 'MODULES', 'header' => true, 'visible' => !Yii::$app->user->isGuest],
+                    ['label' => 'PATIENT', 'header' => true, 'visible' => !Yii::$app->user->isGuest],
                     [
-                        'label' => 'Admin',
+                        'label' => 'Health Records',
                         'items' => [
-                            ['label' => 'User Management', 'url' => ['/admin/user/index'], 'iconStyle' => 'far'],
-                            [
-                                'label' => 'RBAC',
-                                'iconStyle' => 'far',
-                                'items' => [
-                                    // ['label' => 'Users', 'url' => ['/rbac/user/index'], 'iconStyle' => 'far', 'icon' => 'dot-circle'],
-                                    ['label' => 'Assignments', 'url' => ['/rbac/assignment/index'], 'iconStyle' => 'far', 'icon' => 'dot-circle'],
-                                    ['label' => 'Roles', 'url' => ['/rbac/role/index'], 'iconStyle' => 'far', 'icon' => 'dot-circle'],
-                                    ['label' => 'Permissions', 'url' => ['/rbac/permission/index'], 'iconStyle' => 'far', 'icon' => 'dot-circle'],
-                                    // ['label' => 'Routes', 'url' => ['/rbac/route/index'], 'iconStyle' => 'far', 'icon' => 'dot-circle'],
-                                    // ['label' => 'Rules', 'url' => ['/rbac/rule/index'], 'iconStyle' => 'far', 'icon' => 'dot-circle'],
-                                    // ['label' => 'Menus', 'url' => ['/rbac/menu/index'], 'iconStyle' => 'far', 'icon' => 'dot-circle'],
-                                ],
-                            ],
+                            ['label' => 'Medical History', 'iconStyle' => 'far', 'url' => ['/patient/medical-history/index']],
+                            ['label' => 'Appointment Details', 'iconStyle' => 'far', 'url' => ['/patient/appointment-details/index']],
                         ],
-                        'visible' => Yii::$app->user->can('access admin module')
+                        'visible' => Yii::$app->user->can('access patient module')
                     ],
-                    ['label' => 'Patient', 'url' => ['/admin/patient/index']],
-                    ['label' => 'Doctor', 'url' => ['/admin/doctor/index']],
                     // [
                     //     'label' => 'Development',
                     //     'items' => [

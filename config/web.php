@@ -1,14 +1,15 @@
 <?php
 
 $params = require __DIR__ . '/params.php';
-$db = require __DIR__ . '/db.php';
+$healthcare_db_auth = require __DIR__ . '/db/healthcare_db_auth.php';
+$healthcare_db_patient = require __DIR__ . '/db/healthcare_db_patient.php';
 
 $config = [
     'id' => 'basic',
     'basePath' => dirname(__DIR__),
     'bootstrap' => [
         'log',
-        'admin'
+        'rbac'
     ],
     'aliases' => [
         '@bower' => '@vendor/bower-asset',
@@ -26,7 +27,7 @@ $config = [
         ],
         'user' => [
             'identityClass' => 'mdm\admin\models\User',
-            'loginUrl' => ['admin/user/login'],
+            'loginUrl' => ['site/login'],
             'enableAutoLogin' => true,
         ],
         'errorHandler' => [
@@ -56,40 +57,89 @@ $config = [
                 ],
             ]
         ],
-        'db' => $db,
+        'db' => $healthcare_db_auth,
+        'healthcare_db_patient' => $healthcare_db_patient,
 
         'urlManager' => [
             'enablePrettyUrl' => true,
             'showScriptName' => false,
-            'rules' => [],
+            'rules' => [
+                'dashboard' => 'admin/dashboard/v1',
+            ],
         ],
 
     ],
-    'as access' => [
-        'class' => 'mdm\admin\components\AccessControl',
-        'allowActions' => [
-            'admin/*',
-            'debug/*',
-            'gii/*',
-            'gridview/*',
-            'site/*',
-            'user/*',
-        ]
-    ],
+
     'params' => $params,
 
     'modules' => [
         'gridview' =>  [
             'class' => '\kartik\grid\Module'
         ],
-        'admin' => [
+        'rbac' => [
             'class' => 'mdm\admin\Module',
             'layout' => '/adminlte',
+            'as access' => [
+                'class' => 'yii\filters\AccessControl',
+                'rules' => [
+                    [
+                        'allow' => true,
+                        'roles' => ['admin', 'super-admin'],
+                    ],
+                    [
+                        'allow' => false,
+                    ],
+                ],
+            ],
         ],
-        'user' => [
-            'class' => 'app\modules\user\Module',
+        'admin' => [
+            'class' => 'app\modules\admin\Module',
             'layout' => '/adminlte',
         ],
+        'patient' => [
+            'class' => 'app\modules\patient\Module',
+            'layout' => '/adminlte',
+        ],
+        'gii' => [
+            'class' => 'yii\gii\Module',
+            'generators' => [
+                'crud' => [
+                    'class' => 'yii\gii\generators\crud\Generator',
+                    'templates' => [
+                        'yii2-adminlte3' => '@vendor/hail812/yii2-adminlte3/src/gii/generators/crud/default'
+                    ]
+                ]
+            ],
+            'as access' => [
+                'class' => 'yii\filters\AccessControl',
+                'rules' => [
+                    [
+                        'allow' => true,
+                        'roles' => ['super-admin'],
+                    ],
+                    [
+                        'allow' => false,
+                    ],
+                ],
+            ],
+        ],
+        // 'debug' => [
+        //     'class' => 'debug\gii\Module',
+        //     'as access' => [
+        //         'class' => 'yii\filters\AccessControl',
+        //         'rules' => [
+        //             [
+        //                 'allow' => true,
+        //                 'roles' => ['super-admin'],
+        //             ],
+        //             [
+        //                 'allow' => false,
+        //             ],
+        //         ],
+        //     ],
+        // ],
+
+
     ],
 ];
 

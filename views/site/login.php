@@ -14,7 +14,7 @@ $this->title = 'Login';
     <div class="row justify-content-center">
         <div class="col-md-4">
             <div class="login-logo text-center mb-4">
-                <a href="#"><b>Basic</b>Template</a>
+                <a href="#"><b>Healthcare</b></a>
             </div>
             <div class="card card-primary card-outline">
                 <div class="card-body">
@@ -40,9 +40,9 @@ $this->title = 'Login';
                         <?= Html::submitButton('Login', ['class' => 'btn btn-primary btn-block', 'name' => 'login-button']) ?>
                     </div>
 
-                    <p class="mb-1 text-right">
-                        <?= Html::a('Forgot Password?', ['site/request-password-reset']) ?>
-                    </p>
+                    <!-- <p class="mb-1 text-right">
+                        <= Html::a('Forgot Password?', ['site/request-password-reset']) ?>
+                    </p> -->
 
                     <?php ActiveForm::end(); ?>
                 </div>
