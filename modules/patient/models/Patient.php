@@ -74,7 +74,7 @@ class Patient extends \yii\db\ActiveRecord
             'contact_number' => 'Contact Number',
             'email' => 'Email',
             'address' => 'Address',
-            'blood_type' => 'Blood Type',
+            'blood_type' => 'Blood Type mo',
             'existing_conditions' => 'Existing Conditions',
             'allergies' => 'Allergies',
             'emergency_contact' => 'Emergency Contact Fullname',
