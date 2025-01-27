@@ -59,8 +59,8 @@
                         ],
                         'visible' => Yii::$app->user->can('access admin module')
                     ],
-                    ['label' => 'Patient', 'url' => ['/admin/patient/index']],
-                    ['label' => 'Doctor', 'url' => ['/admin/doctor/index']],
+                    ['label' => 'Patient', 'url' => ['/patient/index']],
+                    ['label' => 'Doctor', 'url' => ['/doctor/index']],
                     // [
                     //     'label' => 'Development',
                     //     'items' => [

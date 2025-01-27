@@ -7,16 +7,16 @@ use yii2ajaxcrud\ajaxcrud\CrudAsset;
 use yii2ajaxcrud\ajaxcrud\BulkButtonWidget;
 
 /* @var $this yii\web\View */
-/* @var $searchModel app\modules\patient\models\PatientSearch */
+/* @var $searchModel app\modules\doctor\models\DoctorSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = 'Patients';
+$this->title = 'Doctors';
 $this->params['breadcrumbs'][] = $this->title;
 
 CrudAsset::register($this);
 
 ?>
-<div class="patient-index">
+<div class="doctor-index">
     <div id="ajaxCrudDatatable">
         <?=GridView::widget([
             'id' => 'crud-datatable',
@@ -26,12 +26,12 @@ CrudAsset::register($this);
             'columns' => require(__DIR__.'/_columns.php'),
             'toolbar' => [
                 ['content'=>
-                    Html::a(Yii::t('yii2-ajaxcrud', 'Add Patient'), ['create'],
-                    ['role' => 'modal-remote', 'title' => Yii::t('yii2-ajaxcrud', 'Add Patient').' Patients', 'class' => 'btn btn-outline-primary']).
+                    Html::a(Yii::t('yii2-ajaxcrud', 'Add Doctor'), ['create'],
+                    ['role' => 'modal-remote', 'title' => Yii::t('yii2-ajaxcrud', 'Add Doctor').' Doctors', 'class' => 'btn btn-outline-primary']).
                     Html::a('<i class="fa fa-redo"></i>', [''],
                     ['data-pjax' => 1, 'class' => 'btn btn-outline-success', 'title' => Yii::t('yii2-ajaxcrud', 'Reset Grid')]).
                     '{toggleData}'
-                    // '{export}'   
+                    // '{export}'
                 ],
             ],          
             'striped' => true,
@@ -39,7 +39,7 @@ CrudAsset::register($this);
             'responsive' => true,          
             'panel' => [
                 'type' => 'default', 
-                'heading' => '<i class="fa fa-list"></i> <b>'.$this->title.'</b>',
+                // 'heading' => '<i class="fa fa-list"></i> <b>'.$this->title.'</b>',
                 // 'before' =>'<em>* '.Yii::t('yii2-ajaxcrud', 'Resize Column').'</em>',
                 // 'after' => BulkButtonWidget::widget([
                 //     'buttons' => Html::a('<i class="fa fa-trash"></i>&nbsp; '.Yii::t('yii2-ajaxcrud', 'Delete All'),

@@ -1,6 +1,6 @@
 <?php
 
-namespace app\modules\patient\models;
+namespace app\modules\admin\models;
 
 use Yii;
 
@@ -40,7 +40,7 @@ class Patient extends \yii\db\ActiveRecord
      */
     public static function getDb()
     {
-        return Yii::$app->get('healthcare_db_patient');
+        return Yii::$app->get('healthcare_db');
     }
 
     /**
@@ -54,6 +54,8 @@ class Patient extends \yii\db\ActiveRecord
             [['fname', 'lname', 'mname', 'gender', 'dob', 'contact_number', 'email', 'address', 'emergency_contact', 'emergency_contact_number'], 'required'],
 
             [['suffix', 'blood_type', 'existing_conditions', 'allergies', 'created_at', 'updated_at'], 'safe'],
+
+            [['email'], 'email'],
 
         ];
     }

@@ -1,16 +1,16 @@
 <?php
 
-namespace app\modules\patient\models;
+namespace app\modules\doctor\models;
 
 use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
-use app\modules\patient\models\Patient;
+use app\modules\doctor\models\Doctor;
 
 /**
- * PatientSearch represents the model behind the search form about `app\modules\patient\models\Patient`.
+ * DoctorSearch represents the model behind the search form about `app\modules\doctor\models\Doctor`.
  */
-class PatientSearch extends Patient
+class DoctorSearch extends Doctor
 {
     /**
      * @inheritdoc
@@ -19,7 +19,7 @@ class PatientSearch extends Patient
     {
         return [
             [['id'], 'integer'],
-            [['fname', 'lname', 'mname', 'suffix', 'gender', 'dob', 'contact_number', 'email', 'address', 'blood_type', 'existing_conditions', 'allergies', 'emergency_contact', 'emergency_contact_number', 'created_at', 'updated_at'], 'safe'],
+            [['fname', 'lname', 'mname', 'suffix', 'gender', 'dob', 'specialization', 'license_number', 'contact_number', 'email', 'address', 'years_of_experience', 'availability_schedule', 'created_at', 'updated_at'], 'safe'],
         ];
     }
 
@@ -41,7 +41,7 @@ class PatientSearch extends Patient
      */
     public function search($params)
     {
-        $query = Patient::find();
+        $query = Doctor::find();
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
@@ -65,14 +65,13 @@ class PatientSearch extends Patient
             ->andFilterWhere(['like', 'suffix', $this->suffix])
             ->andFilterWhere(['like', 'gender', $this->gender])
             ->andFilterWhere(['like', 'dob', $this->dob])
+            ->andFilterWhere(['like', 'specialization', $this->specialization])
+            ->andFilterWhere(['like', 'license_number', $this->license_number])
             ->andFilterWhere(['like', 'contact_number', $this->contact_number])
             ->andFilterWhere(['like', 'email', $this->email])
             ->andFilterWhere(['like', 'address', $this->address])
-            ->andFilterWhere(['like', 'blood_type', $this->blood_type])
-            ->andFilterWhere(['like', 'existing_conditions', $this->existing_conditions])
-            ->andFilterWhere(['like', 'allergies', $this->allergies])
-            ->andFilterWhere(['like', 'emergency_contact', $this->emergency_contact])
-            ->andFilterWhere(['like', 'emergency_contact_number', $this->emergency_contact_number])
+            ->andFilterWhere(['like', 'years_of_experience', $this->years_of_experience])
+            ->andFilterWhere(['like', 'availability_schedule', $this->availability_schedule])
             ->andFilterWhere(['like', 'created_at', $this->created_at])
             ->andFilterWhere(['like', 'updated_at', $this->updated_at]);
 

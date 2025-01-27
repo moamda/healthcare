@@ -4,9 +4,6 @@ use kartik\date\DatePicker;
 use yii\helpers\Html;
 use yii\bootstrap4\ActiveForm;
 
-/* @var $this yii\web\View */
-/* @var $model app\modules\patient\models\Patient */
-/* @var $form yii\widgets\ActiveForm */
 ?>
 
 <div class="patient-form">

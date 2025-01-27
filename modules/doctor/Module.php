@@ -3,7 +3,7 @@
 namespace app\modules\doctor;
 
 /**
- * admin module definition class
+ * doctor module definition class
  */
 class Module extends \yii\base\Module
 {

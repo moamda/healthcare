@@ -2,7 +2,7 @@
 
 $params = require __DIR__ . '/params.php';
 $healthcare_db_auth = require __DIR__ . '/db/healthcare_db_auth.php';
-$healthcare_db_patient = require __DIR__ . '/db/healthcare_db_patient.php';
+$healthcare_db = require __DIR__ . '/db/healthcare_db.php';
 
 $config = [
     'id' => 'basic',
@@ -58,7 +58,7 @@ $config = [
             ]
         ],
         'db' => $healthcare_db_auth,
-        'healthcare_db_patient' => $healthcare_db_patient,
+        'healthcare_db' => $healthcare_db,
 
         'urlManager' => [
             'enablePrettyUrl' => true,
@@ -98,6 +98,10 @@ $config = [
         ],
         'patient' => [
             'class' => 'app\modules\patient\Module',
+            'layout' => '/adminlte',
+        ],
+        'doctor' => [
+            'class' => 'app\modules\doctor\Module',
             'layout' => '/adminlte',
         ],
         'gii' => [

@@ -1,10 +1,10 @@
 <?php
 
-namespace app\modules\patient\controllers;
+namespace app\modules\doctor\controllers;
 
 use Yii;
-use app\modules\patient\models\Patient;
-use app\modules\patient\models\PatientSearch;
+use app\modules\doctor\models\Doctor;
+use app\modules\doctor\models\DoctorSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -12,9 +12,9 @@ use \yii\web\Response;
 use yii\helpers\Html;
 
 /**
- * PatientController implements the CRUD actions for Patient model.
+ * DoctorController implements the CRUD actions for Doctor model.
  */
-class PatientController extends Controller
+class DoctorController extends Controller
 {
     /**
      * @inheritdoc
@@ -33,12 +33,12 @@ class PatientController extends Controller
     }
 
     /**
-     * Lists all Patient models.
+     * Lists all Doctor models.
      * @return mixed
      */
     public function actionIndex()
-    {
-        $searchModel = new PatientSearch();
+    {    
+        $searchModel = new DoctorSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
         return $this->render('index', [
@@ -49,24 +49,27 @@ class PatientController extends Controller
 
 
     /**
-     * Displays a single Patient model.
+     * Displays a single Doctor model.
      * @param integer $id
      * @return mixed
      */
     public function actionView($id)
-    {
+    {   
         $request = Yii::$app->request;
-        if ($request->isAjax) {
+        if($request->isAjax)
+        {
             Yii::$app->response->format = Response::FORMAT_JSON;
             return [
-                'title' => "Patient #" . $id,
-                'content' => $this->renderAjax('view', [
+                'title' => "Doctor #".$id,
+                'content' =>$this->renderAjax('view', [
                     'model' => $this->findModel($id),
                 ]),
-                'footer' => Html::button(Yii::t('yii2-ajaxcrud', 'Close'), ['class' => 'btn btn-default pull-left', 'data-dismiss' => 'modal']) .
+                'footer' => Html::button(Yii::t('yii2-ajaxcrud', 'Close'), ['class' => 'btn btn-default pull-left', 'data-dismiss' => 'modal']).
                     Html::a(Yii::t('yii2-ajaxcrud', 'Update'), ['update', 'id' => $id], ['class' => 'btn btn-primary', 'role' => 'modal-remote'])
             ];
-        } else {
+        }
+        else
+        {
             return $this->render('view', [
                 'model' => $this->findModel($id),
             ]);
@@ -74,7 +77,7 @@ class PatientController extends Controller
     }
 
     /**
-     * Creates a new Patient model.
+     * Creates a new Doctor model.
      * For ajax request will return json object
      * and for non-ajax request if creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
@@ -82,65 +85,68 @@ class PatientController extends Controller
     public function actionCreate()
     {
         $request = Yii::$app->request;
-        $model = new Patient();
+        $model = new Doctor();  
 
-        if ($request->isAjax) {
-
+        if($request->isAjax)
+        {
             /*
             *   Process for ajax request
             */
             Yii::$app->response->format = Response::FORMAT_JSON;
-            if ($request->isGet) {
+            if($request->isGet)
+            {
                 return [
-                    'title' => Yii::t('yii2-ajaxcrud', 'Create New') . " Patient",
+                    'title' => Yii::t('yii2-ajaxcrud', 'Create New')." Doctor",
                     'content' => $this->renderAjax('create', [
                         'model' => $model,
                     ]),
-                    'footer' => Html::button(Yii::t('yii2-ajaxcrud', 'Close'), ['class' => 'btn btn-default pull-left', 'data-dismiss' => 'modal']) .
+                    'footer' => Html::button(Yii::t('yii2-ajaxcrud', 'Close'), ['class' => 'btn btn-default pull-left', 'data-dismiss' => 'modal']).
                         Html::button(Yii::t('yii2-ajaxcrud', 'Create'), ['class' => 'btn btn-primary', 'type' => 'submit'])
                 ];
-            } else if ($model->load($request->post())) {
-                date_default_timezone_set('Asia/Manila');
-                $model->created_at = date('Y-m-d H:i:s');
-                $model->save();
-
+            }
+            else if($model->load($request->post()) && $model->save())
+            {
                 return [
                     'forceReload' => '#crud-datatable-pjax',
-                    'title' => Yii::t('yii2-ajaxcrud', 'Create New') . " Patient",
-                    'content' => '<span class="text-success">' . Yii::t('yii2-ajaxcrud', 'Create') . ' Patient ' . Yii::t('yii2-ajaxcrud', 'Success') . '</span>',
-                    'footer' =>  Html::button(Yii::t('yii2-ajaxcrud', 'Close'), ['class' => 'btn btn-default pull-left', 'data-dismiss' => 'modal']) .
+                    'title' => Yii::t('yii2-ajaxcrud', 'Create New')." Doctor",
+                    'content' => '<span class="text-success">'.Yii::t('yii2-ajaxcrud', 'Create').' Doctor '.Yii::t('yii2-ajaxcrud', 'Success').'</span>',
+                    'footer' =>  Html::button(Yii::t('yii2-ajaxcrud', 'Close'), ['class' => 'btn btn-default pull-left', 'data-dismiss' => 'modal']).
                         Html::a(Yii::t('yii2-ajaxcrud', 'Create More'), ['create'], ['class' => 'btn btn-primary', 'role' => 'modal-remote'])
                 ];
-            } else {
+            }
+            else
+            {
                 return [
-                    'title' => Yii::t('yii2-ajaxcrud', 'Create New') . " Patient",
+                    'title' => Yii::t('yii2-ajaxcrud', 'Create New')." Doctor",
                     'content' => $this->renderAjax('create', [
                         'model' => $model,
                     ]),
-                    'footer' => Html::button(Yii::t('yii2-ajaxcrud', 'Close'), ['class' => 'btn btn-default pull-left', 'data-dismiss' => 'modal']) .
+                    'footer' => Html::button(Yii::t('yii2-ajaxcrud', 'Close'), ['class' => 'btn btn-default pull-left', 'data-dismiss' => 'modal']).
                         Html::button(Yii::t('yii2-ajaxcrud', 'Save'), ['class' => 'btn btn-primary', 'type' => 'submit'])
                 ];
             }
-        } else {
+        }
+        else
+        {
             /*
             *   Process for non-ajax request
             */
-            if ($model->load($request->post())) {
-                date_default_timezone_set('Asia/Manila');
-                $model->created_at = date('Y-m-d H:i:s');
-                $model->save();
-
+            if ($model->load($request->post()) && $model->save())
+            {
                 return $this->redirect(['view', 'id' => $model->id]);
-            } else {
+            }
+            else
+            {
                 return $this->render('create', [
                     'model' => $model,
                 ]);
             }
         }
+       
     }
 
     /**
-     * Updates an existing Patient model.
+     * Updates an existing Doctor model.
      * For ajax request will return json object
      * and for non-ajax request if update is successful, the browser will be redirected to the 'view' page.
      * @param integer $id
@@ -149,49 +155,60 @@ class PatientController extends Controller
     public function actionUpdate($id)
     {
         $request = Yii::$app->request;
-        $model = $this->findModel($id);
+        $model = $this->findModel($id);       
 
-        if ($request->isAjax) {
+        if($request->isAjax)
+        {
             /*
             *   Process for ajax request
             */
             Yii::$app->response->format = Response::FORMAT_JSON;
-            if ($request->isGet) {
+            if($request->isGet)
+            {
                 return [
-                    'title' => Yii::t('yii2-ajaxcrud', 'Update') . " Patient #" . $id,
+                    'title' => Yii::t('yii2-ajaxcrud', 'Update')." Doctor #".$id,
                     'content' => $this->renderAjax('update', [
                         'model' => $model,
                     ]),
-                    'footer' => Html::button(Yii::t('yii2-ajaxcrud', 'Close'), ['class' => 'btn btn-default pull-left', 'data-dismiss' => 'modal']) .
+                    'footer' => Html::button(Yii::t('yii2-ajaxcrud', 'Close'), ['class' => 'btn btn-default pull-left', 'data-dismiss' => 'modal']).
                         Html::button(Yii::t('yii2-ajaxcrud', 'Save'), ['class' => 'btn btn-primary', 'type' => 'submit'])
-                ];
-            } else if ($model->load($request->post()) && $model->save()) {
+                ];   
+            }
+            else if($model->load($request->post()) && $model->save())
+            {
                 return [
                     'forceReload' => '#crud-datatable-pjax',
-                    'title' => "Patient #" . $id,
+                    'title' => "Doctor #".$id,
                     'content' => $this->renderAjax('view', [
                         'model' => $model,
                     ]),
-                    'footer' => Html::button(Yii::t('yii2-ajaxcrud', 'Close'), ['class' => 'btn btn-default pull-left', 'data-dismiss' => 'modal']) .
-                        Html::a(Yii::t('yii2-ajaxcrud', 'Update'), ['update', 'id' => $id], ['class' => 'btn btn-primary', 'role' => 'modal-remote'])
+                    'footer' => Html::button(Yii::t('yii2-ajaxcrud', 'Close'), ['class' => 'btn btn-default pull-left', 'data-dismiss' => 'modal']).
+                        Html::a(Yii::t('yii2-ajaxcrud', 'Update'), ['update', 'id' => $id],['class' => 'btn btn-primary', 'role' => 'modal-remote'])
                 ];
-            } else {
-                return [
-                    'title' => Yii::t('yii2-ajaxcrud', 'Update') . " Patient #" . $id,
+            }
+            else
+            {
+                 return [
+                    'title' => Yii::t('yii2-ajaxcrud', 'Update')." Doctor #".$id,
                     'content' => $this->renderAjax('update', [
                         'model' => $model,
                     ]),
-                    'footer' => Html::button(Yii::t('yii2-ajaxcrud', 'Close'), ['class' => 'btn btn-default pull-left', 'data-dismiss' => 'modal']) .
+                    'footer' => Html::button(Yii::t('yii2-ajaxcrud', 'Close'), ['class' => 'btn btn-default pull-left', 'data-dismiss' => 'modal']).
                         Html::button(Yii::t('yii2-ajaxcrud', 'Save'), ['class' => 'btn btn-primary', 'type' => 'submit'])
                 ];
             }
-        } else {
+        }
+        else
+        {
             /*
             *   Process for non-ajax request
             */
-            if ($model->load($request->post()) && $model->save()) {
+            if ($model->load($request->post()) && $model->save())
+            {
                 return $this->redirect(['view', 'id' => $model->id]);
-            } else {
+            }
+            else
+            {
                 return $this->render('update', [
                     'model' => $model,
                 ]);
@@ -200,7 +217,7 @@ class PatientController extends Controller
     }
 
     /**
-     * Delete an existing Patient model.
+     * Delete an existing Doctor model.
      * For ajax request will return json object
      * and for non-ajax request if deletion is successful, the browser will be redirected to the 'index' page.
      * @param integer $id
@@ -211,13 +228,16 @@ class PatientController extends Controller
         $request = Yii::$app->request;
         $this->findModel($id)->delete();
 
-        if ($request->isAjax) {
+        if($request->isAjax)
+        {
             /*
             *   Process for ajax request
             */
             Yii::$app->response->format = Response::FORMAT_JSON;
-            return ['forceClose' => true, 'forceReload' => '#crud-datatable-pjax'];
-        } else {
+            return ['forceClose'=>true,'forceReload'=>'#crud-datatable-pjax'];
+        }
+        else
+        {
             /*
             *   Process for non-ajax request
             */
@@ -225,29 +245,33 @@ class PatientController extends Controller
         }
     }
 
-    /**
-     * Delete multiple existing Patient model.
+     /**
+     * Delete multiple existing Doctor model.
      * For ajax request will return json object
      * and for non-ajax request if deletion is successful, the browser will be redirected to the 'index' page.
      * @param integer $id
      * @return mixed
      */
     public function actionBulkdelete()
-    {
+    {        
         $request = Yii::$app->request;
-        $pks = explode(',', $request->post('pks')); // Array or selected records primary keys
-        foreach ($pks as $pk) {
+        $pks = explode(',', $request->post( 'pks' )); // Array or selected records primary keys
+        foreach ( $pks as $pk )
+        {
             $model = $this->findModel($pk);
             $model->delete();
         }
 
-        if ($request->isAjax) {
+        if($request->isAjax)
+        {
             /*
             *   Process for ajax request
             */
             Yii::$app->response->format = Response::FORMAT_JSON;
-            return ['forceClose' => true, 'forceReload' => '#crud-datatable-pjax'];
-        } else {
+            return ['forceClose'=>true,'forceReload'=>'#crud-datatable-pjax'];
+        }
+        else
+        {
             /*
             *   Process for non-ajax request
             */
@@ -256,17 +280,20 @@ class PatientController extends Controller
     }
 
     /**
-     * Finds the Patient model based on its primary key value.
+     * Finds the Doctor model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
      * @param integer $id
-     * @return Patient the loaded model
+     * @return Doctor the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
     protected function findModel($id)
     {
-        if (($model = Patient::findOne($id)) !== null) {
+        if (($model = Doctor::findOne($id)) !== null)
+        {
             return $model;
-        } else {
+        }
+        else
+        {
             throw new NotFoundHttpException('The requested page does not exist.');
         }
     }

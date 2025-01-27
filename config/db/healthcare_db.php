@@ -2,7 +2,7 @@
 
 return [
     'class' => 'yii\db\Connection',
-    'dsn' => env('HEALTHCARE_DB_PATIENT_DSN'),
+    'dsn' => env('HEALTHCARE_DB_DSN'),
     'username' => env('HEALTHCARE_DB_AUTH_USERNAME'),
     'password' => env('HEALTHCARE_DB_AUTH_PASSWORD'),
     'charset' => 'utf8',
