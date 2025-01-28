@@ -35,31 +35,14 @@
 
                 'items' => [
                     ['label' => 'DASHBOARD', 'url' => ['/dashboard'], 'icon' => 'tachometer-alt'],
-
-
                     ['label' => '', 'header' => true],
                     ['label' => 'PATIENT', 'header' => true, 'visible' => !Yii::$app->user->isGuest],
-                    [
-                        'label' => 'Health Records',
-                        'items' => [
-                            ['label' => 'Medical History', 'iconStyle' => 'far', 'url' => ['/patient/medical-history/index']],
-                            ['label' => 'Appointment Details', 'iconStyle' => 'far', 'url' => ['/patient/appointment-details/index']],
-                        ],
-                        'visible' => Yii::$app->user->can('access patient module')
-                    ],
-                    // [
-                    //     'label' => 'Development',
-                    //     'items' => [
-                    //         ['label' => 'Gii',  'icon' => 'file-code', 'url' => ['/gii'], 'target' => '_blank'],
-                    //         ['label' => 'Debug', 'icon' => 'bug', 'url' => ['/debug'], 'target' => '_blank'],
-                    //     ],
-                    //     'visible' => Yii::$app->user->can('access admin module')
-                    // ],
+                    ['label' => 'Find Doctor', 'url' => ['/patient/patient/book'], 'visible' => Yii::$app->user->can('access patient module')],
+                    ['label' => 'Appointments', 'url' => ['/patient/patient/appointments'], 'visible' => Yii::$app->user->can('access patient module')],
+                   
                 ],
             ]);
             ?>
         </nav>
-        <!-- /.sidebar-menu -->
     </div>
-    <!-- /.sidebar -->
 </aside>

@@ -1,10 +1,10 @@
 <?php
 
-namespace app\modules\doctor\controllers;
+namespace app\modules\admin\controllers;
 
 use Yii;
-use app\modules\doctor\models\Doctor;
-use app\modules\doctor\models\DoctorSearch;
+use app\modules\admin\models\Doctor;
+use app\modules\admin\models\DoctorSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;

@@ -1,11 +1,11 @@
 <?php
 
-namespace app\modules\doctor\models;
+namespace app\modules\admin\models;
 
 use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
-use app\modules\doctor\models\Doctor;
+use app\modules\admin\models\Doctor;
 
 /**
  * DoctorSearch represents the model behind the search form about `app\modules\doctor\models\Doctor`.

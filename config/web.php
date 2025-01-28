@@ -14,7 +14,7 @@ $config = [
     'aliases' => [
         '@bower' => '@vendor/bower-asset',
         '@npm'   => '@vendor/npm-asset',
-    ],
+   ],
     'components' => [
         'authManager' => [
             'class' => 'yii\rbac\DbManager',
@@ -98,11 +98,11 @@ $config = [
         ],
         'patient' => [
             'class' => 'app\modules\patient\Module',
-            'layout' => '/adminlte',
+            'layout' => '/patient',
         ],
         'doctor' => [
             'class' => 'app\modules\doctor\Module',
-            'layout' => '/adminlte',
+            'layout' => '/doctor',
         ],
         'gii' => [
             'class' => 'yii\gii\Module',

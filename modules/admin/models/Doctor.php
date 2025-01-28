@@ -1,6 +1,6 @@
 <?php
 
-namespace app\modules\doctor\models;
+namespace app\modules\admin\models;
 
 use Yii;
 
