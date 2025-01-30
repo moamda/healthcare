@@ -35,45 +35,12 @@
 
                 'items' => [
                     ['label' => 'DASHBOARD', 'url' => ['/dashboard'], 'icon' => 'tachometer-alt'],
-
-
                     ['label' => '', 'header' => true],
-                    ['label' => 'MODULES', 'header' => true, 'visible' => !Yii::$app->user->isGuest],
-                    [
-                        'label' => 'Admin',
-                        'items' => [
-                            ['label' => 'User Management', 'url' => ['/admin/user/index'], 'iconStyle' => 'far'],
-                            [
-                                'label' => 'RBAC',
-                                'iconStyle' => 'far',
-                                'items' => [
-                                    // ['label' => 'Users', 'url' => ['/rbac/user/index'], 'iconStyle' => 'far', 'icon' => 'dot-circle'],
-                                    ['label' => 'Assignments', 'url' => ['/rbac/assignment/index'], 'iconStyle' => 'far', 'icon' => 'dot-circle'],
-                                    ['label' => 'Roles', 'url' => ['/rbac/role/index'], 'iconStyle' => 'far', 'icon' => 'dot-circle'],
-                                    ['label' => 'Permissions', 'url' => ['/rbac/permission/index'], 'iconStyle' => 'far', 'icon' => 'dot-circle'],
-                                    // ['label' => 'Routes', 'url' => ['/rbac/route/index'], 'iconStyle' => 'far', 'icon' => 'dot-circle'],
-                                    // ['label' => 'Rules', 'url' => ['/rbac/rule/index'], 'iconStyle' => 'far', 'icon' => 'dot-circle'],
-                                    // ['label' => 'Menus', 'url' => ['/rbac/menu/index'], 'iconStyle' => 'far', 'icon' => 'dot-circle'],
-                                ],
-                            ],
-                        ],
-                        'visible' => Yii::$app->user->can('access admin module')
-                    ],
-                    ['label' => 'Patient', 'url' => ['/patient/index']],
-                    ['label' => 'Doctor', 'url' => ['/doctor/index']],
-                    // [
-                    //     'label' => 'Development',
-                    //     'items' => [
-                    //         ['label' => 'Gii',  'icon' => 'file-code', 'url' => ['/gii'], 'target' => '_blank'],
-                    //         ['label' => 'Debug', 'icon' => 'bug', 'url' => ['/debug'], 'target' => '_blank'],
-                    //     ],
-                    //     'visible' => Yii::$app->user->can('access admin module')
-                    // ],
+                    ['label' => 'DOCTOR', 'header' => true, 'visible' => !Yii::$app->user->isGuest],
+                   
                 ],
             ]);
             ?>
         </nav>
-        <!-- /.sidebar-menu -->
     </div>
-    <!-- /.sidebar -->
 </aside>

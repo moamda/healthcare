@@ -103,7 +103,14 @@ class SignupForm extends Model
             $profile->address = $this->address;
             $profile->contact = $this->contact;
 
-            return $profile->save();
+            if ($profile->save()) {
+                $doctor = new Doctorx();
+                $doctor->user_id = $user->id;
+                $doctor->profile_id = $profile->id;
+
+                return $doctor->save();
+            }
+            // return $profile->save();
         }
 
         return false;

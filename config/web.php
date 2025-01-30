@@ -14,8 +14,11 @@ $config = [
     'aliases' => [
         '@bower' => '@vendor/bower-asset',
         '@npm'   => '@vendor/npm-asset',
-   ],
+    ],
     'components' => [
+        'formatter' => [
+            'nullDisplay' => '', // Set empty string instead of (not set)
+        ],
         'authManager' => [
             'class' => 'yii\rbac\DbManager',
         ],
@@ -98,11 +101,11 @@ $config = [
         ],
         'patient' => [
             'class' => 'app\modules\patient\Module',
-            'layout' => '/patient',
+            'layout' => '/adminlte',
         ],
         'doctor' => [
             'class' => 'app\modules\doctor\Module',
-            'layout' => '/doctor',
+            'layout' => '/adminlte',
         ],
         'gii' => [
             'class' => 'yii\gii\Module',

@@ -59,8 +59,11 @@
                         ],
                         'visible' => Yii::$app->user->can('access admin module')
                     ],
-                    ['label' => 'Patient', 'url' => ['/admin/patient/index']],
-                    ['label' => 'Doctor', 'url' => ['/admin/doctor/index']],
+                    ['label' => 'Patient', 'url' => ['/admin/patient/index'], 'visible' => Yii::$app->user->can('access admin module')],
+                    ['label' => 'Doctor', 'url' => ['/admin/doctor/index'], 'visible' => Yii::$app->user->can('access admin module')],
+                    ['label' => 'Appointments', 'url' => ['/doctor/doctor/appointments'], 'visible' => Yii::$app->user->can('access doctor module')],
+                    ['label' => 'Find Doctor', 'url' => ['/patient/patient/book'], 'visible' => Yii::$app->user->can('access patient module')],
+                    ['label' => 'Appointments', 'url' => ['/patient/patient/appointments'], 'visible' => Yii::$app->user->can('access patient module')],
                     // [
                     //     'label' => 'Development',
                     //     'items' => [

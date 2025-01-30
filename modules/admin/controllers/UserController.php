@@ -2,6 +2,7 @@
 
 namespace app\modules\admin\controllers;
 
+use app\modules\admin\models\Doctorx;
 use Yii;
 use app\modules\admin\models\User;
 use app\modules\admin\models\UserSearch;
@@ -153,12 +154,13 @@ class UserController extends Controller
     public function actionSignup()
     {
         $model = new SignupForm();
+        $doctor = new Doctorx();
 
         if (Yii::$app->request->post()) {
             $model->load(Yii::$app->request->post());
             if ($model->validate()) {
                 if ($model->signup()) {
-                    Yii::$app->session->setFlash(self::FLASH_SUCCESS, 'Thank you for registtration. Please check your inbox for verification email.');
+                    Yii::$app->session->setFlash(self::FLASH_SUCCESS, 'Thank you for registration. Please check your inbox for verification email.');
                     return $this->redirect(['index']);
                 } else {
                     Yii::$app->session->setFlash(self::FLASH_ERROR, 'Failed to save user.');

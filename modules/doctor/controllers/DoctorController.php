@@ -1,6 +1,6 @@
 <?php
 
-namespace app\modules\patient\controllers;
+namespace app\modules\doctor\controllers;
 
 use Yii;
 use app\modules\admin\models\Doctor;
@@ -16,7 +16,7 @@ use yii\helpers\Html;
 /**
  * PatientController implements the CRUD actions for Doctors model.
  */
-class PatientController extends Controller
+class DoctorController extends Controller
 {
     /**
      * @inheritdoc
@@ -54,6 +54,13 @@ class PatientController extends Controller
         $searchModel = new AppointmentsSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
+        $userId = Yii::$app->user->id;
+
+        // Check if the user is a doctor (adjust role checking based on your RBAC setup)
+        if (Yii::$app->user->can('doctor')) {
+            $dataProvider->query->andWhere(['doctor_id' => $userId]);
+        }
+
         return $this->render('appointments', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
@@ -71,7 +78,31 @@ class PatientController extends Controller
         }
 
         $model->status = 'Cancelled';
-        $model->notes = 'Cancelled by patient.';
+        $model->notes = 'Cancelled by doctor.';
+
+        if ($model->save(false)) {
+            if ($request->isAjax) {
+                Yii::$app->response->format = Response::FORMAT_JSON;
+                return ['forceClose' => true, 'forceReload' => '#crud-datatable-pjax'];
+            }
+            return $this->redirect(['index']);
+        } else {
+            Yii::$app->session->setFlash('error', 'Unable to cancel the appointment.');
+            return $this->redirect(['index']);
+        }
+    }
+
+    public function actionApprove($id)
+    {
+        $request = Yii::$app->request;
+        $model = $this->findModel2($id);
+
+        if ($model === null) {
+            throw new NotFoundHttpException('The requested record does not exist.');
+        }
+
+        $model->status = 'Approved';
+        $model->notes = 'Cancelled by doctor.';
 
         if ($model->save(false)) {
             if ($request->isAjax) {

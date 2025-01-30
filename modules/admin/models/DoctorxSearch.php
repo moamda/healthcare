@@ -1,18 +1,16 @@
 <?php
 
-namespace app\modules\patient\models;
+namespace app\modules\admin\models;
 
-use app\modules\admin\models\Doctor;
-use app\modules\admin\models\Doctorx;
 use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
-use app\modules\patient\models\Appointments;
+use app\modules\admin\models\Doctorx;
 
 /**
- * AppointmentsSearch represents the model behind the search form about `app\modules\patient\models\Appointments`.
+ * DoctorxSearch represents the model behind the search form about `app\modules\admin\models\Doctorx`.
  */
-class AppointmentsSearch extends Appointments
+class DoctorxSearch extends Doctorx
 {
     /**
      * @inheritdoc
@@ -20,8 +18,8 @@ class AppointmentsSearch extends Appointments
     public function rules()
     {
         return [
-            [['id', 'patient_id', 'doctor_id'], 'integer'],
-            [['appointment_date', 'status', 'reason', 'notes', 'created_at', 'updated_at'], 'safe'],
+            [['id', 'user_id', 'profile_id'], 'integer'],
+            [['specialization', 'license_number', 'years_of_experience', 'availability_schedule', 'created_at', 'updated_at'], 'safe'],
         ];
     }
 
@@ -43,12 +41,10 @@ class AppointmentsSearch extends Appointments
      */
     public function search($params)
     {
-        $query = Appointments::find();
+        $query = Doctorx::find();
+
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
-            'sort' => [
-                'defaultOrder' => ['appointment_date' => SORT_DESC], // Sort by latest appointment first
-            ],
         ]);
 
         $this->load($params);
@@ -61,14 +57,14 @@ class AppointmentsSearch extends Appointments
 
         $query->andFilterWhere([
             'id' => $this->id,
-            'patient_id' => $this->patient_id,
-            'doctor_id' => $this->doctor_id,
+            'user_id' => $this->user_id,
+            'profile_id' => $this->profile_id,
         ]);
 
-        $query->andFilterWhere(['like', 'appointment_date', $this->appointment_date])
-            ->andFilterWhere(['like', 'status', $this->status])
-            ->andFilterWhere(['like', 'reason', $this->reason])
-            ->andFilterWhere(['like', 'notes', $this->notes])
+        $query->andFilterWhere(['like', 'specialization', $this->specialization])
+            ->andFilterWhere(['like', 'license_number', $this->license_number])
+            ->andFilterWhere(['like', 'years_of_experience', $this->years_of_experience])
+            ->andFilterWhere(['like', 'availability_schedule', $this->availability_schedule])
             ->andFilterWhere(['like', 'created_at', $this->created_at])
             ->andFilterWhere(['like', 'updated_at', $this->updated_at]);
 

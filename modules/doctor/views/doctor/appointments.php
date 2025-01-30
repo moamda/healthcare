@@ -51,11 +51,11 @@ CrudAsset::register($this);
                     'class' => '\kartik\grid\DataColumn',
                     'attribute' => 'status',
                     'width' => '100px',
-                    'format' => 'raw', 
+                    'format' => 'raw',
                     'value' => function ($model) {
                         $statusClass = match ($model->status) {
                             'Pending' => 'badge bg-warning',
-                            'Scheduled' => 'badge bg-primary',
+                            'Approved' => 'badge bg-primary',
                             'Cancelled' => 'badge bg-danger',
                             'Completed' => 'badge bg-success',
                             default => 'badge bg-secondary',
@@ -75,7 +75,7 @@ CrudAsset::register($this);
                     'class' => 'kartik\grid\ActionColumn',
                     'dropdown' => false,
                     'noWrap' => 'true',
-                    'template' => '{update} {cancel}',
+                    'template' => '{update} {cancel} {approve}',
                     'vAlign' => 'middle',
                     'urlCreator' => function ($action, $model, $key, $index) {
                         return Url::to([$action, 'id' => $key]);
@@ -102,6 +102,20 @@ CrudAsset::register($this);
                                     'data-toggle' => 'tooltip',
                                     'data-confirm-title' => Yii::t('yii2-ajaxcrud', 'Cancel'),
                                     'data-confirm-message' => Yii::t('yii2-ajaxcrud', 'Cancel Confirm')
+                                ]);
+                            }
+                        },
+                        'approve' => function ($url, $model, $key) {
+                            if ($model->status === 'Pending') { // Hide if Cancelled
+                                return Html::a('Approve', $url, [
+                                    'role' => 'modal-remote',
+                                    'title' => Yii::t('yii2-ajaxcrud', 'Confirm'),
+                                    'class' => 'btn bg-gradient-primary',
+                                    'data-method' => false,
+                                    'data-request-method' => 'post',
+                                    'data-toggle' => 'tooltip',
+                                    'data-confirm-title' => Yii::t('yii2-ajaxcrud', 'Approve'),
+                                    'data-confirm-message' => Yii::t('yii2-ajaxcrud', 'Approve Confirm')
                                 ]);
                             }
                         },

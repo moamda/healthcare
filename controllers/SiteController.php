@@ -94,6 +94,10 @@ class SiteController extends Controller
                 return $this->redirect(['/admin/dashboard/v1']);
             } elseif (Yii::$app->user->can('access admin module')) {
                 return $this->redirect(['/admin/dashboard/v1']);
+            } elseif (Yii::$app->user->can('access patient module')) {
+                return $this->redirect(['/patient/patient/appointments']);
+            } elseif (Yii::$app->user->can('access doctor module')) {
+                return $this->redirect(['/doctor/doctor/appointments']);
             } else {
                 return $this->goHome();
             }
