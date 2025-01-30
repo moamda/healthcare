@@ -132,10 +132,11 @@ class PatientController extends Controller
                         Html::button(Yii::t('yii2-ajaxcrud', 'Submit'), ['class' => 'btn btn-primary', 'type' => 'submit'])
                 ];
             } else if ($model->load($request->post())) {
+                $doctor = Doctor::findOne($id);
                 date_default_timezone_set('Asia/Manila');
 
                 $model->patient_id = Yii::$app->user->id;
-                $model->doctor_id = $id;
+                $model->doctor_id = $doctor->user_id;
                 $model->created_at = date('Y-m-d H:i:s');
                 $model->status = 'Pending';
                 $model->save();
@@ -159,10 +160,11 @@ class PatientController extends Controller
             }
         } else {
             if ($model->load($request->post())) {
+                $doctor = Doctor::findOne($id);
                 date_default_timezone_set('Asia/Manila');
 
                 $model->patient_id = Yii::$app->user->id;
-                $model->doctor_id = $id;
+                $model->doctor_id = $doctor->user_id;
                 $model->created_at = date('Y-m-d H:i:s');
                 $model->status = 'Pending';
                 $model->save();
@@ -194,7 +196,12 @@ class PatientController extends Controller
                     'footer' => Html::button(Yii::t('yii2-ajaxcrud', 'Close'), ['class' => 'btn btn-default pull-left', 'data-dismiss' => 'modal']) .
                         Html::button(Yii::t('yii2-ajaxcrud', 'Submit'), ['class' => 'btn btn-primary', 'type' => 'submit'])
                 ];
-            } else if ($model->load($request->post()) && $model->save()) {
+            } else if ($model->load($request->post())) {
+
+                date_default_timezone_set('Asia/Manila');
+                $model->updated_at = date('Y-m-d H:i:s');
+                $model->save();
+
                 return [
                     'forceReload' => '#crud-datatable-pjax',
                     'title' => Yii::t('yii2-ajaxcrud', 'Update') . " Appointment",

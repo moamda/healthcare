@@ -102,7 +102,7 @@ class DoctorController extends Controller
         }
 
         $model->status = 'Approved';
-        $model->notes = 'Cancelled by doctor.';
+        $model->notes = 'Approved by doctor.';
 
         if ($model->save(false)) {
             if ($request->isAjax) {

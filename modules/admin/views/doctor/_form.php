@@ -61,10 +61,6 @@ use yii\bootstrap4\ActiveForm;
 
     <?= $form->field($model, 'availability_schedule')->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'created_at')->textInput(['maxlength' => true]) ?>
-
-    <?= $form->field($model, 'updated_at')->textInput(['maxlength' => true]) ?>
-
 
     <?php if (!Yii::$app->request->isAjax) { ?>
         <div class="form-group">

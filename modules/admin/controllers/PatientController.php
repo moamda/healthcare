@@ -166,7 +166,10 @@ class PatientController extends Controller
                     'footer' => Html::button(Yii::t('yii2-ajaxcrud', 'Close'), ['class' => 'btn btn-default pull-left', 'data-dismiss' => 'modal']) .
                         Html::button(Yii::t('yii2-ajaxcrud', 'Save'), ['class' => 'btn btn-primary', 'type' => 'submit'])
                 ];
-            } else if ($model->load($request->post()) && $model->save()) {
+            } else if ($model->load($request->post())) {
+                date_default_timezone_set('Asia/Manila');
+                $model->updated_at = date('Y-m-d H:i:s');
+                $model->save();
                 return [
                     'forceReload' => '#crud-datatable-pjax',
                     'title' => "Patient #" . $id,

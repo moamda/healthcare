@@ -67,6 +67,6 @@ class Appointments extends \yii\db\ActiveRecord
 
     public function getDoctor()
 {
-    return $this->hasOne(Doctor::class, ['id' => 'doctor_id']);
+    return $this->hasOne(Doctor::class, ['user_id' => 'doctor_id']);
 }
 }

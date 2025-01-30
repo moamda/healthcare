@@ -104,10 +104,18 @@ class SignupForm extends Model
             $profile->contact = $this->contact;
 
             if ($profile->save()) {
-                $doctor = new Doctorx();
+                date_default_timezone_set('Asia/Manila');
+                
+                $doctor = new Doctor();
                 $doctor->user_id = $user->id;
-                $doctor->profile_id = $profile->id;
-
+                $doctor->fname = $profile->first_name;
+                $doctor->lname = $profile->last_name;
+                $doctor->mname = $profile->middle_name;
+                $doctor->suffix = $profile->suffix;
+                $doctor->gender = $profile->gender;
+                $doctor->address = $profile->address;
+                $doctor->contact_number = $profile->contact;
+                $doctor->created_at = date('Y-m-d H:i:s');
                 return $doctor->save();
             }
             // return $profile->save();

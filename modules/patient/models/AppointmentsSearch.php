@@ -44,11 +44,9 @@ class AppointmentsSearch extends Appointments
     public function search($params)
     {
         $query = Appointments::find();
+
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
-            'sort' => [
-                'defaultOrder' => ['appointment_date' => SORT_DESC], // Sort by latest appointment first
-            ],
         ]);
 
         $this->load($params);

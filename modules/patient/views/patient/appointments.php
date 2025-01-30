@@ -55,7 +55,7 @@ CrudAsset::register($this);
                     'value' => function ($model) {
                         $statusClass = match ($model->status) {
                             'Pending' => 'badge bg-warning',
-                            'Scheduled' => 'badge bg-primary',
+                            'Approved' => 'badge bg-primary',
                             'Cancelled' => 'badge bg-danger',
                             'Completed' => 'badge bg-success',
                             default => 'badge bg-secondary',

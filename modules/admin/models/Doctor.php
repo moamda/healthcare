@@ -50,7 +50,7 @@ class Doctor extends \yii\db\ActiveRecord
         return [
             [['fname', 'lname', 'mname', 'suffix', 'gender', 'dob', 'specialization', 'license_number', 'contact_number', 'email', 'address', 'years_of_experience', 'availability_schedule', 'created_at', 'updated_at'], 'string', 'max' => 255],
 
-            [['fname', 'lname', 'mname', 'gender', 'dob', 'specialization', 'license_number', 'contact_number', 'email', 'address', 'years_of_experience', 'availability_schedule'], 'required'],
+            [['user_id', 'fname', 'lname', 'mname', 'gender', 'dob', 'specialization', 'license_number', 'contact_number', 'email', 'address', 'years_of_experience', 'availability_schedule'], 'safe'],
 
             [['suffix', 'created_at', 'updated_at'], 'safe'],
 
