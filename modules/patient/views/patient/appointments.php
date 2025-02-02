@@ -35,6 +35,15 @@ CrudAsset::register($this);
                 ],
                 [
                     'class' => '\kartik\grid\DataColumn',
+                    'attribute' => 'patient_id',
+                    'value' => function ($model) {
+                        return $model->patient ? $model->patient->fname . ' ' . strtoupper(substr($model->patient->mname, 0, 1)) . '. ' . $model->patient->lname : 'No patient assigned';
+                    },
+                    'label' => 'Patient',
+                    'contentOptions' => ['style' => 'vertical-align: middle;']
+                ],
+                [
+                    'class' => '\kartik\grid\DataColumn',
                     'attribute' => 'doctor_id',
                     'value' => function ($model) {
                         return $model->doctor ? $model->doctor->fname . ' ' . strtoupper(substr($model->doctor->mname, 0, 1)) . '. ' . $model->doctor->lname : 'No doctor assigned';
@@ -51,7 +60,7 @@ CrudAsset::register($this);
                     'class' => '\kartik\grid\DataColumn',
                     'attribute' => 'status',
                     'width' => '100px',
-                    'format' => 'raw', 
+                    'format' => 'raw',
                     'value' => function ($model) {
                         $statusClass = match ($model->status) {
                             'Pending' => 'badge bg-warning',

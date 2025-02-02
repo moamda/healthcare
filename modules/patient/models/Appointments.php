@@ -3,6 +3,7 @@
 namespace app\modules\patient\models;
 
 use app\modules\admin\models\Doctor;
+use app\modules\admin\models\Patient;
 use Yii;
 
 /**
@@ -43,7 +44,8 @@ class Appointments extends \yii\db\ActiveRecord
     {
         return [
             [['patient_id', 'doctor_id'], 'integer'],
-            [['appointment_date', 'status', 'reason', 'notes', 'created_at', 'updated_at'], 'string', 'max' => 255],
+            [['appointment_date'], 'safe'],
+            [['status', 'reason', 'notes', 'created_at', 'updated_at'], 'string', 'max' => 255],
         ];
     }
 
@@ -56,7 +58,7 @@ class Appointments extends \yii\db\ActiveRecord
             'id' => 'ID',
             'patient_id' => 'Patient ID',
             'doctor_id' => 'Doctor ID',
-            'appointment_date' => 'Appointment Date',
+            'appointment_date' => 'Date',
             'status' => 'Status',
             'reason' => 'Reason',
             'notes' => 'Notes',
@@ -65,8 +67,13 @@ class Appointments extends \yii\db\ActiveRecord
         ];
     }
 
+    public function getPatient()
+    {
+        return $this->hasOne(Patient::class, ['user_id' => 'patient_id']);
+    }
+
     public function getDoctor()
-{
-    return $this->hasOne(Doctor::class, ['user_id' => 'doctor_id']);
-}
+    {
+        return $this->hasOne(Doctor::class, ['user_id' => 'doctor_id']);
+    }
 }

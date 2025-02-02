@@ -57,9 +57,9 @@ class DoctorController extends Controller
         $userId = Yii::$app->user->id;
 
         // Check if the user is a doctor (adjust role checking based on your RBAC setup)
-        if (Yii::$app->user->can('doctor')) {
-            $dataProvider->query->andWhere(['doctor_id' => $userId]);
-        }
+        // if (Yii::$app->user->can('doctor')) {
+        //     $dataProvider->query->andWhere(['doctor_id' => $userId]);
+        // }
 
         return $this->render('appointments', [
             'searchModel' => $searchModel,

@@ -25,53 +25,63 @@ $this->params['breadcrumbs'][] = $this->title;
 
                     <?php $form = ActiveForm::begin(['id' => 'form-signup']); ?>
 
-                    <div class="form-row">
-                        <div class="form-group col-md-4">
-                            <?= $form->field($model, 'fname')->textInput(['placeholder' => 'Required'])?>
-                        </div>
-                        <div class="form-group col-md-3">
-                            <?= $form->field($model, 'mname')->textInput(['placeholder' => 'Optional'])?>
-                        </div>
-                        <div class="form-group col-md-3">
-                            <?= $form->field($model, 'lname')->textInput(['placeholder' => 'Required'])?>
-                        </div>
-                        <div class="form-group col-md-2">
-                            <?= $form->field($model, 'suffix')->dropDownList(
-                                [
-                                    'Jr.' => 'Jr.',
-                                    'Sr.' => 'Sr.',
-                                    'I' => 'I',
-                                    'II' => 'II',
-                                    'III' => 'III',
-                                    'IV' => 'IV',
-                                    'V' => 'V'
-                                ],
-                                ['prompt' => 'Optional']
-                            )?>
-                        </div>
-                    </div>
-
-                    <div class="form-row">
-                        <div class="form-group col-md-6">
-                            <?= $form->field($model, 'gender')->dropDownList(
-                                [
-                                    'Male' => 'Male',
-                                    'Female' => 'Female',
-                                ],
-                                ['prompt' => 'Optional']
-                            )?>
-                        </div>
-                        <div class="form-group col-md-6">
-                            <?= $form->field($model, 'contact')->textInput(['placeholder' => 'Required'])?>
-                        </div>
-                    </div>
-
                     <div class="form-group">
-                        <?= $form->field($model, 'address')->textarea(['rows' => 2, 'placeholder' => 'Required'])?>
+                        <?= Html::label('User Type', 'user_type') ?>
+                        <?= Html::dropDownList('user_type', null, [
+                            'doctor' => 'Doctor',
+                            'patient' => 'Patient'
+                        ], ['class' => 'form-control', 'prompt' => 'Select User Type', 'id' => 'user-type']) ?>
                     </div>
 
-                    <div class="form-group">
-                        <?= $form->field($model, 'email')->input('email', ['placeholder' => 'Required'])?>
+                    <div id="user-fields" style="display: none;">
+                        <div class="form-row">
+                            <div class="form-group col-md-4">
+                                <?= $form->field($model, 'fname')->textInput(['placeholder' => 'Required']) ?>
+                            </div>
+                            <div class="form-group col-md-3">
+                                <?= $form->field($model, 'mname')->textInput(['placeholder' => 'Optional']) ?>
+                            </div>
+                            <div class="form-group col-md-3">
+                                <?= $form->field($model, 'lname')->textInput(['placeholder' => 'Required']) ?>
+                            </div>
+                            <div class="form-group col-md-2">
+                                <?= $form->field($model, 'suffix')->dropDownList(
+                                    [
+                                        'Jr.' => 'Jr.',
+                                        'Sr.' => 'Sr.',
+                                        'I' => 'I',
+                                        'II' => 'II',
+                                        'III' => 'III',
+                                        'IV' => 'IV',
+                                        'V' => 'V'
+                                    ],
+                                    ['prompt' => 'Optional']
+                                ) ?>
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group col-md-6">
+                                <?= $form->field($model, 'gender')->dropDownList(
+                                    [
+                                        'Male' => 'Male',
+                                        'Female' => 'Female',
+                                    ],
+                                    ['prompt' => 'Optional']
+                                ) ?>
+                            </div>
+                            <div class="form-group col-md-6">
+                                <?= $form->field($model, 'contact')->textInput(['placeholder' => 'Required']) ?>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <?= $form->field($model, 'address')->textarea(['rows' => 2, 'placeholder' => 'Required']) ?>
+                        </div>
+
+                        <div class="form-group">
+                            <?= $form->field($model, 'email')->input('email', ['placeholder' => 'Required']) ?>
+                        </div>
                     </div>
 
                     <div class="form-group">
@@ -96,3 +106,15 @@ $this->params['breadcrumbs'][] = $this->title;
     </div>
     <!--.row-->
 </div>
+
+<?php
+$this->registerJs(<<<JS
+    $('#user-type').change(function() {
+        if ($(this).val()) {
+            $('#user-fields').slideDown();
+        } else {
+            $('#user-fields').slideUp();
+        }
+    });
+JS);
+?>

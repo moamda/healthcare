@@ -19,7 +19,7 @@ class DoctorSearch extends Doctor
     {
         return [
             [['id'], 'integer'],
-            [['fname', 'lname', 'mname', 'suffix', 'gender', 'dob', 'specialization', 'license_number', 'contact_number', 'email', 'address', 'years_of_experience', 'availability_schedule', 'created_at', 'updated_at'], 'safe'],
+            [['uuid', 'fname', 'lname', 'mname', 'suffix', 'gender', 'dob', 'specialization', 'license_number', 'contact_number', 'email', 'address', 'years_of_experience', 'availability_schedule', 'created_at', 'updated_at'], 'safe'],
         ];
     }
 
@@ -60,6 +60,7 @@ class DoctorSearch extends Doctor
         ]);
 
         $query->andFilterWhere(['like', 'fname', $this->fname])
+            ->andFilterWhere(['like', 'uuid', $this->uuid])
             ->andFilterWhere(['like', 'lname', $this->lname])
             ->andFilterWhere(['like', 'mname', $this->mname])
             ->andFilterWhere(['like', 'suffix', $this->suffix])

@@ -1,4 +1,5 @@
 <?php
+
 use yii\helpers\Url;
 use yii\helpers\Html;
 use yii\bootstrap4\Modal;
@@ -18,27 +19,30 @@ CrudAsset::register($this);
 ?>
 <div class="doctor-index">
     <div id="ajaxCrudDatatable">
-        <?=GridView::widget([
+        <?= GridView::widget([
             'id' => 'crud-datatable',
             'dataProvider' => $dataProvider,
             'filterModel' => $searchModel,
             'pjax' => true,
-            'columns' => require(__DIR__.'/_columns.php'),
+            'columns' => require(__DIR__ . '/_columns.php'),
             'toolbar' => [
-                ['content'=>
-                    Html::a(Yii::t('yii2-ajaxcrud', 'Add Doctor'), ['create'],
-                    ['role' => 'modal-remote', 'title' => Yii::t('yii2-ajaxcrud', 'Add Doctor').' Doctors', 'class' => 'btn btn-outline-primary']).
-                    Html::a('<i class="fa fa-redo"></i>', [''],
-                    ['data-pjax' => 1, 'class' => 'btn btn-outline-success', 'title' => Yii::t('yii2-ajaxcrud', 'Reset Grid')]).
-                    '{toggleData}'
+                [
+                    'content' =>
+                    Html::a('Add Doctor', ['/admin/user/signup'], ['class' => 'btn btn-success']) .
+                        Html::a(
+                            '<i class="fa fa-redo"></i>',
+                            [''],
+                            ['data-pjax' => 1, 'class' => 'btn btn-outline-success', 'title' => Yii::t('yii2-ajaxcrud', 'Reset Grid')]
+                        ) .
+                        '{toggleData}'
                     // '{export}'
                 ],
-            ],          
+            ],
             'striped' => true,
             'condensed' => true,
-            'responsive' => true,          
+            'responsive' => true,
             'panel' => [
-                'type' => 'default', 
+                'type' => 'default',
                 // 'heading' => '<i class="fa fa-list"></i> <b>'.$this->title.'</b>',
                 // 'before' =>'<em>* '.Yii::t('yii2-ajaxcrud', 'Resize Column').'</em>',
                 // 'after' => BulkButtonWidget::widget([
@@ -56,7 +60,7 @@ CrudAsset::register($this);
                 // ]).                        
                 // '<div class="clearfix"></div>',
             ]
-        ])?>
+        ]) ?>
     </div>
 </div>
 <?php Modal::begin([
@@ -70,5 +74,5 @@ CrudAsset::register($this);
     "options" => [
         "tabindex" => false
     ]
-])?>
+]) ?>
 <?php Modal::end(); ?>

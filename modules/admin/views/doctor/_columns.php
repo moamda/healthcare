@@ -17,6 +17,10 @@ return [
     // ],
     [
         'class' => '\kartik\grid\DataColumn',
+        'attribute' => 'uuid',
+    ],
+    [
+        'class' => '\kartik\grid\DataColumn',
         'attribute' => 'fname',
     ],
     [

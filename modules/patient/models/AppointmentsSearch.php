@@ -45,6 +45,16 @@ class AppointmentsSearch extends Appointments
     {
         $query = Appointments::find();
 
+        $userId = Yii::$app->user->id;
+        
+        $query->orderBy(['appointment_date' => SORT_ASC]);
+
+        $query->andWhere([
+            'or',
+            ['patient_id' => $userId], 
+            ['doctor_id' => $userId]   
+        ]);
+
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
         ]);

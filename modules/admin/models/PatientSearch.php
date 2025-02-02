@@ -19,7 +19,7 @@ class PatientSearch extends Patient
     {
         return [
             [['id'], 'integer'],
-            [['fname', 'lname', 'mname', 'suffix', 'gender', 'dob', 'contact_number', 'email', 'address', 'blood_type', 'existing_conditions', 'allergies', 'emergency_contact', 'emergency_contact_number', 'created_at', 'updated_at'], 'safe'],
+            [['uuid','fname', 'lname', 'mname', 'suffix', 'gender', 'dob', 'contact_number', 'email', 'address', 'blood_type', 'existing_conditions', 'allergies', 'emergency_contact', 'emergency_contact_number', 'created_at', 'updated_at'], 'safe'],
         ];
     }
 

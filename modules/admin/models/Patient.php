@@ -49,9 +49,11 @@ class Patient extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
+            [['user_id'], 'integer'],
+            
             [['fname', 'lname', 'mname', 'suffix', 'gender', 'dob', 'contact_number', 'email', 'address', 'blood_type', 'existing_conditions', 'allergies', 'emergency_contact', 'emergency_contact_number', 'created_at', 'updated_at'], 'string', 'max' => 255],
 
-            [['fname', 'lname', 'mname', 'gender', 'dob', 'contact_number', 'email', 'address', 'emergency_contact', 'emergency_contact_number'], 'required'],
+            [['user_id', 'txn_code', 'fname', 'lname', 'mname', 'gender', 'dob', 'contact_number', 'email', 'address', 'emergency_contact', 'emergency_contact_number'], 'safe'],
 
             [['suffix', 'blood_type', 'existing_conditions', 'allergies', 'created_at', 'updated_at'], 'safe'],
 
@@ -67,6 +69,7 @@ class Patient extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'ID',
+            'uuid' => 'Patient ID',
             'fname' => 'Firstname',
             'lname' => 'Lastname',
             'mname' => 'Middle Name',

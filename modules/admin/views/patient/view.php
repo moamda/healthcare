@@ -10,6 +10,7 @@ use yii\widgets\DetailView;
     <?= DetailView::widget([
         'model' => $model,
         'attributes' => [
+            'uuid',
             'fname',
             'lname',
             'mname',

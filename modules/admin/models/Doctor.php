@@ -48,9 +48,10 @@ class Doctor extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['fname', 'lname', 'mname', 'suffix', 'gender', 'dob', 'specialization', 'license_number', 'contact_number', 'email', 'address', 'years_of_experience', 'availability_schedule', 'created_at', 'updated_at'], 'string', 'max' => 255],
+            [['user_id'], 'integer'],
+            [['fname', 'uuid', 'lname', 'mname', 'suffix', 'gender', 'dob', 'specialization', 'license_number', 'contact_number', 'email', 'address', 'years_of_experience', 'availability_schedule', 'created_at', 'updated_at'], 'string', 'max' => 255],
 
-            [['user_id', 'fname', 'lname', 'mname', 'gender', 'dob', 'specialization', 'license_number', 'contact_number', 'email', 'address', 'years_of_experience', 'availability_schedule'], 'safe'],
+            [['user_id', 'uuid', 'fname', 'lname', 'mname', 'gender', 'dob', 'specialization', 'license_number', 'contact_number', 'email', 'address', 'years_of_experience', 'availability_schedule'], 'safe'],
 
             [['suffix', 'created_at', 'updated_at'], 'safe'],
 
@@ -65,6 +66,7 @@ class Doctor extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'ID',
+            'uuid' => 'Doctor ID',
             'fname' => 'Firstname',
             'lname' => 'Lastname',
             'mname' => 'Middle Name',

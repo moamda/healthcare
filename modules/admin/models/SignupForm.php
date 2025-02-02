@@ -70,11 +70,6 @@ class SignupForm extends Model
         ];
     }
 
-    /**
-     * Signs user up.
-     *
-     * @return bool whether the creating new account was successful and email was sent
-     */
     public function signup()
     {
         if (!$this->validate()) {
@@ -83,15 +78,13 @@ class SignupForm extends Model
 
         $user = new User();
         $user->username = $this->generateUsername();
-        // $user->username = $this->username;
         $user->email = strtolower($this->email);
         $user->setPassword($this->generateDefaultPassword());
         $user->generateAuthKey();
         $user->generateEmailVerificationToken();
 
-
         if ($user->save()) {
-            // return $this->sendEmail($user);
+            $userType = Yii::$app->request->post('user_type'); 
 
             $profile = new Profile();
             $profile->user_id = $user->id;
@@ -105,27 +98,75 @@ class SignupForm extends Model
 
             if ($profile->save()) {
                 date_default_timezone_set('Asia/Manila');
-                
-                $doctor = new Doctor();
-                $doctor->user_id = $user->id;
-                $doctor->fname = $profile->first_name;
-                $doctor->lname = $profile->last_name;
-                $doctor->mname = $profile->middle_name;
-                $doctor->suffix = $profile->suffix;
-                $doctor->gender = $profile->gender;
-                $doctor->address = $profile->address;
-                $doctor->contact_number = $profile->contact;
-                $doctor->created_at = date('Y-m-d H:i:s');
-                return $doctor->save();
+
+                if ($userType === 'doctor') {
+                    $lastDoctor = Doctor::find()->orderBy(['uuid' => SORT_DESC])->one();
+                    $lastPatient = Patient::find()->orderBy(['uuid' => SORT_DESC])->one();
+                    $lastDoctorId = $lastDoctor ? (int)substr($lastDoctor->uuid, 0, 4) : 0;
+                    $lastPatientId = $lastPatient ? (int)substr($lastPatient->uuid, 0, 4) : 0;
+                    $nextNumber = max($lastDoctorId, $lastPatientId) + 1;
+                    $nextNumber = str_pad($nextNumber, 4, '0', STR_PAD_LEFT); 
+                    $uuid = $nextNumber . date('mdY');
+
+
+                    $doctor = new Doctor();
+                    $doctor->user_id = $user->id;
+                    $doctor->uuid = $uuid;
+                    $doctor->fname = $profile->first_name;
+                    $doctor->lname = $profile->last_name;
+                    $doctor->mname = $profile->middle_name;
+                    $doctor->suffix = $profile->suffix;
+                    $doctor->gender = $profile->gender;
+                    $doctor->address = $profile->address;
+                    $doctor->contact_number = $profile->contact;
+                    $doctor->created_at = date('Y-m-d H:i:s');
+
+                    if (!$doctor->save()) {
+                        Yii::$app->session->setFlash('error', 'Failed to save doctor details.');
+                        return false;
+                    }
+                }
+
+                if ($userType === 'patient') {
+                    $lastDoctor = Doctor::find()->orderBy(['uuid' => SORT_DESC])->one();
+                    $lastPatient = Patient::find()->orderBy(['uuid' => SORT_DESC])->one();
+                    $lastDoctorId = $lastDoctor ? (int)substr($lastDoctor->uuid, 0, 4) : 0;
+                    $lastPatientId = $lastPatient ? (int)substr($lastPatient->uuid, 0, 4) : 0;
+                    $nextNumber = max($lastDoctorId, $lastPatientId) + 1;
+                    $nextNumber = str_pad($nextNumber, 4, '0', STR_PAD_LEFT); 
+                    $uuid = $nextNumber . date('mdY');
+
+                    $patient = new Patient();
+                    $patient->user_id = $user->id;
+                    $patient->uuid = $uuid;
+                    $patient->fname = $profile->first_name;
+                    $patient->lname = $profile->last_name;
+                    $patient->mname = $profile->middle_name;
+                    $patient->suffix = $profile->suffix;
+                    $patient->gender = $profile->gender;
+                    $patient->address = $profile->address;
+                    $patient->contact_number = $profile->contact;
+                    $patient->created_at = date('Y-m-d H:i:s');
+
+                    if (!$patient->save()) {
+                        Yii::$app->session->setFlash('error', 'Failed to save patient details.');
+                        return false;
+                    }
+                }
+
+                Yii::$app->session->setFlash('success', 'User registered successfully!');
+                return true;
             }
-            // return $profile->save();
+
+            Yii::$app->session->setFlash('error', 'Failed to save profile.');
+            return false;
         }
 
+        Yii::$app->session->setFlash('error', 'Failed to register user.');
         return false;
-
-        //return $user->save() && $this->sendEmail($user);
-
     }
+
+
 
 
     /**

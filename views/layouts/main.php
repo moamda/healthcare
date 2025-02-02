@@ -37,15 +37,16 @@ $this->registerLinkTag(['rel' => 'icon', 'type' => 'image/x-icon', 'href' => Yii
     <header id="header">
         <?php
         NavBar::begin([
-            'brandLabel' => Yii::$app->name,
+            // 'brandLabel' => Yii::$app->name,
+            'brandLabel' => 'Baranggay Ibaba Health Center',
             'brandUrl' => Yii::$app->homeUrl,
             'options' => ['class' => 'navbar-expand-md navbar-dark bg-dark fixed-top']
         ]);
 
         $menuItems = [
             ['label' => 'Home', 'url' => ['/site/index']],
-            ['label' => 'About', 'url' => ['/site/about']],
-            ['label' => 'Contact', 'url' => ['/site/contact']],
+            // ['label' => 'About', 'url' => ['/site/about']],
+            // ['label' => 'Contact', 'url' => ['/site/contact']],
         ];
         // if (Yii::$app->user->isGuest) {
         //     $menuItems[] = ['label' => 'Signup', 'url' => ['/site/signup']];
@@ -79,14 +80,14 @@ $this->registerLinkTag(['rel' => 'icon', 'type' => 'image/x-icon', 'href' => Yii
         </div>
     </main>
 
-    <footer id="footer" class="mt-auto py-3 bg-light">
+    <!-- <footer id="footer" class="mt-auto py-3 bg-light">
         <div class="container">
             <div class="row text-muted">
-                <div class="col-md-6 text-center text-md-start">&copy; <?= Html::encode(Yii::$app->name) ?> <?= date('Y') ?></div>
-                <div class="col-md-6 text-center text-md-end"><?= Yii::powered() ?></div>
+                <div class="col-md-6 text-center text-md-start">&copy; <= Html::encode(Yii::$app->name) ?> <= date('Y') ?></div>
+                <div class="col-md-6 text-center text-md-end"><= Yii::powered() ?></div>
             </div>
         </div>
-    </footer>
+    </footer> -->
 
     <?php $this->endBody() ?>
 </body>

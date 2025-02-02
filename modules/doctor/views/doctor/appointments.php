@@ -35,6 +35,15 @@ CrudAsset::register($this);
                 ],
                 [
                     'class' => '\kartik\grid\DataColumn',
+                    'attribute' => 'patient_id',
+                    'value' => function ($model) {
+                        return $model->patient ? $model->patient->fname . ' ' . strtoupper(substr($model->patient->mname, 0, 1)) . '. ' . $model->patient->lname : 'No patient assigned';
+                    },
+                    'label' => 'Patient',
+                    'contentOptions' => ['style' => 'vertical-align: middle;']
+                ],
+                [
+                    'class' => '\kartik\grid\DataColumn',
                     'attribute' => 'doctor_id',
                     'value' => function ($model) {
                         return $model->doctor ? $model->doctor->fname . ' ' . strtoupper(substr($model->doctor->mname, 0, 1)) . '. ' . $model->doctor->lname : 'No doctor assigned';
@@ -61,7 +70,6 @@ CrudAsset::register($this);
                             default => 'badge bg-secondary',
                         };
 
-                        // Wrap the status with a span and the appropriate class
                         return "<span class='{$statusClass}'>{$model->status}</span>";
                     },
                     'contentOptions' => ['style' => 'vertical-align: middle;']
