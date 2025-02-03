@@ -7,6 +7,8 @@ use app\modules\admin\models\Doctor;
 use app\modules\patient\models\Appointments;
 use app\modules\patient\models\AppointmentsSearch;
 use app\modules\admin\models\DoctorSearch;
+use app\modules\patient\models\MedicalHistory;
+use app\modules\patient\models\MedicalHistorySearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -135,6 +137,14 @@ class PatientController extends Controller
                 $doctor = Doctor::findOne($id);
                 date_default_timezone_set('Asia/Manila');
 
+                do {
+                    // Generate a random 6-digit number as reference number
+                    $refNo = sprintf('%06d', mt_rand(0, 999999));
+                } while (Appointments::find()->where(['reference_no' => $refNo])->exists());
+
+
+
+                $model->reference_no = Yii::$app->user->id . $refNo . $doctor->user_id;
                 $model->patient_id = Yii::$app->user->id;
                 $model->doctor_id = $doctor->user_id;
                 $model->created_at = date('Y-m-d H:i:s');
@@ -227,6 +237,17 @@ class PatientController extends Controller
                 ]);
             }
         }
+    }
+
+    public function actionHistory()
+    {
+        $searchModel = new MedicalHistorySearch();
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+
+        return $this->render('history', [
+            'searchModel' => $searchModel,
+            'dataProvider' => $dataProvider,
+        ]);
     }
 
 

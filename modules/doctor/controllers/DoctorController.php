@@ -7,20 +7,17 @@ use app\modules\admin\models\Doctor;
 use app\modules\patient\models\Appointments;
 use app\modules\patient\models\AppointmentsSearch;
 use app\modules\admin\models\DoctorSearch;
+use app\modules\patient\models\MedicalHistorySearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use \yii\web\Response;
 use yii\helpers\Html;
 
-/**
- * PatientController implements the CRUD actions for Doctors model.
- */
+
 class DoctorController extends Controller
 {
-    /**
-     * @inheritdoc
-     */
+
     public function behaviors()
     {
         return [
@@ -34,10 +31,6 @@ class DoctorController extends Controller
         ];
     }
 
-    /**
-     * Lists all Doctors models.
-     * @return mixed
-     */
     public function actionBook()
     {
         $searchModel = new DoctorSearch();
@@ -54,19 +47,11 @@ class DoctorController extends Controller
         $searchModel = new AppointmentsSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
-        $userId = Yii::$app->user->id;
-
-        // Check if the user is a doctor (adjust role checking based on your RBAC setup)
-        // if (Yii::$app->user->can('doctor')) {
-        //     $dataProvider->query->andWhere(['doctor_id' => $userId]);
-        // }
-
         return $this->render('appointments', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
         ]);
     }
-
 
     public function actionCancel($id)
     {
@@ -116,12 +101,19 @@ class DoctorController extends Controller
         }
     }
 
+    public function actionComplete() {}
 
-    /**
-     * Displays a single Appointments model.
-     * @param integer $id
-     * @return mixed
-     */
+    public function actionHistory()
+    {
+        $searchModel = new MedicalHistorySearch();
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+
+        return $this->render('history', [
+            'searchModel' => $searchModel,
+            'dataProvider' => $dataProvider,
+        ]);
+    }
+
     public function actionView($id)
     {
         $request = Yii::$app->request;
@@ -253,15 +245,6 @@ class DoctorController extends Controller
         }
     }
 
-
-
-    /**
-     * Finds the Appointments model based on its primary key value.
-     * If the model is not found, a 404 HTTP exception will be thrown.
-     * @param integer $id
-     * @return Appointments the loaded model
-     * @throws NotFoundHttpException if the model cannot be found
-     */
     protected function findModel($id)
     {
         if (($model = Doctor::findOne($id)) !== null) {

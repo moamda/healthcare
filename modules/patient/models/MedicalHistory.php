@@ -2,31 +2,30 @@
 
 namespace app\modules\patient\models;
 
-use app\modules\admin\models\Doctor;
-use app\modules\admin\models\Patient;
 use Yii;
 
 /**
- * This is the model class for table "appointments".
+ * This is the model class for table "medical_history".
  *
  * @property int $id
  * @property int|null $patient_id
  * @property int|null $doctor_id
- * @property string|null $appointment_date
- * @property string|null $status
- * @property string|null $reason
- * @property string|null $notes
+ * @property string|null $visit_date
+ * @property string|null $diagnosis
+ * @property string|null $treatment
+ * @property string|null $remarks
+ * @property string|null $attachments
  * @property string|null $created_at
  * @property string|null $updated_at
  */
-class Appointments extends \yii\db\ActiveRecord
+class MedicalHistory extends \yii\db\ActiveRecord
 {
     /**
      * {@inheritdoc}
      */
     public static function tableName()
     {
-        return 'appointments';
+        return 'medical_history';
     }
 
     /**
@@ -44,8 +43,7 @@ class Appointments extends \yii\db\ActiveRecord
     {
         return [
             [['patient_id', 'doctor_id'], 'integer'],
-            [['appointment_date'], 'safe'],
-            [['reference_no', 'status', 'reason', 'notes', 'created_at', 'updated_at'], 'string', 'max' => 255],
+            [['visit_date', 'diagnosis', 'treatment', 'remarks', 'attachments', 'created_at', 'updated_at'], 'string', 'max' => 255],
         ];
     }
 
@@ -58,23 +56,13 @@ class Appointments extends \yii\db\ActiveRecord
             'id' => 'ID',
             'patient_id' => 'Patient ID',
             'doctor_id' => 'Doctor ID',
-            'reference_no' => 'Reference #',
-            'appointment_date' => 'Date',
-            'status' => 'Status',
-            'reason' => 'Reason',
-            'notes' => 'Notes',
+            'visit_date' => 'Visit Date',
+            'diagnosis' => 'Diagnosis',
+            'treatment' => 'Treatment',
+            'remarks' => 'Remarks',
+            'attachments' => 'Attachments',
             'created_at' => 'Created At',
             'updated_at' => 'Updated At',
         ];
-    }
-
-    public function getPatient()
-    {
-        return $this->hasOne(Patient::class, ['user_id' => 'patient_id']);
-    }
-
-    public function getDoctor()
-    {
-        return $this->hasOne(Doctor::class, ['user_id' => 'doctor_id']);
     }
 }

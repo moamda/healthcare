@@ -57,7 +57,17 @@ use yii\bootstrap4\ActiveForm;
 
     <?= $form->field($model, 'address')->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'years_of_experience')->textInput(['maxlength' => true]) ?>
+    <?= $form->field($model, 'years_of_experience')->dropDownList(
+        [
+            '0' => 'Less than a year',
+            '1' => '1 Year',
+            '2' => '2 Years',
+            '3' => '3 Years',
+            '4' => '4 Years',
+            '5' => '5+ Years'
+        ],
+        ['prompt' => 'Select Years of Experience']
+    ) ?>
 
     <?= $form->field($model, 'availability_schedule')->textInput(['maxlength' => true]) ?>
 

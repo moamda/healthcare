@@ -28,6 +28,12 @@ CrudAsset::register($this);
                 ],
                 [
                     'class' => '\kartik\grid\DataColumn',
+                    'attribute' => 'reference_no',
+                    'contentOptions' => ['style' => 'vertical-align: middle;']
+
+                ],
+                [
+                    'class' => '\kartik\grid\DataColumn',
                     'attribute' => 'appointment_date',
                     'format' => ['date', 'php:F j, Y h:i A'],
                     'contentOptions' => ['style' => 'vertical-align: middle;']

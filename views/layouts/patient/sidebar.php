@@ -39,7 +39,8 @@
                     ['label' => 'PATIENT', 'header' => true, 'visible' => !Yii::$app->user->isGuest],
                     ['label' => 'Find Doctor', 'url' => ['/patient/patient/book'], 'visible' => Yii::$app->user->can('access patient module')],
                     ['label' => 'Appointments', 'url' => ['/patient/patient/appointments'], 'visible' => Yii::$app->user->can('access patient module')],
-                   
+                    ['label' => 'Medical History', 'url' => ['/patient/patient/history'], 'visible' => Yii::$app->user->can('access patient module')],
+
                 ],
             ]);
             ?>

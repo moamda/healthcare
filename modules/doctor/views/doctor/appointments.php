@@ -28,6 +28,11 @@ CrudAsset::register($this);
                 ],
                 [
                     'class' => '\kartik\grid\DataColumn',
+                    'attribute' => 'reference_no',
+                    'contentOptions' => ['style' => 'vertical-align: middle;']
+                ],
+                [
+                    'class' => '\kartik\grid\DataColumn',
                     'attribute' => 'appointment_date',
                     'format' => ['date', 'php:F j, Y h:i A'],
                     'contentOptions' => ['style' => 'vertical-align: middle;']
@@ -83,7 +88,7 @@ CrudAsset::register($this);
                     'class' => 'kartik\grid\ActionColumn',
                     'dropdown' => false,
                     'noWrap' => 'true',
-                    'template' => '{update} {cancel} {approve}',
+                    'template' => '{update} {cancel} {approve} {complete}',
                     'vAlign' => 'middle',
                     'urlCreator' => function ($action, $model, $key, $index) {
                         return Url::to([$action, 'id' => $key]);
@@ -124,6 +129,16 @@ CrudAsset::register($this);
                                     'data-toggle' => 'tooltip',
                                     'data-confirm-title' => Yii::t('yii2-ajaxcrud', 'Approve'),
                                     'data-confirm-message' => Yii::t('yii2-ajaxcrud', 'Approve Confirm')
+                                ]);
+                            }
+                        },
+                        'complete' => function ($url, $model, $key) {
+                            if ($model->status !== 'Cancelled') { 
+                                return Html::a('Complete', $url, [
+                                    'role' => 'modal-remote',
+                                    'title' => Yii::t('yii2-ajaxcrud', 'submit to complete'),
+                                    'data-toggle' => 'tooltip',
+                                    'class' => 'btn bg-gradient-success', 
                                 ]);
                             }
                         },
