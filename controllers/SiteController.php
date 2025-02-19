@@ -98,6 +98,8 @@ class SiteController extends Controller
                 return $this->redirect(['/patient/patient/appointments']);
             } elseif (Yii::$app->user->can('access doctor module')) {
                 return $this->redirect(['/doctor/doctor/appointments']);
+            } elseif (Yii::$app->user->can('access midwife module')) {
+                return $this->redirect(['/midwife/midwife/appointments']);
             } else {
                 return $this->goHome();
             }

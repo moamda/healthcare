@@ -1,12 +1,14 @@
 <?php
 
-namespace app\modules\doctor\controllers;
+namespace app\modules\midwife\controllers;
 
 use Yii;
 use app\modules\admin\models\Doctor;
 use app\modules\patient\models\Appointments;
 use app\modules\patient\models\AppointmentsSearch;
 use app\modules\admin\models\DoctorSearch;
+use app\modules\admin\models\Midwife;
+use app\modules\admin\models\SignupForm;
 use app\modules\patient\models\MedicalHistory;
 use app\modules\patient\models\MedicalHistorySearch;
 use yii\web\Controller;
@@ -14,12 +16,10 @@ use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use \yii\web\Response;
 use yii\helpers\Html;
-use yii\helpers\Json;
-use yii\web\UploadedFile;
 use yii\httpclient\Client;
+use yii\web\UploadedFile;
 
-
-class DoctorController extends Controller
+class MidwifeController extends Controller
 {
 
     public function behaviors()
@@ -67,7 +67,7 @@ class DoctorController extends Controller
         }
 
         $model->status = 'Cancelled';
-        $model->notes = 'Cancelled by doctor.';
+        $model->notes = 'Cancelled by midwife.';
 
         if ($model->save(false)) {
             if ($request->isAjax) {
@@ -80,53 +80,6 @@ class DoctorController extends Controller
             return $this->redirect(['index']);
         }
     }
-
-    public function actionApprove($id)
-    {
-        $request = Yii::$app->request;
-        $model = $this->findModel2($id);
-
-        if ($model === null) {
-            throw new NotFoundHttpException('The requested record does not exist.');
-        }
-
-        $model->status = 'Approved';
-        $model->notes = 'Approved by doctor.';
-
-        if ($model->save(false)) {
-            if ($request->isAjax) {
-                Yii::$app->response->format = Response::FORMAT_JSON;
-                return ['forceClose' => true, 'forceReload' => '#crud-datatable-pjax'];
-            }
-            return $this->redirect(['index']);
-        } else {
-            Yii::$app->session->setFlash('error', 'Unable to cancel the appointment.');
-            return $this->redirect(['index']);
-        }
-    }
-
-    // public function actionEncrypt()
-    // {
-    //     $models = Pdf::find()->all();
-    //     $key = Yii::$app->params['MOHAM']['key'];
-
-    //     try {
-    //         $orderedData = [];
-
-    //         $orderedData[] = array_map(function ($model) {
-    //             return $model->attributes;
-    //         }, $models);
-
-    //         $dataToEncrypt = json_encode($orderedData);
-    //         $encryptedData = Yii::$app->getSecurity()->encryptByKey($dataToEncrypt, $key);
-    //         $base64EncryptedData = base64_encode($encryptedData);
-    //         $hashedData = Yii::$app->getSecurity()->hashData($base64EncryptedData, $key);
-    //         $data = $hashedData;
-    //         return $this->asJson(['data' => $data]);
-    //     } catch (\Exception $e) {
-    //         return $this->asJson(['error' => $e->getMessage()]);
-    //     }
-    // }
 
     public function actionComplete($id)
     {
@@ -227,6 +180,29 @@ class DoctorController extends Controller
         return $this->render('create', ['model' => $model]);
     }
 
+    public function actionApprove($id)
+    {
+        $request = Yii::$app->request;
+        $model = $this->findModel2($id);
+
+        if ($model === null) {
+            throw new NotFoundHttpException('The requested record does not exist.');
+        }
+
+        $model->status = 'Approved';
+        $model->notes = 'Approved by midwife.';
+
+        if ($model->save(false)) {
+            if ($request->isAjax) {
+                Yii::$app->response->format = Response::FORMAT_JSON;
+                return ['forceClose' => true, 'forceReload' => '#crud-datatable-pjax'];
+            }
+            return $this->redirect(['index']);
+        } else {
+            Yii::$app->session->setFlash('error', 'Unable to cancel the appointment.');
+            return $this->redirect(['index']);
+        }
+    }
 
 
     public function actionHistory()
@@ -258,71 +234,69 @@ class DoctorController extends Controller
             ]);
         }
     }
-    public function actionViewHistory($id)
-    {
-        $request = Yii::$app->request;
-        if ($request->isAjax) {
-            Yii::$app->response->format = Response::FORMAT_JSON;
-            return [
-                'title' =>  "Details",
-                'content' => $this->renderAjax('view-history', [
-                    'model' => $this->findModel3($id),
-                ]),
-                'footer' => Html::button(Yii::t('yii2-ajaxcrud', 'Close'), ['class' => 'btn btn-default pull-left', 'data-dismiss' => 'modal'])
-            ];
-        } else {
-            return $this->render('view', [
-                'model' => $this->findModel3($id),
-            ]);
-        }
-    }
 
     public function actionCreate($id)
     {
         $request = Yii::$app->request;
-        $model = new MedicalHistory();
+        $model = new Appointments();
 
         if ($request->isAjax) {
+
             /*
             *   Process for ajax request
             */
             Yii::$app->response->format = Response::FORMAT_JSON;
             if ($request->isGet) {
                 return [
-                    'title' => Yii::t('yii2-ajaxcrud', 'Create New') . " MedicalHistory",
+                    'title' => "Book Appointment",
                     'content' => $this->renderAjax('create', [
                         'model' => $model,
+                        'doctor' => $this->findModel($id),
                     ]),
                     'footer' => Html::button(Yii::t('yii2-ajaxcrud', 'Close'), ['class' => 'btn btn-default pull-left', 'data-dismiss' => 'modal']) .
-                        Html::button(Yii::t('yii2-ajaxcrud', 'Create'), ['class' => 'btn btn-primary', 'type' => 'submit'])
+                        Html::button(Yii::t('yii2-ajaxcrud', 'Submit'), ['class' => 'btn btn-primary', 'type' => 'submit'])
                 ];
-            } else if ($model->load($request->post()) && $model->save()) {
+            } else if ($model->load($request->post())) {
+                date_default_timezone_set('Asia/Manila');
+
+                $model->patient_id = Yii::$app->user->id;
+                $model->doctor_id = $id;
+                $model->created_at = date('Y-m-d H:i:s');
+                $model->status = 'Pending';
+                $model->save();
+
                 return [
                     'forceReload' => '#crud-datatable-pjax',
-                    'title' => Yii::t('yii2-ajaxcrud', 'Create New') . " MedicalHistory",
-                    'content' => '<span class="text-success">' . Yii::t('yii2-ajaxcrud', 'Create') . ' MedicalHistory ' . Yii::t('yii2-ajaxcrud', 'Success') . '</span>',
-                    'footer' =>  Html::button(Yii::t('yii2-ajaxcrud', 'Close'), ['class' => 'btn btn-default pull-left', 'data-dismiss' => 'modal']) .
-                        Html::a(Yii::t('yii2-ajaxcrud', 'Create More'), ['create'], ['class' => 'btn btn-primary', 'role' => 'modal-remote'])
+                    'title' => Yii::t('yii2-ajaxcrud', 'Create New') . " Appointment",
+                    'content' => '<span class="text-success">' . Yii::t('yii2-ajaxcrud', 'Create') . ' Appointments ' . Yii::t('yii2-ajaxcrud', 'Success') . '</span>',
+                    'footer' =>  Html::button(Yii::t('yii2-ajaxcrud', 'Close'), ['class' => 'btn btn-default pull-left', 'data-dismiss' => 'modal']),
                 ];
             } else {
                 return [
-                    'title' => Yii::t('yii2-ajaxcrud', 'Create New') . " MedicalHistory",
+                    'title' => Yii::t('yii2-ajaxcrud', 'Create New') . " Appointment",
                     'content' => $this->renderAjax('create', [
                         'model' => $model,
+
                     ]),
                     'footer' => Html::button(Yii::t('yii2-ajaxcrud', 'Close'), ['class' => 'btn btn-default pull-left', 'data-dismiss' => 'modal']) .
                         Html::button(Yii::t('yii2-ajaxcrud', 'Save'), ['class' => 'btn btn-primary', 'type' => 'submit'])
                 ];
             }
         } else {
-            /*
-            *   Process for non-ajax request
-            */
-            if ($model->load($request->post()) && $model->save()) {
+            if ($model->load($request->post())) {
+                date_default_timezone_set('Asia/Manila');
+
+                $model->patient_id = Yii::$app->user->id;
+                $model->doctor_id = $id;
+                $model->created_at = date('Y-m-d H:i:s');
+                $model->status = 'Pending';
+                $model->save();
+
                 return $this->redirect(['view', 'id' => $model->id]);
             } else {
                 return $this->render('create', [
                     'model' => $model,
+
                 ]);
             }
         }
@@ -373,36 +347,11 @@ class DoctorController extends Controller
         }
     }
 
-    public function actionGetNotifications()
-    {
-        Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
-    
-        $userId = Yii::$app->user->id;
-        $appointments = Appointments::find()
-            ->where(['specialist_id' => $userId, 'status' => 'Pending'])
-            ->orderBy(['appointment_date' => SORT_ASC])
-            ->limit(10)
-            ->all();
-    
-        $notifications = [];
-        foreach ($appointments as $appointment) {
-            $notifications[] = [
-                'message' => "You have an appointment on " . Yii::$app->formatter->asDatetime($appointment->appointment_date, 'php:M d, Y h:i A'),
-                'url' => \yii\helpers\Url::to(['appointments']),
-                'time' => Yii::$app->formatter->asRelativeTime($appointment->appointment_date),
-                'type' => 'appointment', // Add notification type for styling later
-            ];
-        }
-    
-        return [
-            'count' => count($appointments),
-            'notifications' => $notifications,
-        ];
-    }
+
 
     protected function findModel($id)
     {
-        if (($model = Doctor::findOne($id)) !== null) {
+        if (($model = Midwife::findOne($id)) !== null) {
             return $model;
         } else {
             throw new NotFoundHttpException('The requested page does not exist.');
@@ -418,13 +367,33 @@ class DoctorController extends Controller
         }
     }
 
-    protected function findModel3($id)
+    
+
+    public function actionGetNotifications()
     {
-        if (($model = MedicalHistory::findOne($id)) !== null) {
-            return $model;
-        } else {
-            throw new NotFoundHttpException('The requested page does not exist.');
+        Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+
+        $userId = Yii::$app->user->id;
+        $appointments = Appointments::find()
+            ->where(['specialist_id' => $userId, 'status' => 'Pending'])
+            ->orderBy(['appointment_date' => SORT_ASC])
+            ->limit(10)
+            ->all();
+
+        $notifications = [];
+        foreach ($appointments as $appointment) {
+            $notifications[] = [
+                'message' => "You have an appointment on " . Yii::$app->formatter->asDatetime($appointment->appointment_date, 'php:M d, Y h:i A'),
+                'url' => \yii\helpers\Url::to(['appointments']),
+                'time' => Yii::$app->formatter->asRelativeTime($appointment->appointment_date),
+                'type' => 'appointment', // Add notification type for styling later
+            ];
         }
+
+        return [
+            'count' => count($appointments),
+            'notifications' => $notifications,
+        ];
     }
 
     private function readRecord($id)

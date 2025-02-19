@@ -15,9 +15,11 @@ $config = [
         '@bower' => '@vendor/bower-asset',
         '@npm'   => '@vendor/npm-asset',
     ],
+    'timeZone' => 'Asia/Manila',
     'components' => [
         'formatter' => [
-            'nullDisplay' => '', // Set empty string instead of (not set)
+            'nullDisplay' => '',
+            'defaultTimeZone' => 'Asia/Manila',
         ],
         'authManager' => [
             'class' => 'yii\rbac\DbManager',
@@ -105,6 +107,10 @@ $config = [
         ],
         'doctor' => [
             'class' => 'app\modules\doctor\Module',
+            'layout' => '/adminlte',
+        ],
+        'midwife' => [
+            'class' => 'app\modules\midwife\Module',
             'layout' => '/adminlte',
         ],
         'gii' => [

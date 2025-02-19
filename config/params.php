@@ -12,5 +12,13 @@ return [
 
     'mdm.admin.configs' => [
         'defaultUserStatus' => 0, // 0 = inactive, 10 = active
-    ]
+    ],
+
+    'fabric' => [
+        'queryParams1' => [
+            'channelid' => 'mychannel',
+            'chaincodeid' => 'basic',
+            'function' => 'ReadAsset',
+        ]
+    ],
 ];

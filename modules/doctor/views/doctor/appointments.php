@@ -5,7 +5,6 @@ use yii\helpers\Html;
 use yii\bootstrap4\Modal;
 use kartik\grid\GridView;
 use yii2ajaxcrud\ajaxcrud\CrudAsset;
-use yii2ajaxcrud\ajaxcrud\BulkButtonWidget;
 
 $this->title = 'Appointments';
 $this->params['breadcrumbs'][] = $this->title;
@@ -49,11 +48,11 @@ CrudAsset::register($this);
                 ],
                 [
                     'class' => '\kartik\grid\DataColumn',
-                    'attribute' => 'doctor_id',
+                    'attribute' => 'specialist_id',
                     'value' => function ($model) {
                         return $model->doctor ? $model->doctor->fname . ' ' . strtoupper(substr($model->doctor->mname, 0, 1)) . '. ' . $model->doctor->lname : 'No doctor assigned';
                     },
-                    'label' => 'Doctor',
+                    'label' => 'Specialist',
                     'contentOptions' => ['style' => 'vertical-align: middle;']
                 ],
                 [
@@ -95,17 +94,18 @@ CrudAsset::register($this);
                     },
                     'buttons' => [
                         'update' => function ($url, $model, $key) {
-                            if ($model->status !== 'Cancelled') { // Hide if Cancelled
+                            if ($model->status !== 'Cancelled' && $model->status !== 'Completed') {
                                 return Html::a('Update', $url, [
                                     'role' => 'modal-remote',
                                     'title' => Yii::t('yii2-ajaxcrud', 'More info'),
                                     'data-toggle' => 'tooltip',
-                                    'class' => 'btn bg-gradient-warning', // Button style
+                                    'class' => 'btn bg-gradient-warning',
                                 ]);
                             }
                         },
+
                         'cancel' => function ($url, $model, $key) {
-                            if ($model->status !== 'Cancelled') { // Hide if Cancelled
+                            if ($model->status !== 'Cancelled' && $model->status !== 'Completed') {
                                 return Html::a('Cancel', $url, [
                                     'role' => 'modal-remote',
                                     'title' => Yii::t('yii2-ajaxcrud', 'Confirm'),
@@ -118,8 +118,9 @@ CrudAsset::register($this);
                                 ]);
                             }
                         },
+
                         'approve' => function ($url, $model, $key) {
-                            if ($model->status === 'Pending') { // Hide if Cancelled
+                            if ($model->status === 'Pending') {
                                 return Html::a('Approve', $url, [
                                     'role' => 'modal-remote',
                                     'title' => Yii::t('yii2-ajaxcrud', 'Confirm'),
@@ -132,16 +133,18 @@ CrudAsset::register($this);
                                 ]);
                             }
                         },
+
                         'complete' => function ($url, $model, $key) {
-                            if ($model->status !== 'Cancelled') { 
+                            if ($model->status === 'Approved') {
                                 return Html::a('Complete', $url, [
                                     'role' => 'modal-remote',
-                                    'title' => Yii::t('yii2-ajaxcrud', 'submit to complete'),
+                                    'title' => Yii::t('yii2-ajaxcrud', 'Submit to complete'),
                                     'data-toggle' => 'tooltip',
-                                    'class' => 'btn bg-gradient-success', 
+                                    'class' => 'btn bg-gradient-success',
                                 ]);
                             }
                         },
+
                     ],
                     // 'deleteOptions' => [
                     //     'role' => 'modal-remote',

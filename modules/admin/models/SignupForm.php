@@ -84,7 +84,7 @@ class SignupForm extends Model
         $user->generateEmailVerificationToken();
 
         if ($user->save()) {
-            $userType = Yii::$app->request->post('user_type'); 
+            $userType = Yii::$app->request->post('user_type');
 
             $profile = new Profile();
             $profile->user_id = $user->id;
@@ -102,10 +102,12 @@ class SignupForm extends Model
                 if ($userType === 'doctor') {
                     $lastDoctor = Doctor::find()->orderBy(['uuid' => SORT_DESC])->one();
                     $lastPatient = Patient::find()->orderBy(['uuid' => SORT_DESC])->one();
+                    $lastMidwife = Midwife::find()->orderBy(['uuid' => SORT_DESC])->one();
                     $lastDoctorId = $lastDoctor ? (int)substr($lastDoctor->uuid, 0, 4) : 0;
                     $lastPatientId = $lastPatient ? (int)substr($lastPatient->uuid, 0, 4) : 0;
-                    $nextNumber = max($lastDoctorId, $lastPatientId) + 1;
-                    $nextNumber = str_pad($nextNumber, 4, '0', STR_PAD_LEFT); 
+                    $lastMidwifeId = $lastMidwife ? (int)substr($lastMidwife->uuid, 0, 4) : 0;
+                    $nextNumber = max($lastDoctorId, $lastPatientId, $lastMidwifeId) + 1;
+                    $nextNumber = str_pad($nextNumber, 4, '0', STR_PAD_LEFT);
                     $uuid = $nextNumber . date('mdY');
 
 
@@ -130,10 +132,12 @@ class SignupForm extends Model
                 if ($userType === 'patient') {
                     $lastDoctor = Doctor::find()->orderBy(['uuid' => SORT_DESC])->one();
                     $lastPatient = Patient::find()->orderBy(['uuid' => SORT_DESC])->one();
+                    $lastPatient = Midwife::find()->orderBy(['uuid' => SORT_DESC])->one();
                     $lastDoctorId = $lastDoctor ? (int)substr($lastDoctor->uuid, 0, 4) : 0;
                     $lastPatientId = $lastPatient ? (int)substr($lastPatient->uuid, 0, 4) : 0;
-                    $nextNumber = max($lastDoctorId, $lastPatientId) + 1;
-                    $nextNumber = str_pad($nextNumber, 4, '0', STR_PAD_LEFT); 
+                    $lastMidwifeId = $lastMidwife ? (int)substr($lastMidwife->uuid, 0, 4) : 0;
+                    $nextNumber = max($lastDoctorId, $lastPatientId, $lastMidwifeId) + 1;
+                    $nextNumber = str_pad($nextNumber, 4, '0', STR_PAD_LEFT);
                     $uuid = $nextNumber . date('mdY');
 
                     $patient = new Patient();
@@ -150,6 +154,35 @@ class SignupForm extends Model
 
                     if (!$patient->save()) {
                         Yii::$app->session->setFlash('error', 'Failed to save patient details.');
+                        return false;
+                    }
+                }
+
+                if ($userType === 'midwife') {
+                    $lastDoctor = Doctor::find()->orderBy(['uuid' => SORT_DESC])->one();
+                    $lastPatient = Patient::find()->orderBy(['uuid' => SORT_DESC])->one();
+                    $lastMidwife = Midwife::find()->orderBy(['uuid' => SORT_DESC])->one();
+                    $lastDoctorId = $lastDoctor ? (int)substr($lastDoctor->uuid, 0, 4) : 0;
+                    $lastPatientId = $lastPatient ? (int)substr($lastPatient->uuid, 0, 4) : 0;
+                    $lastMidwifeId = $lastMidwife ? (int)substr($lastMidwife->uuid, 0, 4) : 0;
+                    $nextNumber = max($lastDoctorId, $lastPatientId, $lastMidwifeId) + 1;
+                    $nextNumber = str_pad($nextNumber, 4, '0', STR_PAD_LEFT);
+                    $uuid = $nextNumber . date('mdY');
+                    
+                    $midwife = new Midwife();
+                    $midwife->user_id = $user->id;
+                    $midwife->uuid = $uuid;
+                    $midwife->fname = $profile->first_name;
+                    $midwife->lname = $profile->last_name;
+                    $midwife->mname = $profile->middle_name;
+                    $midwife->suffix = $profile->suffix;
+                    $midwife->gender = $profile->gender;
+                    $midwife->address = $profile->address;
+                    $midwife->contact_number = $profile->contact;
+                    $midwife->created_at = date('Y-m-d H:i:s');
+
+                    if (!$midwife->save()) {
+                        Yii::$app->session->setFlash('error', 'Failed to save midwife details.');
                         return false;
                     }
                 }

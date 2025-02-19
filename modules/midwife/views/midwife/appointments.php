@@ -30,7 +30,6 @@ CrudAsset::register($this);
                     'class' => '\kartik\grid\DataColumn',
                     'attribute' => 'reference_no',
                     'contentOptions' => ['style' => 'vertical-align: middle;']
-
                 ],
                 [
                     'class' => '\kartik\grid\DataColumn',
@@ -63,7 +62,6 @@ CrudAsset::register($this);
                     'label' => 'Specialist',
                     'contentOptions' => ['style' => 'vertical-align: middle;']
                 ],
-
                 [
                     'class' => '\kartik\grid\DataColumn',
                     'attribute' => 'reason',
@@ -83,7 +81,6 @@ CrudAsset::register($this);
                             default => 'badge bg-secondary',
                         };
 
-                        // Wrap the status with a span and the appropriate class
                         return "<span class='{$statusClass}'>{$model->status}</span>";
                     },
                     'contentOptions' => ['style' => 'vertical-align: middle;']
@@ -97,7 +94,7 @@ CrudAsset::register($this);
                     'class' => 'kartik\grid\ActionColumn',
                     'dropdown' => false,
                     'noWrap' => 'true',
-                    'template' => '{update} {cancel}',
+                    'template' => '{update} {cancel} {approve} {complete}',
                     'vAlign' => 'middle',
                     'urlCreator' => function ($action, $model, $key, $index) {
                         return Url::to([$action, 'id' => $key]);
@@ -124,6 +121,30 @@ CrudAsset::register($this);
                                     'data-toggle' => 'tooltip',
                                     'data-confirm-title' => Yii::t('yii2-ajaxcrud', 'Cancel'),
                                     'data-confirm-message' => Yii::t('yii2-ajaxcrud', 'Cancel Confirm')
+                                ]);
+                            }
+                        },
+                        'approve' => function ($url, $model, $key) {
+                            if ($model->status === 'Pending') { // Hide if Cancelled
+                                return Html::a('Approve', $url, [
+                                    'role' => 'modal-remote',
+                                    'title' => Yii::t('yii2-ajaxcrud', 'Confirm'),
+                                    'class' => 'btn bg-gradient-primary',
+                                    'data-method' => false,
+                                    'data-request-method' => 'post',
+                                    'data-toggle' => 'tooltip',
+                                    'data-confirm-title' => Yii::t('yii2-ajaxcrud', 'Approve'),
+                                    'data-confirm-message' => Yii::t('yii2-ajaxcrud', 'Approve Confirm')
+                                ]);
+                            }
+                        },
+                        'complete' => function ($url, $model, $key) {
+                            if ($model->status === 'Approved') {
+                                return Html::a('Complete', $url, [
+                                    'role' => 'modal-remote',
+                                    'title' => Yii::t('yii2-ajaxcrud', 'Submit to complete'),
+                                    'data-toggle' => 'tooltip',
+                                    'class' => 'btn bg-gradient-success',
                                 ]);
                             }
                         },

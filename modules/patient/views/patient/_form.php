@@ -12,7 +12,7 @@ use yii\bootstrap4\ActiveForm;
 
 <div class="appointments-form">
 
-	
+
 
 	<?php $form = ActiveForm::begin(); ?>
 
@@ -20,7 +20,8 @@ use yii\bootstrap4\ActiveForm;
 		'options' => ['placeholder' => 'Select time...'],
 		'pluginOptions' => [
 			'autoclose' => true,
-			'format' => 'yyyy-mm-dd hh:ii:ss',
+			'format' => 'yyyy-mm-dd hh:ii:ss P',
+			'showMeridian' => true,
 			'startView' => 1,
 			'minView' => 0,
 			'maxView' => 1,

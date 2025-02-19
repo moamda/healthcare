@@ -3,6 +3,7 @@
 namespace app\modules\patient\models;
 
 use app\modules\admin\models\Doctor;
+use app\modules\admin\models\Midwife;
 use app\modules\admin\models\Patient;
 use Yii;
 
@@ -11,7 +12,7 @@ use Yii;
  *
  * @property int $id
  * @property int|null $patient_id
- * @property int|null $doctor_id
+ * @property int|null $specialist_id
  * @property string|null $appointment_date
  * @property string|null $status
  * @property string|null $reason
@@ -43,7 +44,7 @@ class Appointments extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['patient_id', 'doctor_id'], 'integer'],
+            [['patient_id', 'specialist_id'], 'integer'],
             [['appointment_date'], 'safe'],
             [['reference_no', 'status', 'reason', 'notes', 'created_at', 'updated_at'], 'string', 'max' => 255],
         ];
@@ -57,7 +58,7 @@ class Appointments extends \yii\db\ActiveRecord
         return [
             'id' => 'ID',
             'patient_id' => 'Patient ID',
-            'doctor_id' => 'Doctor ID',
+            'specialist_id' => 'Specialist',
             'reference_no' => 'Reference #',
             'appointment_date' => 'Date',
             'status' => 'Status',
@@ -75,6 +76,12 @@ class Appointments extends \yii\db\ActiveRecord
 
     public function getDoctor()
     {
-        return $this->hasOne(Doctor::class, ['user_id' => 'doctor_id']);
+        return $this->hasOne(Doctor::class, ['user_id' => 'specialist_id']);
     }
+
+    public function getMidwife()
+    {
+        return $this->hasOne(Midwife::class, ['user_id' => 'specialist_id']);
+    }
+
 }

@@ -18,8 +18,8 @@ class MedicalHistorySearch extends MedicalHistory
     public function rules()
     {
         return [
-            [['id', 'patient_id', 'doctor_id'], 'integer'],
-            [['visit_date', 'diagnosis', 'treatment', 'remarks', 'attachments', 'created_at', 'updated_at'], 'safe'],
+            [['id', 'patient_id', 'specialist_id'], 'integer'],
+            [['reference_no', 'visit_date', 'diagnosis', 'treatment', 'remarks', 'attachments', 'created_at', 'updated_at'], 'safe'],
         ];
     }
 
@@ -43,8 +43,16 @@ class MedicalHistorySearch extends MedicalHistory
     {
         $query = MedicalHistory::find();
 
+        $userId = Yii::$app->user->id;
+
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
+        ]);
+
+        $query->andWhere([
+            'or',
+            ['patient_id' => $userId], 
+            ['specialist_id' => $userId]   
         ]);
 
         $this->load($params);
@@ -58,10 +66,11 @@ class MedicalHistorySearch extends MedicalHistory
         $query->andFilterWhere([
             'id' => $this->id,
             'patient_id' => $this->patient_id,
-            'doctor_id' => $this->doctor_id,
+            'specialist_id' => $this->specialist_id,
         ]);
 
         $query->andFilterWhere(['like', 'visit_date', $this->visit_date])
+            ->andFilterWhere(['like', 'reference_no', $this->reference_no])
             ->andFilterWhere(['like', 'diagnosis', $this->diagnosis])
             ->andFilterWhere(['like', 'treatment', $this->treatment])
             ->andFilterWhere(['like', 'remarks', $this->remarks])

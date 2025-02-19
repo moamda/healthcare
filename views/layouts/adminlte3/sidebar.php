@@ -14,7 +14,22 @@
             </div>
             <div class="info">
                 <?php if (!Yii::$app->user->isGuest): ?>
-                    <a href="#" class="d-block"><?= Yii::$app->user->identity->username ?></a>
+                    <a href="#" class="d-block">
+                        <?= Yii::$app->user->identity->username ?>
+                        (<?php
+                            if (Yii::$app->user->can('access admin module')) {
+                                echo 'Admin';
+                            } elseif (Yii::$app->user->can('access midwife module')) {
+                                echo 'Midwife';
+                            } elseif (Yii::$app->user->can('access doctor module')) {
+                                echo 'Doctor';
+                            } elseif (Yii::$app->user->can('access patient module')) {
+                                echo 'Patient';
+                            } else {
+                                echo 'User'; 
+                            }
+                            ?>)
+                    </a>
                 <?php else: ?>
                     <a href="<?= \yii\helpers\Url::to(['/site/login']) ?>" class="d-block"> <i class="fas fa-sign-in-alt"></i> Login</a>
                 <?php endif; ?>
@@ -61,18 +76,16 @@
                     ],
                     ['label' => 'Patient', 'url' => ['/admin/patient/index'], 'visible' => Yii::$app->user->can('access admin module')],
                     ['label' => 'Doctor', 'url' => ['/admin/doctor/index'], 'visible' => Yii::$app->user->can('access admin module')],
+                    ['label' => 'Midwife', 'url' => ['/admin/midwife/index'], 'visible' => Yii::$app->user->can('access admin module')],
                     ['label' => 'Appointments', 'url' => ['/doctor/doctor/appointments'], 'visible' => Yii::$app->user->can('access doctor module')],
-                    ['label' => 'Find Doctor', 'url' => ['/patient/patient/book'], 'visible' => Yii::$app->user->can('access patient module')],
+                    ['label' => 'Appointments', 'url' => ['/midwife/midwife/appointments'], 'visible' => Yii::$app->user->can('access midwife module')],
+                    ['label' => 'Find Doctor', 'url' => ['/patient/patient/book-doctor'], 'visible' => Yii::$app->user->can('access patient module')],
+                    ['label' => 'Find Midwife', 'url' => ['/patient/patient/book-midwife'], 'visible' => Yii::$app->user->can('access patient module')],
                     ['label' => 'Appointments', 'url' => ['/patient/patient/appointments'], 'visible' => Yii::$app->user->can('access patient module')],
-                    ['label' => 'Medical History', 'url' => ['/patient/patient/history'], 'visible' => Yii::$app->user->can('access patient module') || Yii::$app->user->can('access doctor module')],
-                    // [
-                    //     'label' => 'Development',
-                    //     'items' => [
-                    //         ['label' => 'Gii',  'icon' => 'file-code', 'url' => ['/gii'], 'target' => '_blank'],
-                    //         ['label' => 'Debug', 'icon' => 'bug', 'url' => ['/debug'], 'target' => '_blank'],
-                    //     ],
-                    //     'visible' => Yii::$app->user->can('access admin module')
-                    // ],
+                    ['label' => 'Medical History', 'url' => ['/patient/patient/history'], 'visible' => Yii::$app->user->can('access patient module')],
+                    ['label' => 'Medical History', 'url' => ['/doctor/doctor/history'], 'visible' => Yii::$app->user->can('access doctor module')],
+                    ['label' => 'Medical History', 'url' => ['/midwife/midwife/history'], 'visible' => Yii::$app->user->can('access midwife module')],
+
                 ],
             ]);
             ?>

@@ -2,6 +2,8 @@
 
 namespace app\modules\patient\models;
 
+use app\modules\admin\models\Doctor;
+use app\modules\admin\models\Patient;
 use Yii;
 
 /**
@@ -9,7 +11,7 @@ use Yii;
  *
  * @property int $id
  * @property int|null $patient_id
- * @property int|null $doctor_id
+ * @property int|null $specialist_id
  * @property string|null $visit_date
  * @property string|null $diagnosis
  * @property string|null $treatment
@@ -20,6 +22,7 @@ use Yii;
  */
 class MedicalHistory extends \yii\db\ActiveRecord
 {
+   
     /**
      * {@inheritdoc}
      */
@@ -42,8 +45,12 @@ class MedicalHistory extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['patient_id', 'doctor_id'], 'integer'],
-            [['visit_date', 'diagnosis', 'treatment', 'remarks', 'attachments', 'created_at', 'updated_at'], 'string', 'max' => 255],
+            [['patient_id', 'specialist_id'], 'integer'],
+            [['reference_no', 'remarks', 'created_at', 'updated_at', 'attachments'], 'safe'], 
+            [['visit_date', 'diagnosis', 'treatment'], 'required'],
+            [['attachments'], 'string', 'max' => 255], 
+            [['attachments'], 'file', 'skipOnEmpty' => true, 'extensions' => 'pdf, png, jpeg, jpg', 'maxSize' => 2 * 1024 * 1024],
+            ['has_consent', 'boolean'],
         ];
     }
 
@@ -55,14 +62,25 @@ class MedicalHistory extends \yii\db\ActiveRecord
         return [
             'id' => 'ID',
             'patient_id' => 'Patient ID',
-            'doctor_id' => 'Doctor ID',
+            'specialist_id' => 'Specialist',
+            'reference_no' => 'Reference #',
             'visit_date' => 'Visit Date',
             'diagnosis' => 'Diagnosis',
             'treatment' => 'Treatment',
             'remarks' => 'Remarks',
-            'attachments' => 'Attachments',
+            'attachments' => 'Attachment',
             'created_at' => 'Created At',
             'updated_at' => 'Updated At',
         ];
+    }
+
+    public function getPatient()
+    {
+        return $this->hasOne(Patient::class, ['user_id' => 'patient_id']);
+    }
+
+    public function getDoctor()
+    {
+        return $this->hasOne(Doctor::class, ['user_id' => 'specialist_id']);
     }
 }
