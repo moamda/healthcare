@@ -132,10 +132,12 @@ class SignupForm extends Model
                 if ($userType === 'patient') {
                     $lastDoctor = Doctor::find()->orderBy(['uuid' => SORT_DESC])->one();
                     $lastPatient = Patient::find()->orderBy(['uuid' => SORT_DESC])->one();
-                    $lastPatient = Midwife::find()->orderBy(['uuid' => SORT_DESC])->one();
+                    $lastMidwife  = Midwife::find()->orderBy(['uuid' => SORT_DESC])->one();
+
                     $lastDoctorId = $lastDoctor ? (int)substr($lastDoctor->uuid, 0, 4) : 0;
                     $lastPatientId = $lastPatient ? (int)substr($lastPatient->uuid, 0, 4) : 0;
                     $lastMidwifeId = $lastMidwife ? (int)substr($lastMidwife->uuid, 0, 4) : 0;
+                    
                     $nextNumber = max($lastDoctorId, $lastPatientId, $lastMidwifeId) + 1;
                     $nextNumber = str_pad($nextNumber, 4, '0', STR_PAD_LEFT);
                     $uuid = $nextNumber . date('mdY');
