@@ -49,7 +49,9 @@
 
 
                 'items' => [
-                    ['label' => 'DASHBOARD', 'url' => ['/dashboard'], 'icon' => 'tachometer-alt'],
+                    ['label' => 'DASHBOARD', 'url' => ['/patient/patient/dashboard'], 'icon' => 'tachometer-alt', 'visible' => Yii::$app->user->can('access patient module')],
+                    ['label' => 'DASHBOARD', 'url' => ['/midwife/midwife/dashboard'], 'icon' => 'tachometer-alt', 'visible' => Yii::$app->user->can('access midwife module')],
+                    ['label' => 'DASHBOARD', 'url' => ['/doctor/doctor/dashboard'], 'icon' => 'tachometer-alt', 'visible' => Yii::$app->user->can('access doctor module')],
 
 
                     ['label' => '', 'header' => true],

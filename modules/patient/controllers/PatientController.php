@@ -525,16 +525,20 @@ class PatientController extends Controller
         }
     }
 
+    public function actionDashboard()
+    {
+        $userId = Yii::$app->user->id;
+        $appointment = Appointments::find()->where(['patient_id' => $userId])->all();
+
+        // var_dump($appointments); die;
+
+        return $this->render('dashboard', [
+            'appointment' => $appointment,
+        ]);
+    }
 
 
 
-    /**
-     * Finds the Appointments model based on its primary key value.
-     * If the model is not found, a 404 HTTP exception will be thrown.
-     * @param integer $id
-     * @return Appointments the loaded model
-     * @throws NotFoundHttpException if the model cannot be found
-     */
     protected function findModel($id)
     {
         if (($model = Doctor::findOne($id)) !== null) {
