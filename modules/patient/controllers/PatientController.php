@@ -529,11 +529,13 @@ class PatientController extends Controller
     {
         $userId = Yii::$app->user->id;
         $appointment = Appointments::find()->where(['patient_id' => $userId])->all();
+        $history = MedicalHistory::find()->where(['patient_id' => $userId])->all();
 
-        // var_dump($appointments); die;
+        // var_dump($history); die;
 
         return $this->render('dashboard', [
             'appointment' => $appointment,
+            'history' => $history,
         ]);
     }
 
