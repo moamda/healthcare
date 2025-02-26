@@ -3,6 +3,7 @@
 namespace app\modules\patient\models;
 
 use app\modules\admin\models\Doctor;
+use app\modules\admin\models\Midwife;
 use app\modules\admin\models\Patient;
 use Yii;
 
@@ -82,5 +83,9 @@ class MedicalHistory extends \yii\db\ActiveRecord
     public function getDoctor()
     {
         return $this->hasOne(Doctor::class, ['user_id' => 'specialist_id']);
+    }
+    public function getMidwife()
+    {
+        return $this->hasOne(Midwife::class, ['user_id' => 'specialist_id']);
     }
 }

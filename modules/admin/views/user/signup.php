@@ -28,6 +28,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     <div class="form-group">
                         <?= Html::label('User Type', 'user_type') ?>
                         <?= Html::dropDownList('user_type', null, [
+                            'admin' => 'Admin',
                             'doctor' => 'Doctor',
                             'patient' => 'Patient',
                             'midwife' => 'Midwife'

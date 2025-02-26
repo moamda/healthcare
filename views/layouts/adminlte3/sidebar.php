@@ -1,9 +1,103 @@
 <aside class="main-sidebar sidebar-dark-primary elevation-4">
     <!-- Brand Logo -->
-    <a href="index3.html" class="brand-link">
-        <img src="<?= $assetDir ?>/img/AdminLTELogo.png" alt="AdminLTE Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
+    <!-- <a href="index3.html" class="brand-link">
+        <img src="<= $assetDir ?>/img/AdminLTELogo.png" alt="AdminLTE Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
         <span class="brand-text font-weight-light">HEALTHCARE</span>
+    </a> -->
+    <a class="brand-link d-flex align-items-center">
+        <span class="brand-logo position-relative d-inline-block" style="width: 42px; height: 42px;">
+            <!-- Sky Blue Glowing Heart -->
+            <i class="fas fa-heart heartbeat-icon"></i>
+
+            <!-- Animated Medical Cross -->
+            <i class="fas fa-plus medical-cross"></i>
+        </span>
+
+        <span class="brand-text font-weight-bold text-uppercase ml-2"
+            style="letter-spacing: 0.5px;">
+            BARANGAY IBABA
+        </span>
     </a>
+
+    <style>
+        /* Sky Blue Heart with Glow & Pulse */
+        .heartbeat-icon {
+            font-size: 42px;
+            color: #007bff;
+            /* Solid blue color */
+            filter: drop-shadow(0 0 8px rgba(0, 123, 255, 0.8));
+            /* Strong blue glow */
+            animation: heartbeat 1.5s infinite ease-in-out;
+            will-change: transform;
+        }
+
+
+
+        /* Medical Cross: Glowing + Soft Rotation */
+        .medical-cross {
+            font-size: 16px;
+            color: hsl(211, 100.00%, 50.00%);
+            background: white;
+            border-radius: 50%;
+            padding: 2px;
+            position: absolute;
+            bottom: 2px;
+            right: 2px;
+            filter: drop-shadow(0 0 4px rgba(0, 123, 255, 0.8));
+            animation: cross-glow 1.5s infinite, rotate-cross 3s infinite ease-in-out;
+            will-change: filter, transform;
+        }
+
+        /* Heartbeat Animation */
+        @keyframes heartbeat {
+
+            0%,
+            100% {
+                transform: scale(1);
+            }
+
+            25% {
+                transform: scale(1.1);
+            }
+
+            50% {
+                transform: scale(1);
+            }
+
+            75% {
+                transform: scale(1.05);
+            }
+        }
+
+        /* Cross Glow Animation */
+        @keyframes cross-glow {
+
+            0%,
+            100% {
+                filter: drop-shadow(0 0 4px rgba(0, 123, 255, 0.8));
+            }
+
+            50% {
+                filter: drop-shadow(0 0 8px rgba(0, 123, 255, 1));
+            }
+        }
+
+        /* Cross Soft Rotation */
+        @keyframes rotate-cross {
+
+            0%,
+            100% {
+                transform: rotate(0deg);
+            }
+
+            50% {
+                transform: rotate(10deg);
+            }
+        }
+    </style>
+
+
+
 
     <!-- Sidebar -->
     <div class="sidebar ">
@@ -26,7 +120,7 @@
                             } elseif (Yii::$app->user->can('access patient module')) {
                                 echo 'Patient';
                             } else {
-                                echo 'User'; 
+                                echo 'User';
                             }
                             ?>)
                     </a>
@@ -50,8 +144,7 @@
 
                 'items' => [
                     ['label' => 'DASHBOARD', 'url' => ['/patient/patient/dashboard'], 'icon' => 'tachometer-alt', 'visible' => Yii::$app->user->can('access patient module')],
-                    ['label' => 'DASHBOARD', 'url' => ['/midwife/midwife/dashboard'], 'icon' => 'tachometer-alt', 'visible' => Yii::$app->user->can('access midwife module')],
-                    ['label' => 'DASHBOARD', 'url' => ['/doctor/doctor/dashboard'], 'icon' => 'tachometer-alt', 'visible' => Yii::$app->user->can('access doctor module')],
+                    ['label' => 'DASHBOARD', 'url' => ['/admin/dashboard/v1'], 'icon' => 'tachometer-alt', 'visible' => Yii::$app->user->can('access admin module')],
 
 
                     ['label' => '', 'header' => true],

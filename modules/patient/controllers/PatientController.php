@@ -7,10 +7,12 @@ use app\modules\admin\models\Doctor;
 use app\modules\admin\models\DoctorSearch;
 use app\modules\admin\models\Midwife;
 use app\modules\admin\models\MidwifeSearch;
+use app\modules\admin\models\TnxLogs;
 use app\modules\patient\models\Appointments;
 use app\modules\patient\models\AppointmentsSearch;
 use app\modules\patient\models\MedicalHistory;
 use app\modules\patient\models\MedicalHistorySearch;
+use yii\filters\AccessControl;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -28,15 +30,29 @@ class PatientController extends Controller
      */
     public function behaviors()
     {
-        return [
-            'verbs' => [
-                'class' => VerbFilter::className(),
-                'actions' => [
-                    'delete' => ['post'],
-                    'bulkdelete' => ['post'],
+        return array_merge(
+            parent::behaviors(),
+            [
+                'access' => [
+                    'class' => AccessControl::class,
+                    'rules' => [
+                        [
+                            'allow' => true,
+                            'roles' => ['patient', 'admin'],
+                        ],
+                        [
+                            'allow' => false,
+                        ],
+                    ],
                 ],
-            ],
-        ];
+                'verbs' => [
+                    'class' => VerbFilter::class,
+                    'actions' => [
+                        'delete' => ['POST'],
+                    ],
+                ],
+            ]
+        );
     }
 
     /**
@@ -89,6 +105,7 @@ class PatientController extends Controller
         $model->notes = 'Cancelled by patient.';
 
         if ($model->save(false)) {
+            $this->logUserAction(Yii::$app->user->id, 'Cancel', 'Appointment cancelled with ref# ' . $model->reference_no . '.');
             if ($request->isAjax) {
                 Yii::$app->response->format = Response::FORMAT_JSON;
                 return ['forceClose' => true, 'forceReload' => '#crud-datatable-pjax'];
@@ -111,6 +128,7 @@ class PatientController extends Controller
         $request = Yii::$app->request;
         if ($request->isAjax) {
             Yii::$app->response->format = Response::FORMAT_JSON;
+            $this->logUserAction(Yii::$app->user->id, 'View', 'Viewed Doctor profile with id# ' . $id . '.');
             return [
                 'title' =>  "Details",
                 'content' => $this->renderAjax('view', [
@@ -130,6 +148,8 @@ class PatientController extends Controller
         $request = Yii::$app->request;
         if ($request->isAjax) {
             Yii::$app->response->format = Response::FORMAT_JSON;
+            $this->logUserAction(Yii::$app->user->id, 'View', 'Viewed Appointment with id# ' . $id . '.');
+
             return [
                 'title' =>  "Details",
                 'content' => $this->renderAjax('view-appointments', [
@@ -143,11 +163,13 @@ class PatientController extends Controller
             ]);
         }
     }
+
     public function actionViewMidwife($id)
-    {
+    {   
         $request = Yii::$app->request;
         if ($request->isAjax) {
             Yii::$app->response->format = Response::FORMAT_JSON;
+            $this->logUserAction(Yii::$app->user->id, 'View', 'Viewed Midwife with id# ' . $id . '.');
             return [
                 'title' =>  "Details",
                 'content' => $this->renderAjax('view', [
@@ -226,6 +248,7 @@ class PatientController extends Controller
                 $model->created_at = date('Y-m-d H:i:s');
                 $model->status = 'Pending';
                 $model->save();
+                $this->logUserAction(Yii::$app->user->id, 'Create', 'New Appointment created with ref# ' . $model->reference_no . '.');
                 // return $this->redirect(['appointments']);
                 return [
                     'forceReload' => '#crud-datatable-pjax',
@@ -254,6 +277,7 @@ class PatientController extends Controller
                 $model->created_at = date('Y-m-d H:i:s');
                 $model->status = 'Pending';
                 $model->save();
+                $this->logUserAction(Yii::$app->user->id, 'Create', 'New Appointment created with ref# ' . $model->reference_no . '.');
 
                 return $this->redirect(['view', 'id' => $model->id]);
             } else {
@@ -303,6 +327,7 @@ class PatientController extends Controller
                 $model->created_at = date('Y-m-d H:i:s');
                 $model->status = 'Pending';
                 $model->save();
+                $this->logUserAction(Yii::$app->user->id, 'Created', 'Appointment created with ref# ' . $model->reference_no);
 
                 return [
                     'forceReload' => '#crud-datatable-pjax',
@@ -331,6 +356,7 @@ class PatientController extends Controller
                 $model->created_at = date('Y-m-d H:i:s');
                 $model->status = 'Pending';
                 $model->save();
+                $this->logUserAction(Yii::$app->user->id, 'Update', 'Updated an appointment with ref# ' . $model->reference_no . '.');
 
                 return $this->redirect(['view', 'id' => $model->id]);
             } else {
@@ -438,6 +464,7 @@ class PatientController extends Controller
                 date_default_timezone_set('Asia/Manila');
                 $model->updated_at = date('Y-m-d H:i:s');
                 $model->save();
+                $this->logUserAction(Yii::$app->user->id, 'Update', 'Updated an appointment with ref# ' . $model->reference_no . '.');
 
                 return [
                     'forceReload' => '#crud-datatable-pjax',
@@ -490,6 +517,7 @@ class PatientController extends Controller
         $model->updated_at = date('Y-m-d H:i:s');
 
         if ($model->save(false)) {
+            $this->logUserAction(Yii::$app->user->id, 'Consent', 'Consent revoked with ref# ' . $model->reference_no . '.');
             if ($request->isAjax) {
                 Yii::$app->response->format = Response::FORMAT_JSON;
                 return ['forceClose' => true, 'forceReload' => '#crud-datatable-pjax'];
@@ -514,6 +542,7 @@ class PatientController extends Controller
         $model->updated_at = date('Y-m-d H:i:s');
 
         if ($model->save(false)) {
+            $this->logUserAction(Yii::$app->user->id, 'Consent', 'Consent granted with ref# ' . $model->reference_no . '.');
             if ($request->isAjax) {
                 Yii::$app->response->format = Response::FORMAT_JSON;
                 return ['forceClose' => true, 'forceReload' => '#crud-datatable-pjax'];
@@ -575,5 +604,17 @@ class PatientController extends Controller
         } else {
             throw new NotFoundHttpException('The requested page does not exist.');
         }
+    }
+
+    private function logUserAction($userId, $action, $details)
+    {
+        $log = new TnxLogs();
+        $log->user_id = $userId;
+        $log->action = $action;
+        $log->details = $details;
+        $log->ip_address = Yii::$app->request->userIP;
+        $log->user_agent = Yii::$app->request->userAgent;
+        $log->created_at = date('Y-m-d H:i:s');
+        $log->save(false);
     }
 }

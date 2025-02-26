@@ -11,6 +11,7 @@ use app\models\LoginForm;
 use app\models\ContactForm;
 use app\models\PasswordResetRequestForm;
 use app\models\SignupForm;
+use app\modules\admin\models\TnxLogs;
 
 class SiteController extends Controller
 {
@@ -117,7 +118,8 @@ class SiteController extends Controller
      * @return Response
      */
     public function actionLogout()
-    {
+    {   
+        $this->logUserAction(Yii::$app->user->id, 'Logout', 'User logged out.');
         Yii::$app->user->logout();
 
         return $this->goHome();
@@ -169,5 +171,17 @@ class SiteController extends Controller
         return $this->render('requestPasswordResetToken', [
             'model' => $model,
         ]);
+    }
+
+    private function logUserAction($userId, $action, $details)
+    {
+        $log = new TnxLogs();
+        $log->user_id = $userId;
+        $log->action = $action;
+        $log->details = $details;
+        $log->ip_address = Yii::$app->request->userIP;
+        $log->user_agent = Yii::$app->request->userAgent;
+        $log->created_at = date('Y-m-d H:i:s');
+        $log->save(false);
     }
 }

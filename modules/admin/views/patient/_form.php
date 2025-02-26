@@ -1,6 +1,7 @@
 <?php
 
 use kartik\date\DatePicker;
+use kartik\file\FileInput;
 use yii\helpers\Html;
 use yii\bootstrap4\ActiveForm;
 
@@ -42,7 +43,7 @@ use yii\bootstrap4\ActiveForm;
         'options' => ['placeholder' => 'Select date'],
         'pluginOptions' => [
             'autoclose' => true,
-            'format' => 'yyyy-mm-dd', 
+            'format' => 'yyyy-mm-dd',
             'todayHighlight' => true,
         ],
     ]); ?>

@@ -10,12 +10,50 @@ use yii\bootstrap4\Html;
 $this->title = 'Login';
 ?>
 
+<style>
+    .fancy-logo {
+        font-size: 26px;
+        font-weight: 300;
+        color: #007bff;
+        text-transform: uppercase;
+        letter-spacing: 1.5px;
+        transition: all 0.3s ease-in-out;
+        display: inline-block;
+        background: linear-gradient(90deg, #007bff, #00d4ff);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+    }
+
+    .bold-text {
+        font-size: 32px;
+        font-weight: 900;
+        /* Extra bold */
+        color: #0056b3;
+    }
+
+    .light-text {
+        font-size: 25px;
+        font-weight: 300;
+        color: #0099ff;
+    }
+
+    .fancy-logo:hover {
+        transform: scale(1.05);
+    }
+</style>
+
 <div class="container">
     <div class="row justify-content-center">
-        <div class="col-md-4">
+        <div class="col-md-5">
             <div class="login-logo text-center mb-4">
-                <a href="#"><b>Healthcare</b></a>
+                <a href="#" class="fancy-logo">
+                    <span class="light-text">BARANGAY</span>
+                    <span class="bold-text">IBABA</span>
+                    <span class="light-text">HEALTH CENTER</span>
+                </a>
             </div>
+
+
             <div class="card card-primary card-outline">
                 <div class="card-body">
                     <p class="login-box-msg">Sign in to start your session</p>

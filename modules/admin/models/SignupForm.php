@@ -99,6 +99,13 @@ class SignupForm extends Model
             if ($profile->save()) {
                 date_default_timezone_set('Asia/Manila');
 
+                if ($userType === 'admin') {
+                    if (!$user->save()) {
+                        Yii::$app->session->setFlash('error', 'Failed to save admin details.');
+                        return false;
+                    }
+                }
+
                 if ($userType === 'doctor') {
                     $lastDoctor = Doctor::find()->orderBy(['uuid' => SORT_DESC])->one();
                     $lastPatient = Patient::find()->orderBy(['uuid' => SORT_DESC])->one();

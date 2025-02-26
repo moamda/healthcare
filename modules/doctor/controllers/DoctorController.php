@@ -7,8 +7,10 @@ use app\modules\admin\models\Doctor;
 use app\modules\patient\models\Appointments;
 use app\modules\patient\models\AppointmentsSearch;
 use app\modules\admin\models\DoctorSearch;
+use app\modules\admin\models\TnxLogs;
 use app\modules\patient\models\MedicalHistory;
 use app\modules\patient\models\MedicalHistorySearch;
+use yii\filters\AccessControl;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -24,15 +26,29 @@ class DoctorController extends Controller
 
     public function behaviors()
     {
-        return [
-            'verbs' => [
-                'class' => VerbFilter::className(),
-                'actions' => [
-                    'delete' => ['post'],
-                    'bulkdelete' => ['post'],
+        return array_merge(
+            parent::behaviors(),
+            [
+                'access' => [
+                    'class' => AccessControl::class,
+                    'rules' => [
+                        [
+                            'allow' => true,
+                            'roles' => ['doctor', 'admin'],
+                        ],
+                        [
+                            'allow' => false,
+                        ],
+                    ],
                 ],
-            ],
-        ];
+                'verbs' => [
+                    'class' => VerbFilter::class,
+                    'actions' => [
+                        'delete' => ['POST'],
+                    ],
+                ],
+            ]
+        );
     }
 
     public function actionBook()
@@ -70,6 +86,8 @@ class DoctorController extends Controller
         $model->notes = 'Cancelled by doctor.';
 
         if ($model->save(false)) {
+            $this->logUserAction(Yii::$app->user->id, 'Cancel', 'Appointment Cancelled with ref# ' . $model->reference_no);
+
             if ($request->isAjax) {
                 Yii::$app->response->format = Response::FORMAT_JSON;
                 return ['forceClose' => true, 'forceReload' => '#crud-datatable-pjax'];
@@ -94,6 +112,7 @@ class DoctorController extends Controller
         $model->notes = 'Approved by doctor.';
 
         if ($model->save(false)) {
+            $this->logUserAction(Yii::$app->user->id, 'Approve', 'Appointment Approved with ref# ' . $model->reference_no);
             if ($request->isAjax) {
                 Yii::$app->response->format = Response::FORMAT_JSON;
                 return ['forceClose' => true, 'forceReload' => '#crud-datatable-pjax'];
@@ -183,6 +202,8 @@ class DoctorController extends Controller
                             $modelApt->status = "Completed";
                             $modelApt->notes = 'completed consultation';
                             $modelApt->save(false);
+                            $this->logUserAction(Yii::$app->user->id, 'Complete', 'Appointment Completed with ref# ' . $model->reference_no);
+
 
                             // return [
                             //     'forceClose' => true,
@@ -260,9 +281,11 @@ class DoctorController extends Controller
     }
     public function actionViewHistory($id)
     {
+        $model = $this->findModel3($id);
         $request = Yii::$app->request;
         if ($request->isAjax) {
             Yii::$app->response->format = Response::FORMAT_JSON;
+            $this->logUserAction(Yii::$app->user->id, 'Viewed', 'Medical record viewed with ref# ' . $model->reference_no);
             return [
                 'title' =>  "Details",
                 'content' => $this->renderAjax('view-history', [
@@ -345,7 +368,11 @@ class DoctorController extends Controller
                     'footer' => Html::button(Yii::t('yii2-ajaxcrud', 'Close'), ['class' => 'btn btn-default pull-left', 'data-dismiss' => 'modal']) .
                         Html::button(Yii::t('yii2-ajaxcrud', 'Submit'), ['class' => 'btn btn-primary', 'type' => 'submit'])
                 ];
-            } else if ($model->load($request->post()) && $model->save()) {
+            } else if ($model->load($request->post())) {
+
+                $model->save();
+                $this->logUserAction(Yii::$app->user->id, 'Update', 'Appointment Updated with ref# ' . $model->reference_no);
+
                 return [
                     'forceReload' => '#crud-datatable-pjax',
                     'title' => Yii::t('yii2-ajaxcrud', 'Update') . " Appointment",
@@ -376,14 +403,14 @@ class DoctorController extends Controller
     public function actionGetNotifications()
     {
         Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
-    
+
         $userId = Yii::$app->user->id;
         $appointments = Appointments::find()
             ->where(['specialist_id' => $userId, 'status' => 'Pending'])
             ->orderBy(['appointment_date' => SORT_ASC])
             ->limit(10)
             ->all();
-    
+
         $notifications = [];
         foreach ($appointments as $appointment) {
             $notifications[] = [
@@ -393,7 +420,7 @@ class DoctorController extends Controller
                 'type' => 'appointment', // Add notification type for styling later
             ];
         }
-    
+
         return [
             'count' => count($appointments),
             'notifications' => $notifications,
@@ -507,5 +534,17 @@ class DoctorController extends Controller
         } else {
             echo 'HTTP Client Exception while communicating with FABRIC API';
         }
+    }
+
+    private function logUserAction($userId, $action, $details)
+    {
+        $log = new TnxLogs();
+        $log->user_id = $userId;
+        $log->action = $action;
+        $log->details = $details;
+        $log->ip_address = Yii::$app->request->userIP;
+        $log->user_agent = Yii::$app->request->userAgent;
+        $log->created_at = date('Y-m-d H:i:s');
+        $log->save(false);
     }
 }

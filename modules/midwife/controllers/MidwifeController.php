@@ -9,6 +9,7 @@ use app\modules\patient\models\AppointmentsSearch;
 use app\modules\admin\models\DoctorSearch;
 use app\modules\admin\models\Midwife;
 use app\modules\admin\models\SignupForm;
+use app\modules\admin\models\TnxLogs;
 use app\modules\patient\models\MedicalHistory;
 use app\modules\patient\models\MedicalHistorySearch;
 use yii\web\Controller;
@@ -70,6 +71,7 @@ class MidwifeController extends Controller
         $model->notes = 'Cancelled by midwife.';
 
         if ($model->save(false)) {
+            $this->logUserAction(Yii::$app->user->id, 'Cancel', 'Appointment Cancelled with ref# ' . $model->reference_no);
             if ($request->isAjax) {
                 Yii::$app->response->format = Response::FORMAT_JSON;
                 return ['forceClose' => true, 'forceReload' => '#crud-datatable-pjax'];
@@ -136,6 +138,8 @@ class MidwifeController extends Controller
                             $modelApt->status = "Completed";
                             $modelApt->notes = 'completed consultation';
                             $modelApt->save(false);
+                            $this->logUserAction(Yii::$app->user->id, 'Complete', 'Appointment Completed with ref# ' . $model->reference_no);
+
 
                             // return [
                             //     'forceClose' => true,
@@ -193,6 +197,7 @@ class MidwifeController extends Controller
         $model->notes = 'Approved by midwife.';
 
         if ($model->save(false)) {
+            $this->logUserAction(Yii::$app->user->id, 'Approve', 'Appointment Approved with ref# ' . $model->reference_no);
             if ($request->isAjax) {
                 Yii::$app->response->format = Response::FORMAT_JSON;
                 return ['forceClose' => true, 'forceReload' => '#crud-datatable-pjax'];
@@ -319,7 +324,10 @@ class MidwifeController extends Controller
                     'footer' => Html::button(Yii::t('yii2-ajaxcrud', 'Close'), ['class' => 'btn btn-default pull-left', 'data-dismiss' => 'modal']) .
                         Html::button(Yii::t('yii2-ajaxcrud', 'Submit'), ['class' => 'btn btn-primary', 'type' => 'submit'])
                 ];
-            } else if ($model->load($request->post()) && $model->save()) {
+            } else if ($model->load($request->post())) {
+                $model->save();
+                $this->logUserAction(Yii::$app->user->id, 'Update', 'Appointment Updated with ref# ' . $model->reference_no);
+
                 return [
                     'forceReload' => '#crud-datatable-pjax',
                     'title' => Yii::t('yii2-ajaxcrud', 'Update') . " Appointment",
@@ -367,7 +375,7 @@ class MidwifeController extends Controller
         }
     }
 
-    
+
 
     public function actionGetNotifications()
     {
@@ -476,5 +484,17 @@ class MidwifeController extends Controller
         } else {
             echo 'HTTP Client Exception while communicating with FABRIC API';
         }
+    }
+
+    private function logUserAction($userId, $action, $details)
+    {
+        $log = new TnxLogs();
+        $log->user_id = $userId;
+        $log->action = $action;
+        $log->details = $details;
+        $log->ip_address = Yii::$app->request->userIP;
+        $log->user_agent = Yii::$app->request->userAgent;
+        $log->created_at = date('Y-m-d H:i:s');
+        $log->save(false);
     }
 }
