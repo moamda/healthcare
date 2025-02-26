@@ -91,6 +91,7 @@ class SiteController extends Controller
 
         $model = new LoginForm();
         if ($model->load(Yii::$app->request->post()) && $model->login()) {
+            $this->logUserAction(Yii::$app->user->id, 'Login', 'User logged in.');
             if (Yii::$app->user->can('access admin module')) {
                 return $this->redirect(['/admin/dashboard/v1']);
             } elseif (Yii::$app->user->can('access admin module')) {
