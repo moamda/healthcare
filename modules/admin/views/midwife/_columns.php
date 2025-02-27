@@ -83,7 +83,7 @@ return [
         'class' => 'kartik\grid\ActionColumn',
         'dropdown' => false,
         'noWrap' => 'true',
-        'template' => '{view} {update} {delete}',
+        'template' => '{view} {update}',
         'vAlign' => 'middle',
         'urlCreator' => function ($action, $model, $key, $index) {
             return Url::to([$action, 'id' => $key]);
@@ -102,18 +102,18 @@ return [
             'class' => 'btn btn bg-gradient-primary',
             'label' => 'Update'
         ],
-        'deleteOptions' => [
-            'role' => 'modal-remote',
-            'title' => Yii::t('yii2-ajaxcrud', 'Delete'),
-            'class' => 'btn btn bg-gradient-danger',
-            'data-confirm' => false,
-            'data-method' => false, // for overide yii data api
-            'data-request-method' => 'post',
-            'data-toggle' => 'tooltip',
-            'data-confirm-title' => Yii::t('yii2-ajaxcrud', 'Delete'),
-            'data-confirm-message' => Yii::t('yii2-ajaxcrud', 'Delete Confirm'),
-            'label' => 'Delete'
-        ],
+        // 'deleteOptions' => [
+        //     'role' => 'modal-remote',
+        //     'title' => Yii::t('yii2-ajaxcrud', 'Delete'),
+        //     'class' => 'btn btn bg-gradient-danger',
+        //     'data-confirm' => false,
+        //     'data-method' => false, // for overide yii data api
+        //     'data-request-method' => 'post',
+        //     'data-toggle' => 'tooltip',
+        //     'data-confirm-title' => Yii::t('yii2-ajaxcrud', 'Delete'),
+        //     'data-confirm-message' => Yii::t('yii2-ajaxcrud', 'Delete Confirm'),
+        //     'label' => 'Delete'
+        // ],
     ],
 
 ];
