@@ -45,6 +45,7 @@ class Appointments extends \yii\db\ActiveRecord
     {
         return [
             [['patient_id', 'specialist_id'], 'integer'],
+            [['appointment_date'], 'required'],
             [['appointment_date'], 'safe'],
             [['reference_no', 'status', 'reason', 'notes', 'created_at', 'updated_at'], 'string', 'max' => 255],
         ];
@@ -83,5 +84,4 @@ class Appointments extends \yii\db\ActiveRecord
     {
         return $this->hasOne(Midwife::class, ['user_id' => 'specialist_id']);
     }
-
 }

@@ -191,7 +191,7 @@ class DoctorController extends Controller
                 $model->specialist_id = $modelApt->specialist_id;
                 $model->reference_no = $modelApt->reference_no;
                 $model->created_at = date('Y-m-d H:i:s');
-                $model->has_consent = 1;
+                $model->has_consent = 0;
 
                 try {
                     $existingRecord = $this->readRecord($model->reference_no);

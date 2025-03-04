@@ -165,7 +165,7 @@ class PatientController extends Controller
     }
 
     public function actionViewMidwife($id)
-    {   
+    {
         $request = Yii::$app->request;
         if ($request->isAjax) {
             Yii::$app->response->format = Response::FORMAT_JSON;
@@ -218,9 +218,6 @@ class PatientController extends Controller
 
         if ($request->isAjax) {
 
-            /*
-            *   Process for ajax request
-            */
             Yii::$app->response->format = Response::FORMAT_JSON;
             if ($request->isGet) {
                 return [
@@ -236,32 +233,54 @@ class PatientController extends Controller
                 $doctor = Doctor::findOne($id);
                 date_default_timezone_set('Asia/Manila');
 
+                $appointmentDate = date('Y-m-d', strtotime($model->appointment_date));
+
+                // Check if any existing appointment on the same date has a status that is NOT "Completed" or "Cancelled"
+                $hasActiveAppointment = Appointments::find()
+                    ->where([
+                        'specialist_id' => $doctor->user_id,
+                        'appointment_date' => $appointmentDate
+                    ])
+                    ->andWhere(['NOT IN', 'status', ['Completed', 'Cancelled']]) // Block only active bookings
+                    ->exists();
+
+                // If an active appointment exists, prevent booking
+                if ($hasActiveAppointment) {
+                    return [
+                        'title' => "Book Appointment",
+                        'content' => '<span class="text-danger">This doctor already has an ongoing appointment on this date. Please select another date.</span>',
+                        'footer' => Html::button(Yii::t('yii2-ajaxcrud', 'Close'), ['class' => 'btn btn-default pull-left', 'data-dismiss' => 'modal']),
+                    ];
+                }
+
                 do {
                     $refNo = sprintf('%06d', mt_rand(0, 999999));
                 } while (Appointments::find()->where(['reference_no' => $refNo])->exists());
 
-
-
                 $model->reference_no = Yii::$app->user->id . $refNo . $doctor->user_id;
                 $model->patient_id = Yii::$app->user->id;
                 $model->specialist_id = $doctor->user_id;
+                $model->appointment_date = $appointmentDate;
                 $model->created_at = date('Y-m-d H:i:s');
                 $model->status = 'Pending';
-                $model->save();
+
+                if ($model->validate()) {
+                    $model->save();
+                }
+
                 $this->logUserAction(Yii::$app->user->id, 'Create', 'New Appointment created with ref# ' . $model->reference_no . '.');
-                // return $this->redirect(['appointments']);
+
                 return [
                     'forceReload' => '#crud-datatable-pjax',
                     'title' => Yii::t('yii2-ajaxcrud', 'Create New') . " Appointment",
                     'content' => '<span class="text-success">' . Yii::t('yii2-ajaxcrud', 'Create') . ' Appointments ' . Yii::t('yii2-ajaxcrud', 'Success') . '</span>',
-                    'footer' =>  Html::button(Yii::t('yii2-ajaxcrud', 'Close'), ['class' => 'btn btn-default pull-left', 'data-dismiss' => 'modal']),
+                    'footer' => Html::button(Yii::t('yii2-ajaxcrud', 'Close'), ['class' => 'btn btn-default pull-left', 'data-dismiss' => 'modal']),
                 ];
             } else {
                 return [
                     'title' => Yii::t('yii2-ajaxcrud', 'Create New') . " Appointment",
                     'content' => $this->renderAjax('create', [
                         'model' => $model,
-
                     ]),
                     'footer' => Html::button(Yii::t('yii2-ajaxcrud', 'Close'), ['class' => 'btn btn-default pull-left', 'data-dismiss' => 'modal']) .
                         Html::button(Yii::t('yii2-ajaxcrud', 'Save'), ['class' => 'btn btn-primary', 'type' => 'submit'])
@@ -272,22 +291,50 @@ class PatientController extends Controller
                 $doctor = Doctor::findOne($id);
                 date_default_timezone_set('Asia/Manila');
 
+                $appointmentDate = date('Y-m-d', strtotime($model->appointment_date));
+
+                $hasActiveAppointment = Appointments::find()
+                    ->where([
+                        'specialist_id' => $doctor->user_id,
+                        'appointment_date' => $appointmentDate
+                    ])
+                    ->andWhere(['NOT IN', 'status', ['Completed', 'Cancelled']])
+                    ->exists();
+
+                if ($hasActiveAppointment) {
+                    return [
+                        'title' => "Book Appointment",
+                        'content' => '<span class="text-danger">This doctor already has an ongoing appointment on this date. Please select another date.</span>',
+                        'footer' => Html::button(Yii::t('yii2-ajaxcrud', 'Close'), ['class' => 'btn btn-default pull-left', 'data-dismiss' => 'modal']),
+                    ];
+                }
+
+                do {
+                    $refNo = sprintf('%06d', mt_rand(0, 999999));
+                } while (Appointments::find()->where(['reference_no' => $refNo])->exists());
+
+                $model->reference_no = Yii::$app->user->id . $refNo . $doctor->user_id;
                 $model->patient_id = Yii::$app->user->id;
                 $model->specialist_id = $doctor->user_id;
+                $model->appointment_date = $appointmentDate;
                 $model->created_at = date('Y-m-d H:i:s');
                 $model->status = 'Pending';
-                $model->save();
+
+                if ($model->validate()) {
+                    $model->save();
+                }
+
                 $this->logUserAction(Yii::$app->user->id, 'Create', 'New Appointment created with ref# ' . $model->reference_no . '.');
 
                 return $this->redirect(['view', 'id' => $model->id]);
             } else {
                 return $this->render('create', [
                     'model' => $model,
-
                 ]);
             }
         }
     }
+
 
     public function actionCreatemidwife($id)
     {
@@ -295,10 +342,6 @@ class PatientController extends Controller
         $model = new Appointments();
 
         if ($request->isAjax) {
-
-            /*
-            *   Process for ajax request
-            */
             Yii::$app->response->format = Response::FORMAT_JSON;
             if ($request->isGet) {
                 return [
@@ -311,22 +354,43 @@ class PatientController extends Controller
                         Html::button(Yii::t('yii2-ajaxcrud', 'Submit'), ['class' => 'btn btn-primary', 'type' => 'submit'])
                 ];
             } else if ($model->load($request->post())) {
-                $doctor = Midwife::findOne($id);
+                $midwife = Midwife::findOne($id);
                 date_default_timezone_set('Asia/Manila');
 
+                $appointmentDate = date('Y-m-d', strtotime($model->appointment_date));
+
+                $appointmentDate = date('Y-m-d', strtotime($model->appointment_date));
+
+                $hasActiveAppointment = Appointments::find()
+                    ->where([
+                        'specialist_id' => $midwife->user_id,
+                        'appointment_date' => $appointmentDate
+                    ])
+                    ->andWhere(['NOT IN', 'status', ['Completed', 'Cancelled']])
+                    ->exists();
+
+                if ($hasActiveAppointment) {
+                    return [
+                        'title' => "Book Appointment",
+                        'content' => '<span class="text-danger">This midwife already has an ongoing appointment on this date. Please select another date.</span>',
+                        'footer' => Html::button(Yii::t('yii2-ajaxcrud', 'Close'), ['class' => 'btn btn-default pull-left', 'data-dismiss' => 'modal']),
+                    ];
+                }
                 do {
-                    // Generate a random 6-digit number as reference number
                     $refNo = sprintf('%06d', mt_rand(0, 999999));
                 } while (Appointments::find()->where(['reference_no' => $refNo])->exists());
 
-
-
-                $model->reference_no = Yii::$app->user->id . $refNo . $doctor->user_id;
+                $model->reference_no = Yii::$app->user->id . $refNo . $midwife->user_id;
                 $model->patient_id = Yii::$app->user->id;
-                $model->specialist_id = $doctor->user_id;
+                $model->specialist_id = $midwife->user_id;
+                $model->appointment_date = $appointmentDate;
                 $model->created_at = date('Y-m-d H:i:s');
                 $model->status = 'Pending';
-                $model->save();
+
+                if ($model->validate()) {
+                    $model->save();
+                }
+
                 $this->logUserAction(Yii::$app->user->id, 'Created', 'Appointment created with ref# ' . $model->reference_no);
 
                 return [
@@ -340,7 +404,6 @@ class PatientController extends Controller
                     'title' => Yii::t('yii2-ajaxcrud', 'Create New') . " Appointment",
                     'content' => $this->renderAjax('create', [
                         'model' => $model,
-
                     ]),
                     'footer' => Html::button(Yii::t('yii2-ajaxcrud', 'Close'), ['class' => 'btn btn-default pull-left', 'data-dismiss' => 'modal']) .
                         Html::button(Yii::t('yii2-ajaxcrud', 'Save'), ['class' => 'btn btn-primary', 'type' => 'submit'])
@@ -348,25 +411,50 @@ class PatientController extends Controller
             }
         } else {
             if ($model->load($request->post())) {
-                $doctor = Doctor::findOne($id);
+                $doctor = Midwife::findOne($id);
                 date_default_timezone_set('Asia/Manila');
+
+                $appointmentDate = date('Y-m-d', strtotime($model->appointment_date));
+
+                $hasActiveAppointment = Appointments::find()
+                    ->where([
+                        'specialist_id' => $doctor->user_id,
+                        'appointment_date' => $appointmentDate
+                    ])
+                    ->andWhere(['NOT IN', 'status', ['Completed', 'Cancelled']])
+                    ->exists();
+
+                if ($hasActiveAppointment) {
+                    return [
+                        'title' => "Book Appointment",
+                        'content' => '<span class="text-danger">This midwife already has an ongoing appointment on this date. Please select another date.</span>',
+                        'footer' => Html::button(Yii::t('yii2-ajaxcrud', 'Close'), ['class' => 'btn btn-default pull-left', 'data-dismiss' => 'modal']),
+                    ];
+                }
+
+                do {
+                    $refNo = sprintf('%06d', mt_rand(0, 999999));
+                } while (Appointments::find()->where(['reference_no' => $refNo])->exists());
 
                 $model->patient_id = Yii::$app->user->id;
                 $model->specialist_id = $doctor->user_id;
                 $model->created_at = date('Y-m-d H:i:s');
                 $model->status = 'Pending';
-                $model->save();
-                $this->logUserAction(Yii::$app->user->id, 'Update', 'Updated an appointment with ref# ' . $model->reference_no . '.');
+
+                if ($model->validate()) {
+                    $model->save();
+                    $this->logUserAction(Yii::$app->user->id, 'Update', 'Updated an appointment with ref# ' . $model->reference_no . '.');
+                }
 
                 return $this->redirect(['view', 'id' => $model->id]);
             } else {
                 return $this->render('create', [
                     'model' => $model,
-
                 ]);
             }
         }
     }
+
 
 
     public function actionUpdateHistory($id)
@@ -557,7 +645,12 @@ class PatientController extends Controller
     public function actionDashboard()
     {
         $userId = Yii::$app->user->id;
-        $appointment = Appointments::find()->where(['patient_id' => $userId])->all();
+        $appointment = Appointments::find()
+            ->where(['patient_id' => $userId])
+            ->andWhere(['not in', 'status', ['Completed', 'Cancelled']])
+            ->orderBy(['appointment_date' => SORT_ASC])
+            ->all();
+
         $history = MedicalHistory::find()->where(['patient_id' => $userId])->all();
 
         // var_dump($history); die;
