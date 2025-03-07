@@ -241,6 +241,16 @@
                             'data-target' => '#guideModal',
                         ],
                     ],
+                    [
+                        'label' => 'Guide',
+                        'url' => '#',
+                        'icon' => 'fa fa-question-circle',
+                        'visible' => Yii::$app->user->can('access doctor module'),
+                        'options' => [
+                            'data-toggle' => 'modal',
+                            'data-target' => '#guideModal2',
+                        ],
+                    ],
                 ],
             ]);
             ?>
@@ -279,6 +289,41 @@
                         <h5>Hakbang 3</h5>
                         <p>Kumpirmahin ang detalye ng iyong appointment at isumite.</p>
                         <img src="<?= Yii::$app->request->baseUrl ?>/uploads/step3.jpg" alt="Step 3 Image">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="guideModal2" tabindex="-1" aria-labelledby="guideModal2Label" aria-hidden="true">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="guideModal2Label">Guide</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div id="guideModal2Content">
+                    <div class="step">
+                        <div class="step-icon">📋</div>
+                        <h5>Hakbang 1</h5>
+                        <p>Pumunta sa "Appointments" upang makita ang listahan ng mga naka-schedule na pasyente.</p>
+                        <p>Piliin ang appointment ng pasyente na nais mong i-manage.</p>
+                        <p>Pindutin ang "Update" kung nais mong baguhin ng pasyente ang kanyang appointment.</p>
+                        <p>pindutin ang "Cancel" kung nais ipaalam sa pasyente na hindi matutuloy.</p>
+                        <p>pindutin ang "Approve" kung nais ipaalam sa pasyente na hindi matutuloy.</p>
+                        <p>Pindutin ang "Diagnosis" at ilagay ang iyong findings at treatment recommendations.</p>
+                        <img src="<?= Yii::$app->request->baseUrl ?>/uploads/dstep1.jpg" alt="Step 1 Image">
+                    </div>
+
+                    <div class="step">
+                        <div class="step-icon">✅</div>
+                        <h5>Hakbang 2</h5>
+                        <p>Siguraduhin na tama ang detalye at isumite.</p>
+                        <img src="<?= Yii::$app->request->baseUrl ?>/uploads/dstep2.png" alt="Step 2 Image">
                     </div>
                 </div>
             </div>
