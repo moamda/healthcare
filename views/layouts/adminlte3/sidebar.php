@@ -314,7 +314,7 @@
                         <p>Piliin ang appointment ng pasyente na nais mong i-manage.</p>
                         <p>Pindutin ang "Update" kung nais mong baguhin ng pasyente ang kanyang appointment.</p>
                         <p>pindutin ang "Cancel" kung nais ipaalam sa pasyente na hindi matutuloy.</p>
-                        <p>pindutin ang "Approve" kung nais ipaalam sa pasyente na hindi matutuloy.</p>
+                        <p>pindutin ang "Approve" kung nais ipaalam sa pasyente na matutuloy ang appointment.</p>
                         <p>Pindutin ang "Diagnosis" at ilagay ang iyong findings at treatment recommendations.</p>
                         <img src="<?= Yii::$app->request->baseUrl ?>/uploads/dstep1.jpg" alt="Step 1 Image">
                     </div>
