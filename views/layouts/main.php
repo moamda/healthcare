@@ -53,9 +53,10 @@ $this->registerLinkTag(['rel' => 'icon', 'type' => 'image/x-icon', 'href' => Yii
         // }
 
         echo Nav::widget([
-            'options' => ['class' => 'navbar-nav ms-auto mb-2 mb-md-0'],
+            'options' => ['class' => 'navbar-nav ml-auto', 'style' => 'font-size: 18px;'],
             'items' => $menuItems,
         ]);
+        
         if (Yii::$app->user->isGuest) {
             echo Html::tag('div', Html::a('Login', ['/site/login'], ['class' => ['btn btn-link login text-decoration-none']]), ['class' => ['d-flex']]);
         } else {

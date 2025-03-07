@@ -105,17 +105,17 @@ return [
         // ]
         'viewOptions' => [
             'role' => 'modal-remote',
-            'title' => Yii::t('yii2-ajaxcrud', 'View'),
-            'data-toggle' => 'tooltip',
+            'title' => false,
             'class' => 'btn bg-gradient-success',
-            'label' => 'View'
+            'label' => 'View',
+            'data-toggle' => false
         ],
         'updateOptions' => [
             'role' => 'modal-remote',
-            'title' => Yii::t('yii2-ajaxcrud', 'Update'),
-            'data-toggle' => 'tooltip',
+            'title' => false,
             'class' => 'btn bg-gradient-primary',
-            'label' => 'Update'
+            'label' => 'Update',
+            'data-toggle' => false
         ],
         // 'deleteOptions' => [
         //     'role' => 'modal-remote',

@@ -94,7 +94,7 @@ return [
                 if (Yii::$app->user->can('access patient module') && $model->has_consent) {
                     return Html::a('Revoke Consent', $url, [
                         'role' => 'modal-remote',
-                        'title' => Yii::t('yii2-ajaxcrud', 'Confirm'),
+                        // 'title' => Yii::t('yii2-ajaxcrud', 'Confirm'),
                         'class' => 'btn bg-gradient-danger',
                         'data-method' => false,
                         'data-request-method' => 'post',
@@ -109,7 +109,7 @@ return [
                 if (Yii::$app->user->can('access patient module') && !$model->has_consent) {
                     return Html::a('Give Consent', $url, [
                         'role' => 'modal-remote',
-                        'title' => Yii::t('yii2-ajaxcrud', 'Confirm'),
+                        // 'title' => Yii::t('yii2-ajaxcrud', 'Confirm'),
                         'class' => 'btn bg-gradient-success',
                         'data-method' => false,
                         'data-request-method' => 'post',

@@ -50,7 +50,7 @@ return [
             'view-midwife' => function ($url, $model, $key) {
                 return Html::a('View', $url, [
                     'role' => 'modal-remote',
-                    'title' => Yii::t('yii2-ajaxcrud', 'More info'),
+                    // 'title' => Yii::t('yii2-ajaxcrud', 'More info'),
                     'data-toggle' => 'tooltip',
                     'class' => 'btn bg-gradient-info', // Button style
                 ]);
@@ -60,7 +60,7 @@ return [
                 // var_dump($url); die;
                 return Html::a('Book', $url, [
                     'role' => 'modal-remote',
-                    'title' => Yii::t('yii2-ajaxcrud', 'More info'),
+                    // 'title' => Yii::t('yii2-ajaxcrud', 'More info'),
                     'data-toggle' => 'tooltip',
                     'class' => 'btn bg-gradient-success', // Button style
                 ]);

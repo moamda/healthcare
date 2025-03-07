@@ -62,7 +62,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                     'view' => function ($url, $model, $key) {
                                         return Html::a('View', $url, [
                                             'class' => 'btn bg-gradient-info',
-                                            'title' => Yii::t('app', 'View'),
+                                            // 'title' => Yii::t('app', 'View'),
                                         ]);
                                     },
                                     'activate' => function ($url, $model, $key) {
@@ -71,7 +71,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                         }
                                         $options = [
                                             'class' => 'btn bg-gradient-warning',
-                                            'title' => Yii::t('app', 'Activate'),
+                                            // 'title' => Yii::t('app', 'Activate'),
                                             'aria-label' => Yii::t('app', 'Activate'),
                                             'data-confirm' => Yii::t('app', 'Are you sure you want to activate this user?'),
                                             'data-method' => 'post',
@@ -82,7 +82,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                     'update' => function ($url, $model, $key) {
                                         return Html::a('Update', $url, [
                                             'class' => 'btn bg-gradient-warning',
-                                            'title' => Yii::t('app', 'Update'),
+                                            // 'title' => Yii::t('app', 'Update'),
                                         ]);
                                     },
                                     'delete' => function ($url, $model, $key) {
@@ -91,7 +91,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                         }
                                         return Html::a('Deactivate', $url, [
                                             'class' => 'btn bg-gradient-danger',
-                                            'title' => Yii::t('app', 'Delete'),
+                                            // 'title' => Yii::t('app', 'Delete'),
                                             'data-confirm' => Yii::t('app', 'Are you sure you want to deactivate this user?'),
                                             'data-method' => 'post',
                                         ]);
@@ -100,7 +100,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                         // var_dump($model); die;
                                         return Html::a('Profile', ['profile/view', 'id' => $model->id], [
                                             'class' => 'btn bg-gradient-success',
-                                            'title' => Yii::t('app', 'Profile'),
+                                            // 'title' => Yii::t('app', 'Profile'),
                                         ]);
                                     },
                                 ],

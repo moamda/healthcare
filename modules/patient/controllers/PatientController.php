@@ -648,10 +648,12 @@ class PatientController extends Controller
         $appointment = Appointments::find()
             ->where(['patient_id' => $userId])
             ->andWhere(['not in', 'status', ['Completed', 'Cancelled']])
-            ->orderBy(['appointment_date' => SORT_ASC])
+            ->orderBy(['appointment_date' => SORT_DESC])
             ->all();
 
-        $history = MedicalHistory::find()->where(['patient_id' => $userId])->all();
+        $history = MedicalHistory::find()->where(['patient_id' => $userId])
+        ->orderBy(['visit_date' => SORT_DESC])
+        ->all();
 
         // var_dump($history); die;
 

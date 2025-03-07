@@ -69,7 +69,12 @@ use yii\bootstrap4\ActiveForm;
         ['prompt' => 'Select Years of Experience']
     ) ?>
 
-    <?= $form->field($model, 'availability_schedule')->textInput(['maxlength' => true]) ?>
+    <?= $form->field($model, 'availability_schedule')->dropDownList(
+        [
+            'Monday and Wednesday 7:30am to 4:00pm' => 'Monday and Wednesday 7:30am to 4:00pm',
+        ],
+        ['prompt' => 'Select Schedule']
+    ) ?>
 
 
     <?php if (!Yii::$app->request->isAjax) { ?>

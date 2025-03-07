@@ -94,18 +94,51 @@
                 transform: rotate(10deg);
             }
         }
+
+        .step {
+            background: #ffffff;
+            border-radius: 15px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            margin-bottom: 20px;
+            text-align: center;
+            transition: transform 0.3s ease-in-out;
+        }
+
+        .step:hover {
+            transform: scale(1.05);
+        }
+
+        .step-icon {
+            font-size: 40px;
+            color: #007bff;
+            margin-bottom: 10px;
+        }
+
+        .step h5 {
+            font-weight: bold;
+            color: #333;
+        }
+
+        .step img {
+            max-width: 100%;
+            border-radius: 10px;
+            margin-top: 10px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+        }
     </style>
 
 
 
 
     <!-- Sidebar -->
-    <div class="sidebar ">
+    <div class="sidebar" style="display: flex; flex-direction: column; height: 92vh;">
         <!-- Sidebar user panel (optional) -->
         <div class="user-panel mt-3 pb-3 mb-3 d-flex">
             <div class="image">
-                <img src="<?= $assetDir ?>/img/user2-160x160.jpg" class="img-circle elevation-2" alt="User Image">
+                <i class="fas fa-user-circle fa-2x text-white"></i>
             </div>
+
             <div class="info">
                 <?php if (!Yii::$app->user->isGuest): ?>
                     <a href="#" class="d-block">
@@ -180,12 +213,75 @@
                     ['label' => 'Medical History', 'url' => ['/patient/patient/history'], 'visible' => Yii::$app->user->can('access patient module')],
                     ['label' => 'Medical History', 'url' => ['/doctor/doctor/history'], 'visible' => Yii::$app->user->can('access doctor module')],
                     ['label' => 'Medical History', 'url' => ['/midwife/midwife/history'], 'visible' => Yii::$app->user->can('access midwife module')],
-
                 ],
             ]);
             ?>
         </nav>
-        <!-- /.sidebar-menu -->
+
+        <div style="flex-grow: 1;"></div>
+
+        <!-- Guide at the bottom -->
+        <nav class="mt-2">
+            <?php
+            echo \hail812\adminlte\widgets\Menu::widget([
+                'options' => [
+                    'class' => 'nav nav-pills nav-sidebar flex-column nav-child-indent',
+                    'data-widget' => 'treeview',
+                    'role' => 'menu',
+                    'data-accordion' => 'false'
+                ],
+                'items' => [
+                    [
+                        'label' => 'Guide',
+                        'url' => '#',
+                        'icon' => 'fa fa-question-circle',
+                        'visible' => Yii::$app->user->can('access patient module'),
+                        'options' => [
+                            'data-toggle' => 'modal',
+                            'data-target' => '#guideModal',
+                        ],
+                    ],
+                ],
+            ]);
+            ?>
+        </nav>
     </div>
     <!-- /.sidebar -->
 </aside>
+
+<div class="modal fade" id="guideModal" tabindex="-1" aria-labelledby="guideModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="guideModalLabel">Guide</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div id="guideModalContent">
+                    <div class="step">
+                        <div class="step-icon">🔍</div>
+                        <h5>Hakbang 1</h5>
+                        <p>Pumunta sa "Find Doctor" o "Find Midwife" upang maghanap ng available na tagapagbigay ng serbisyo.</p>
+                        <img src="<?= Yii::$app->request->baseUrl ?>/uploads/step1.jpg" alt="Step 1 Image">
+                    </div>
+
+                    <div class="step">
+                        <div class="step-icon">📅</div>
+                        <h5>Hakbang 2</h5>
+                        <p>Piliin ang iyong nais na doktor o midwife at pumili ng available na petsa at oras at ilagay ang dahilan.</p>
+                        <img src="<?= Yii::$app->request->baseUrl ?>/uploads/step2.jpg" alt="Step 2 Image">
+                    </div>
+
+                    <div class="step">
+                        <div class="step-icon">✅</div>
+                        <h5>Hakbang 3</h5>
+                        <p>Kumpirmahin ang detalye ng iyong appointment at isumite.</p>
+                        <img src="<?= Yii::$app->request->baseUrl ?>/uploads/step3.jpg" alt="Step 3 Image">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

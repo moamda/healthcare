@@ -53,7 +53,7 @@ $this->params['breadcrumbs'][] = $this->title;
                   <th>User</th>
                   <th>Action</th>
                   <th>Details</th>
-                  <th>IP Address</th>
+                  <!-- <th>IP Address</th> -->
                   <th>Date</th>
                 </tr>
               </thead>
@@ -64,7 +64,7 @@ $this->params['breadcrumbs'][] = $this->title;
                   <td><?= Html::encode($log->user->username ?? 'Unknown') ?></td>
                   <td><?= Html::encode($log->action) ?></td>
                   <td><?= Html::encode($log->details) ?></td>
-                  <td><?= Html::encode($log->ip_address) ?></td>
+                  <!-- <td><= Html::encode($log->ip_address) ?></td> -->
                   <td><?= date('Y-m-d H:i:s', strtotime($log->created_at)) ?></td>
                 </tr>
                 <?php endforeach; ?>

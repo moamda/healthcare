@@ -24,8 +24,8 @@ use yii\widgets\DetailView;
             'address',
             'years_of_experience',
             'availability_schedule',
-            'created_at',
-            'updated_at',
+            // 'created_at',
+            // 'updated_at',
         ],
     ]) ?>
 
