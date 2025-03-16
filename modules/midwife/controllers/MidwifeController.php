@@ -240,6 +240,27 @@ class MidwifeController extends Controller
         }
     }
 
+    public function actionViewHistory($id)
+    {
+        $model = $this->findModel3($id);
+        $request = Yii::$app->request;
+        if ($request->isAjax) {
+            Yii::$app->response->format = Response::FORMAT_JSON;
+            $this->logUserAction(Yii::$app->user->id, 'Viewed', 'Medical record viewed with ref# ' . $model->reference_no);
+            return [
+                'title' =>  "Details",
+                'content' => $this->renderAjax('view-history', [
+                    'model' => $this->findModel3($id),
+                ]),
+                'footer' => Html::button(Yii::t('yii2-ajaxcrud', 'Close'), ['class' => 'btn btn-default pull-left', 'data-dismiss' => 'modal'])
+            ];
+        } else {
+            return $this->render('view', [
+                'model' => $this->findModel3($id),
+            ]);
+        }
+    }
+
     public function actionCreate($id)
     {
         $request = Yii::$app->request;
@@ -369,6 +390,15 @@ class MidwifeController extends Controller
     protected function findModel2($id)
     {
         if (($model = Appointments::findOne($id)) !== null) {
+            return $model;
+        } else {
+            throw new NotFoundHttpException('The requested page does not exist.');
+        }
+    }
+
+    protected function findModel3($id)
+    {
+        if (($model = MedicalHistory::findOne($id)) !== null) {
             return $model;
         } else {
             throw new NotFoundHttpException('The requested page does not exist.');

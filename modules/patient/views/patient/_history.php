@@ -27,7 +27,13 @@ return [
         'class' => '\kartik\grid\DataColumn',
         'attribute' => 'specialist_id',
         'value' => function ($model) {
-            return $model->doctor ? $model->doctor->fname . ' ' . strtoupper(substr($model->doctor->mname, 0, 1)) . '. ' . $model->doctor->lname : 'No specialist assigned';
+            if ($model->doctor) {
+                return $model->doctor->fname . ' ' . strtoupper(substr($model->doctor->mname, 0, 1)) . '. ' . $model->doctor->lname . ' (Doctor)';
+            } elseif ($model->midwife) {
+                return $model->midwife->fname . ' ' . strtoupper(substr($model->midwife->mname, 0, 1)) . '. ' . $model->midwife->lname . ' (Midwife)';
+            } else {
+                return 'No doctor or midwife assigned';
+            }
         },
         'label' => 'Specialist',
         'contentOptions' => ['style' => 'vertical-align: middle;']
@@ -89,7 +95,7 @@ return [
             //         ]);
             //     }
             // },
-           
+
             'revoke-consent' => function ($url, $model, $key) {
                 if (Yii::$app->user->can('access patient module') && $model->has_consent) {
                     return Html::a('Revoke Consent', $url, [

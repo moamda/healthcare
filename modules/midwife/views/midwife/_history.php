@@ -57,10 +57,10 @@ return [
         },
         'buttons' => [
             'view-history' => function ($url, $model, $key) {
-                if ($model->has_consent) { // If consent is given
+                if ($model->has_consent) { 
                     return Html::a('View', $url, [
                         'role' => 'modal-remote',
-                        'title' => Yii::t('yii2-ajaxcrud', 'More info'),
+                        // 'title' => Yii::t('yii2-ajaxcrud', 'More info'),
                         'data-toggle' => 'tooltip',
                         'class' => 'btn bg-gradient-info',
                     ]);

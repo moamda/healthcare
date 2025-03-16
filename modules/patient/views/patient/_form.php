@@ -20,7 +20,7 @@ use yii\bootstrap4\ActiveForm;
 		'options' => ['placeholder' => 'Select time...'],
 		'pluginOptions' => [
 			'autoclose' => true,
-			'format' => 'yyyy-mm-dd hh:ii:ss P',
+			'format' => 'yyyy-mm-dd hh:ii:ss',
 			'showMeridian' => true,
 			'startView' => 1,
 			'minView' => 0,
