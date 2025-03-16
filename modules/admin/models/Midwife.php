@@ -70,7 +70,7 @@ class Midwife extends \yii\db\ActiveRecord
             'mname' => 'Middle Name',
             'suffix' => 'Suffix',
             'gender' => 'Gender',
-            'dob' => 'Dob',
+            'dob' => 'Date of Birth',
             'specialization' => 'Specialization',
             'license_number' => 'License Number',
             'contact_number' => 'Contact Number',

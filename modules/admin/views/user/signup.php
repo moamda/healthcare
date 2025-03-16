@@ -38,13 +38,13 @@ $this->params['breadcrumbs'][] = $this->title;
                     <div id="user-fields" style="display: none;">
                         <div class="form-row">
                             <div class="form-group col-md-4">
-                                <?= $form->field($model, 'fname')->textInput(['placeholder' => 'Required']) ?>
+                                <?= $form->field($model, 'fname')->textInput(['placeholder' => 'Required', 'autocomplete' => 'off']) ?>
                             </div>
                             <div class="form-group col-md-3">
-                                <?= $form->field($model, 'mname')->textInput(['placeholder' => 'Optional']) ?>
+                                <?= $form->field($model, 'mname')->textInput(['placeholder' => 'Optional', 'autocomplete' => 'off']) ?>
                             </div>
                             <div class="form-group col-md-3">
-                                <?= $form->field($model, 'lname')->textInput(['placeholder' => 'Required']) ?>
+                                <?= $form->field($model, 'lname')->textInput(['placeholder' => 'Required', 'autocomplete' => 'off']) ?>
                             </div>
                             <div class="form-group col-md-2">
                                 <?= $form->field($model, 'suffix')->dropDownList(
@@ -57,7 +57,9 @@ $this->params['breadcrumbs'][] = $this->title;
                                         'IV' => 'IV',
                                         'V' => 'V'
                                     ],
-                                    ['prompt' => 'Optional']
+                                    [
+                                        'prompt' => 'Optional'
+                                    ]
                                 ) ?>
                             </div>
                         </div>
@@ -73,16 +75,16 @@ $this->params['breadcrumbs'][] = $this->title;
                                 ) ?>
                             </div>
                             <div class="form-group col-md-6">
-                                <?= $form->field($model, 'contact')->textInput(['placeholder' => 'Required']) ?>
+                                <?= $form->field($model, 'contact')->textInput(['placeholder' => 'Required', 'autocomplete' => 'off']) ?>
                             </div>
                         </div>
 
                         <div class="form-group">
-                            <?= $form->field($model, 'address')->textarea(['rows' => 2, 'placeholder' => 'Required']) ?>
+                            <?= $form->field($model, 'address')->textarea(['rows' => 2, 'placeholder' => 'Required', 'autocomplete' => 'off'])->hint(false) ?>
                         </div>
 
                         <div class="form-group">
-                            <?= $form->field($model, 'email')->input('email', ['placeholder' => 'Required']) ?>
+                            <?= $form->field($model, 'email')->input('email', ['placeholder' => 'Required', 'autocomplete' => 'off']) ?>
                         </div>
                     </div>
 
