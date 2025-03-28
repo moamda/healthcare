@@ -266,6 +266,7 @@ class PatientController extends Controller
 
                 if ($model->validate()) {
                     $model->save();
+                    return $this->redirect(['dashboard']);
                 }
 
                 $this->logUserAction(Yii::$app->user->id, 'Create', 'New Appointment created with ref# ' . $model->reference_no . '.');
@@ -389,6 +390,7 @@ class PatientController extends Controller
 
                 if ($model->validate()) {
                     $model->save();
+                    return $this->redirect(['dashboard']);
                 }
 
                 $this->logUserAction(Yii::$app->user->id, 'Created', 'Appointment created with ref# ' . $model->reference_no);
@@ -654,8 +656,6 @@ class PatientController extends Controller
         $history = MedicalHistory::find()->where(['patient_id' => $userId])
         ->orderBy(['visit_date' => SORT_DESC])
         ->all();
-
-        // var_dump($history); die;
 
         return $this->render('dashboard', [
             'appointment' => $appointment,

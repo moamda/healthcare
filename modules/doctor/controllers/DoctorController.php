@@ -2,6 +2,7 @@
 
 namespace app\modules\doctor\controllers;
 
+use app\helpers\Debugger;
 use Yii;
 use app\modules\admin\models\Doctor;
 use app\modules\patient\models\Appointments;
@@ -196,13 +197,16 @@ class DoctorController extends Controller
                 try {
                     $existingRecord = $this->readRecord($model->reference_no);
                     if (empty($existingRecord)) {
-                        $this->saveRecord($model);
+                        $fabricTxnHash = $this->saveRecord($model);
+
 
                         if ($model->save(false)) {
                             $modelApt->status = "Completed";
                             $modelApt->notes = 'completed consultation';
                             $modelApt->save(false);
                             $this->logUserAction(Yii::$app->user->id, 'Complete', 'Appointment Completed with ref# ' . $model->reference_no);
+                            $this->logUserAction(Yii::$app->user->id, 'Diagnosed', 'Txn Hash: '. $fabricTxnHash);
+
 
 
                             // return [
@@ -530,10 +534,19 @@ class DoctorController extends Controller
             ->send();
 
         if ($response->isOk) {
-            echo $response->getContent();
+            // echo $response->getContent();
+            $fabricTxnHash = $response->getContent();
+            $fabricTxnHash2 = str_replace(["Transaction ID :", "Response:"], "", $fabricTxnHash);
+            $jsonContent = trim($fabricTxnHash2);
+
+            return $jsonContent;
         } else {
             echo 'HTTP Client Exception while communicating with FABRIC API';
         }
+
+
+        // die;
+        // $model->txn_hash = $fabricTxnHash;
     }
 
     private function logUserAction($userId, $action, $details)
